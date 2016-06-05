@@ -1,0 +1,6 @@
+perek/settings.py
+db.sqlite3
+.idea/
+perek/__pycache__/
+utama/__pycache__/
+utama/migrations/__pycache__/

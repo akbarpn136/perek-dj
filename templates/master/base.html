@@ -1,0 +1,131 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <title>
+        {% block title %}Perekayasa BBTA3{% endblock %}
+    </title>
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="{% static 'semantic.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'custom.css' %}">
+    {% block style %}{% endblock %}
+    <script src="{% static 'jquery-2.1.4.min.js' %}"></script>
+    <script src="{% static 'semantic.min.js' %}"></script>
+    <script src="{% static 'custom.js' %}"></script>
+</head>
+<body>
+    <div id="latar-samping" class="mobile hidden" style="position:absolute; top: 0; background-color: #00B5AD; height: 100%; z-index: -1;"></div>
+    {% block content %}
+        <div class="ui fluid container" style="margin-left: 0 ! important; margin-right: 0 ! important;">
+            <div class="ui stackable grid">
+                <div id="kolom_samping" class="mobile hidden three wide column">
+                    <div class="ui teal inverted vertical fluid menu">
+                        <div class="item">
+                            <div class="ui input"><input placeholder="Search..." type="text"></div>
+                        </div>
+
+                        <div class="ui simple dropdown item">
+                            UTAMA
+                            <i class="home icon"></i>
+                            <div class="menu">
+                                <a class="item"><i class="angle right icon"></i>Tugas</a>
+                                <a class="item"><i class="angle right icon"></i>Kategori</a>
+                                <div class="divider"></div>
+                                <div class="ui simple dropdown item">
+                                    PERK
+                                    <i class="caret right icon"></i>
+                                    <div class="menu">
+                                        <a class="item"><i class="angle right icon"></i>Pendidikan</a>
+                                        <a class="item"><i class="angle right icon"></i>Profesi</a>
+                                        <a class="item"><i class="angle right icon"></i>Penunjang</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ui simple dropdown item">
+                            DOK.
+                            <i class="newspaper icon"></i>
+                            <div class="menu">
+                                <a class="item"><i class="student icon"></i>Pendidikan</a>
+                                <a class="item"><i class="wizard icon"></i>Perekayasa</a>
+                                <a class="item"><i class="area chart icon"></i>Profesi</a>
+                                <a class="item"><i class="send outline icon"></i>Penunjang</a>
+                                <div class="divider"></div>
+                                <a class="item"><i class="bookmark icon"></i>DUPAK</a>
+                            </div>
+                        </div>
+
+                        <div class="ui simple dropdown item">
+                            SETEL
+                            <i class="setting icon"></i>
+                            <div class="menu">
+                                <a class="item"><i class="edit icon"></i>Ubah Profil</a>
+                                <a class="item"><i class="idea icon"></i> Info Aplikasi</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="kolom_konten" class="thirteen wide column">
+                    <div class="mobile hidden gap"></div>
+                    <div class="ui fluid container" style="margin-left: 0 !important; margin-right: 0 !important;">
+                        {% block message %}
+                            {% if messages %}
+                                <div class="ui positive message">
+                                    <i class="close icon"></i>
+                                    <div class="header">
+                                        Pesan
+                                    </div>
+                                    {% for message in messages %}
+                                        <p>{{ message }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        {% endblock %}
+                        {% block header %}
+                            <div class="ui inverted small borderless menu">
+                                <div class="item">
+                                    <img src="{% static 'logo.svg' %}" class="ui fluid image">
+                                </div>
+                                <div class="right menu">
+                                    <div class="mobile only item">
+                                        <div class="ui blue icon simple dropdown button">
+                                            <i class="ellipsis vertical icon"></i>
+                                            <div class="menu">
+                                                {% if request.user.is_authenticated %}
+                                                    <a href="{% url 'halaman_logout' %}" class="item"><i class="sign out icon"></i>Keluar</a>
+                                                {% endif %}
+                                                <a href="https://github.com/akbarpn136/darsplot-dj" class="item"><i class="share alternate icon"></i>App</a>
+                                                <a href="/static/plot.csv" class="item"><i class="download icon"></i>Download</a>
+                                                <a href="" class="item"><i class="trash icon"></i>Flush</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mobile hidden item">
+                                        <a class="ui circular facebook icon button" title="Tambah Kategori">
+                                            <i class="sitemap icon"></i>
+                                        </a>
+                                        <a class="ui circular twitter icon button" title="Tambah Tugas">
+                                            <i class="book icon"></i>
+                                        </a>
+                                        <a class="ui circular google plus icon button" title="Masuk">
+                                            <i class="sign in icon"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endblock %}
+
+                        {% block grafik %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+    {% block js %}{% endblock %}
+</body>
+</html>
