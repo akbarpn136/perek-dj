@@ -26,6 +26,8 @@ $(document).ready(function(){
         $("body").css('padding-right', 14);
     }
 
+    $("div.ui.dropdown.little_menu").dropdown();
+
     $(window).resize(function(){
         $("div#latar-samping").css('width', lebar_latar_samping_selector.width())
                                 .css('min-height', menu_samping_selector.height()+28);
