@@ -1,0 +1,40 @@
+{% extends 'master/base.html' %}
+{% load staticfiles %}
+
+{% block grafik %}
+    <div class="gap"></div>
+    <div class="ui container">
+        <div class="ui stackable three column grid">
+        {% for kat in kategori %}
+            <div class="column">
+                <div class="ui segment">
+                    <div class="ui middle aligned list">
+                        <div class="item">
+                            <div class="right floated content">
+                                <a href="" title="Ubah" class="ui basic icon button">
+                                    <i class="pencil icon"></i>
+                                </a>
+                            </div>
+                            <div class="content" style="position: absolute; top: 36%;">
+                                {{ kat.nama }}
+                            </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="ui message">
+                <div class="header">
+                    Kategori Nihil
+                </div>
+                <p>
+                    Kategori tidak ada, silahkan tambah kategori di tautan yang diberikan.
+                </p>
+            </div>
+        {% endfor %}
+    </div>
+    </div>
+{% endblock %}
+{% block js %}
+
+{% endblock %}
