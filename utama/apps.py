@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class DarsplotConfig(AppConfig):
+class UtamaConfig(AppConfig):
     name = 'utama'
