@@ -3,7 +3,7 @@
 
 {% block grafik %}
     <div class="gap"></div>
-    <div class="ui container">
+    <div class="ui fluid container">
         <div class="ui stackable three column grid">
         {% for kat in kategori %}
             <div class="column">
@@ -32,7 +32,31 @@
                 </p>
             </div>
         {% endfor %}
-    </div>
+
+            <div class="row">
+                <div class="sixteen wide column">
+                    <div class="ui pagination menu" style="padding-left: 0; padding-right: 0; {% if page_range|length < 2 %}display: none;{% endif %}">
+                        {% if kategori.has_previous %}
+                            <a href="?halaman={{ kategori.previous_page_number }}" class="item"><i class="chevron left fitted icon" style="margin-right: 0;"></i></a>
+                        {% endif %}
+
+                        {% if page_range|length != 1 %}
+                            {% for pg in page_range %}
+                                {% if kategori.number == pg %}
+                                    <a href="?halaman={{ pg }}" class="active item">{{ pg }}</a>
+                                {% else %}
+                                    <a href="?halaman={{ pg }}" class="item">{{ pg }}</a>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+
+                        {% if kategori.has_next %}
+                            <a href="?halaman={{ kategori.next_page_number }}" class="item"><i class="chevron right fitted icon" style="margin-right: 0;"></i></a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 {% block js %}
