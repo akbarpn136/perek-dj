@@ -5,14 +5,18 @@ from django.contrib.auth import logout
 # from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from .models import Kategori
+from .models import Kategori, Kegiatan
 
 
 # Create your views here.
-def index(request, ol=None):
-    data = {}
-    if ol is None or ol == 'offline':
-        return render(request, 'utama/halaman_utama.html', data)
+def index(request):
+    data_kegiatan = Kegiatan.objects.all()
+
+    data = {
+        'kegiatan': data_kegiatan
+    }
+
+    return render(request, 'utama/halaman_utama.html', data)
 
 
 def lihat_kategori(request):
