@@ -4,6 +4,7 @@
 {% block grafik %}
     <div class="gap"></div>
     <div class="ui three stackable cards">
+        {% for keg in kegiatan %}
         <div class="ui card">
             <div class="content">
                 <div class="ui icon top left pointing right floated little_menu dropdown basic button">
@@ -14,17 +15,25 @@
                         <a class="item"><i class="write icon"></i>Ubah</a>
                     </div>
                 </div>
-                <div class="header">Nama kegiatan</div>
-                <div class="meta">Tanggal kegiatan</div>
+                <div class="header">{{ keg.nama }}</div>
+                <div class="meta">{{ keg.kapan_dibuat }}</div>
                 <div class="description">
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus consectetur culpa, cum
-                        dolores eius enim error, facere illo magni non numquam omnis placeat quae quas quibusdam,
-                        quidem recusandae vero voluptates.
-                    </p>
-                    <p>
-                        Many people also have their own barometers for what makes a cute dog.
-                    </p>
+                    <div class="ui list">
+                        <div class="item">
+                            <div class="header">Kode</div>
+                            {{ keg.kode }}
+                        </div>
+
+                        <div class="item">
+                            <div class="header">Referensi</div>
+                            {{ keg.referensi }}
+                        </div>
+
+                        <div class="item">
+                            <div class="header">Kategori</div>
+                            {{ keg.kategori_kegiatan }}
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="extra content">
@@ -36,6 +45,18 @@
                 </div>
             </div>
         </div>
+        {% empty %}
+        <div class="ui card" style="width: 100%;">
+            <div class="ui message">
+                <div class="header">
+                    Kegiatan Nihil
+                </div>
+                <p>
+                    Kegiatan tidak ada, silahkan tambah kegiatan di tautan yang diberikan.
+                </p>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 {% endblock %}
 {% block js %}
