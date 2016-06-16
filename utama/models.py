@@ -19,7 +19,7 @@ class Kegiatan(models.Model):
     kapan_dibuat = models.DateField(verbose_name='Kapan dibuat', auto_now_add=True)
     kode = models.CharField(max_length=200, verbose_name='Kode')
     referensi = models.TextField(verbose_name='Referensi')
-    kategori_kegiatan = models.ManyToManyField(Kategori, verbose_name='Kategori')
+    kategori_kegiatan = models.ManyToManyField(Kategori, verbose_name='Kategori', blank=True)
 
     def __str__(self):
         return self.nama
