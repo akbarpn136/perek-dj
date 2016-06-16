@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-# from django.http import JsonResponse
+from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth import logout
 # from django.contrib.auth.decorators import login_required
@@ -9,11 +9,38 @@ from .models import Kategori, Kegiatan
 
 
 # Create your views here.
+def bantu_kegiatan(request):
+    data_raw = [{'title': o.nama, 'description': o.referensi, 'slug': o.slug} for o in Kegiatan.objects.all()]
+
+    return JsonResponse(data_raw, safe=False)
+
+
 def index(request):
     data_kegiatan = Kegiatan.objects.all()
 
     data = {
         'kegiatan': data_kegiatan
+    }
+
+    return render(request, 'utama/halaman_utama.html', data)
+
+
+def kegiatan_berdasarkan_kategori(request, slug, pk):
+    kegiatan_kategori = Kegiatan.objects.filter(kategori_kegiatan__slug=slug, kategori_kegiatan__pk=pk)
+
+    data = {
+        'kegiatan': kegiatan_kategori
+    }
+
+    return render(request, 'utama/halaman_utama.html', data)
+
+
+def cari_kegiatan(request, slug):
+    teks = slug.replace('-', ' ')
+    temu_kegiatan = Kegiatan.objects.filter(nama__contains=teks)
+
+    data = {
+        'kegiatan': temu_kegiatan
     }
 
     return render(request, 'utama/halaman_utama.html', data)
