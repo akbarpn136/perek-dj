@@ -33,7 +33,13 @@
                         <div class="item">
                             <div class="header">Kategori</div>
                             {% for kat in keg.pk|ambil_kategori_tertentu %}
-                                <a href="">#{{ kat.nama }}</a>,
+                                {% if forloop.first %}
+                                    <a href="">#{{ kat.nama }}</a>,
+                                {% elif forloop.last %}
+                                    <a href="">#{{ kat.nama }}</a>
+                                {% endif %}
+                            {% empty %}
+                                NIHIL
                             {% endfor %}
                         </div>
                     </div>
