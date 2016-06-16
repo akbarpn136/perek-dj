@@ -1,5 +1,6 @@
 {% extends 'master/base.html' %}
 {% load staticfiles %}
+{% load kategori_terkait %}
 
 {% block grafik %}
     <div class="gap"></div>
@@ -31,7 +32,9 @@
 
                         <div class="item">
                             <div class="header">Kategori</div>
-                            {{ keg.kategori_kegiatan }}
+                            {% for kat in keg.pk|ambil_kategori_tertentu %}
+                                <a href="">#{{ kat.nama }}</a>,
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
