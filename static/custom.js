@@ -28,6 +28,32 @@ $(document).ready(function(){
 
     $("div.ui.dropdown.little_menu").dropdown();
 
+    $.get("/json_kegiatan/", function(data){
+        $('.ui.search').search({
+            source: data,
+            searchFields: ['title'],
+            searchFullText: true,
+            onSelect: function(result){
+                window.location.replace('/cari/'+result['slug']+'/');
+            }
+        });
+    });
+
+    $('.prompt').keypress(function(e) {
+        var slug = function(str) {
+            var $slug = '';
+            var trimmed = $.trim(str);
+            $slug = trimmed.replace(/[^a-z0-9-]/gi, '-').
+            replace(/-+/g, '-').
+            replace(/^-|-$/g, '');
+            return $slug.toLowerCase();
+        };
+
+        if(e.which == 13) {
+            window.location.replace('/cari/'+slug($(this).val())+'/');
+        }
+    });
+
     $(window).resize(function(){
         $("div#latar-samping").css('width', lebar_latar_samping_selector.width())
                                 .css('min-height', menu_samping_selector.height()+28);
