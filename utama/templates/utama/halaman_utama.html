@@ -33,10 +33,14 @@
                         <div class="item">
                             <div class="header">Kategori</div>
                             {% for kat in keg.pk|ambil_kategori_tertentu %}
-                                {% if forloop.first %}
-                                    <a href="">#{{ kat.nama }}</a>,
-                                {% elif forloop.last %}
-                                    <a href="">#{{ kat.nama }}</a>
+                                {% if keg.pk|ambil_kategori_tertentu|length == 1 %}
+                                    <a href="{% url 'halaman_kegiatan_kategori' slug=kat.slug pk=kat.pk %}">#{{ kat.nama }}</a>
+                                {% else %}
+                                    {% if forloop.first %}
+                                        <a href="{% url 'halaman_kegiatan_kategori' slug=kat.slug pk=kat.pk %}">#{{ kat.nama }}</a>,
+                                    {% elif forloop.last %}
+                                        <a href="{% url 'halaman_kegiatan_kategori' slug=kat.slug pk=kat.pk %}">#{{ kat.nama }}</a>
+                                    {% endif %}
                                 {% endif %}
                             {% empty %}
                                 NIHIL
