@@ -16,7 +16,9 @@
                                 </a>
                             </div>
                             <div class="content" style="position: absolute; top: 36%;">
-                                {{ kat.nama }}
+                                <a href="{% url 'halaman_kegiatan_kategori' slug=kat.slug pk=kat.pk %}">
+                                    {{ kat.nama }}
+                                </a>
                             </div>
                       </div>
                     </div>
