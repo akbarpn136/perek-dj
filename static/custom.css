@@ -22,6 +22,11 @@ body
     margin-bottom: 0;
 }
 
+.ui.header
+{
+    font-family: exoregular, Arial, Helvetica, Sans-Serif, serif !important;
+}
+
 div#kolom_samping
 {
     padding-right: 0;
