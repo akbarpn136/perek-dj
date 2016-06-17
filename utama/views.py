@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth import logout
@@ -116,9 +116,30 @@ def ubah_kategori(request, slug, pk):
         formulir = FormKategori(instance=kategori_ubah)
 
     data = {
-        'form_kategori': formulir
+        'form_kategori': formulir,
+        'kategori': kategori_ubah
     }
     return render(request, 'utama/halaman_modif_kategori.html', data)
+
+
+@login_required
+def hapus_kategori(request, slug, pk):
+    if slug is None:
+        pass
+
+    kategori_ubah = get_object_or_404(Kategori, pk=pk)
+
+    if kategori_ubah.delete():
+        messages.success(request, 'Sekali lagi, kategori berhasil dihapus.')
+        html = '''<div class="ui green message">
+            <div class="header">
+                Info
+            </div>
+            <p>
+                Kategori berhasil dihapus.
+            </p>
+        </div>'''
+        return HttpResponse(html)
 
 
 def keluar(request):
