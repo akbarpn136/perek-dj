@@ -9,6 +9,9 @@ urlpatterns = [
     url(r'^kategori/$', views.lihat_kategori, name='halaman_kategori'),
     url(r'^kategori/(?P<slug>[\w-]+)-(?P<pk>[0-9]+)/$', views.kegiatan_berdasarkan_kategori,
         name='halaman_kegiatan_kategori'),
+    url(r'^kategori/tambah/$', views.tambah_kategori, name='halaman_tambah_kategori'),
+    url(r'^kategori/(?P<slug>[\w-]+)-(?P<pk>[0-9]+)/ubah/$', views.ubah_kategori, name='halaman_ubah_kategori'),
+
     url(r'^cari/(?P<slug>[\w-]+)/$', views.cari_kegiatan, name='halaman_cari_kegiatan'),
 
     url(r'^json_kegiatan/$', views.bantu_kegiatan, name='json_kegiatan'),
