@@ -16,6 +16,11 @@
                 </h2>
                 <div class="ui attached segment">
                     {% block formulir %}
+                    {% if '/ubah/' in request.path %}
+                    <a href="" class="ui icon red button" title=" Hapus kategori " style="position: absolute;top: -47px;right: 10px;">
+                      <i class="trash icon"></i>
+                    </a>
+                    {% endif %}
                     <form class="ui form" method="post">
                         {% csrf_token %}
                         <div class="field">
