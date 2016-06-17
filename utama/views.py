@@ -1,11 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth import logout
-# from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.utils.text import slugify
 
 from .models import Kategori, Kegiatan
+from .forms import FormKategori
 
 
 # Create your views here.
@@ -71,6 +73,52 @@ def lihat_kategori(request):
         'page_range': page_range,
     }
     return render(request, 'utama/halaman_kategori.html', data)
+
+
+@login_required
+def tambah_kategori(request):
+    if request.method == 'POST':
+        slug = slugify(request.POST.get('nama'))
+        a = Kategori(slug=slug)
+        formulir = FormKategori(request.POST, instance=a)
+
+        if formulir.is_valid():
+            messages.success(request, 'Kategori berhasil disimpan.')
+            formulir.save()
+
+            return redirect('halaman_kategori')
+    else:
+        formulir = FormKategori()
+
+    data = {
+        'form_kategori': formulir
+    }
+    return render(request, 'utama/halaman_modif_kategori.html', data)
+
+
+@login_required
+def ubah_kategori(request, slug, pk):
+    kategori_ubah = get_object_or_404(Kategori, pk=pk)
+    if slug is None:
+        pass
+
+    if request.method == 'POST':
+        slg = slugify(request.POST.get('nama'))
+        kategori_ubah.slug = slg
+        formulir = FormKategori(request.POST, instance=kategori_ubah)
+
+        if formulir.is_valid():
+            messages.success(request, 'Kategori berhasil disimpan.')
+            formulir.save()
+
+            return redirect('halaman_kategori')
+    else:
+        formulir = FormKategori(instance=kategori_ubah)
+
+    data = {
+        'form_kategori': formulir
+    }
+    return render(request, 'utama/halaman_modif_kategori.html', data)
 
 
 def keluar(request):
