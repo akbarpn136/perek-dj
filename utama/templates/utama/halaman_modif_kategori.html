@@ -16,10 +16,21 @@
                 </h2>
                 <div class="ui attached segment">
                     {% block formulir %}
-                    {% if '/ubah/' in request.path %}
-                    <a href="" class="ui icon red button" title=" Hapus kategori " style="position: absolute;top: -47px;right: 10px;">
-                      <i class="trash icon"></i>
+                    {% if '/ubah/' in request.path and request.user.is_authenticated %}
+                    <a id="hapus_kategori" class="ui icon red button" title=" Hapus kategori " style="position: absolute;top: -47px;right: 10px;" data-value="/kategori/{{ kategori.slug }}-{{ kategori.pk }}/hapus/">
+                        <i class="trash icon"></i>
                     </a>
+                    <div id="modal_hapus_kategori" class="ui small modal">
+                        <div class="header">Anda yakin?</div>
+                        <div class="content">
+                            <p>Sekali dihapus, maka tidak dapat dikembalikan.</p>
+                        </div>
+
+                        <div class="actions">
+                            <div class="ui positive button">Ya</div>
+                            <div class="ui deny button">Batal</div>
+                        </div>
+                    </div>
                     {% endif %}
                     <form class="ui form" method="post">
                         {% csrf_token %}
