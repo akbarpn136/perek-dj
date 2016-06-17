@@ -1,0 +1,44 @@
+{% extends 'master/base.html' %}
+{% load staticfiles %}
+
+{% block grafik %}
+    <div class="gap"></div>
+    <div class="ui fluid container">
+        <div class="ui grid">
+            <div class="sixteen wide column">
+                <h2 class="ui top attached header">
+                    <i class="save icon"></i>
+                    <div class="content">
+                        {% block judul_formulir %}
+                            Rekam Data Kategori
+                        {% endblock %}
+                    </div>
+                </h2>
+                <div class="ui attached segment">
+                    {% block formulir %}
+                    <form class="ui form" method="post">
+                        {% csrf_token %}
+                        <div class="field">
+                            {% if form_kategori.nama.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in form_kategori.nama.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ form_kategori.nama.label_tag }}
+                            {{ form_kategori.nama }}
+                        </div>
+
+                        <input type="submit" class="ui submit button" value="Simpan">
+                    </form>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+
+{% endblock %}
