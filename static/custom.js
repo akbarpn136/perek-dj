@@ -27,6 +27,7 @@ $(document).ready(function(){
     }
 
     $("div.ui.dropdown.little_menu").dropdown();
+    $("div.ui.dropdown").dropdown();
 
     $.get("/json_kegiatan/", function(data){
         $('.ui.search').search({
@@ -52,6 +53,23 @@ $(document).ready(function(){
         if(e.which == 13) {
             window.location.replace('/cari/'+slug($(this).val())+'/');
         }
+    });
+
+    $("a#hapus_kategori").click(function(e){
+        e.preventDefault();
+        $("div#modal_hapus_kategori").modal({
+            closable  : false,
+            onApprove : function(){
+                $.get($("a#hapus_kategori").attr('data-value'), function(dt){
+                    var html = '<a href="/kategori/" class="ui icon green button" title=" Kembali ke kategori " style="position: absolute;top: -75px;right: -4px;">';
+                    html += '<i class="reply icon"></i>';
+                    html += '</a>';
+
+                    $("form").empty().prepend(dt).prepend(html);
+                    $("a#hapus_kategori").remove();
+                });
+            }
+        }).modal('show');
     });
 
     $(window).resize(function(){
