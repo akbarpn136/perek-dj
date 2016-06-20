@@ -7,7 +7,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.text import slugify
 
 from .models import Kategori, Kegiatan
-from .forms import FormKategori
+from .forms import FormKategori, FormKegiatan
 
 
 # Create your views here.
@@ -43,6 +43,27 @@ def index(request):
     }
 
     return render(request, 'utama/halaman_utama.html', data)
+
+
+@login_required
+def tambah_kegiatan(request):
+    if request.method == 'POST':
+        slug = slugify(request.POST.get('nama'))
+        a = Kegiatan(slug=slug)
+        formulir = FormKegiatan(request.POST, instance=a)
+
+        if formulir.is_valid():
+            messages.success(request, 'Kegiatan berhasil disimpan.')
+            formulir.save()
+
+            return redirect('halaman_utama')
+    else:
+        formulir = FormKegiatan()
+
+    data = {
+        'form_kegiatan': formulir
+    }
+    return render(request, 'utama/halaman_modif_kegiatan.html', data)
 
 
 def kegiatan_berdasarkan_kategori(request, slug, pk):
