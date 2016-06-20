@@ -25,4 +25,13 @@ class Kegiatan(models.Model):
         return self.nama
 
     class Meta:
-        ordering = ['kapan_dibuat']
+        ordering = ['-kapan_dibuat']
+
+
+class Format(models.Model):
+    nama = models.CharField(max_length=150, verbose_name='Nama format')
+    formasi = models.TextField(verbose_name='Kode dokumen')
+    format_kegiatan = models.ForeignKey(Kegiatan, verbose_name='Kegiatan', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.nama
