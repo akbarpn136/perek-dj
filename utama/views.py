@@ -53,7 +53,7 @@ def tambah_kegiatan(request):
         formulir = FormKegiatan(request.POST, instance=a)
 
         if formulir.is_valid():
-            if request.user.is_authenticated():
+            if request.user.is_superuser:
                 messages.success(request, 'Kegiatan berhasil disimpan.')
                 formulir.save()
 
@@ -68,7 +68,7 @@ def tambah_kegiatan(request):
         'form_kegiatan': formulir
     }
 
-    if request.user.is_authenticated():
+    if request.user.is_superuser:
         return render(request, 'utama/halaman_modif_kegiatan.html', data)
     else:
         messages.warning(request, 'Halaman khusus admin')
@@ -87,7 +87,7 @@ def ubah_kegiatan(request, slug, pk):
         formulir = FormKegiatan(request.POST, instance=kegiatan_ubah)
 
         if formulir.is_valid():
-            if request.user.is_authenticated():
+            if request.user.is_superuser:
                 messages.success(request, 'Kegiatan berhasil disimpan.')
                 formulir.save()
 
@@ -100,13 +100,45 @@ def ubah_kegiatan(request, slug, pk):
 
     data = {
         'form_kegiatan': formulir,
+        'kegiatan': kegiatan_ubah
     }
 
-    if request.user.is_authenticated():
+    if request.user.is_superuser:
         return render(request, 'utama/halaman_modif_kegiatan.html', data)
     else:
         messages.warning(request, 'Halaman khusus admin')
         return redirect('halaman_utama')
+
+
+@login_required
+def hapus_kegiatan(request, slug, pk):
+    if slug is None:
+        pass
+
+    kegiatan_ubah = get_object_or_404(Kegiatan, pk=pk)
+
+    if request.user.is_superuser:
+        if kegiatan_ubah.delete():
+            messages.success(request, 'Sekali lagi, Kegiatan berhasil dihapus.')
+            html = '''<div class="ui green message">
+                <div class="header">
+                    Info
+                </div>
+                <p>
+                    Kegiatan berhasil dihapus.
+                </p>
+            </div>'''
+            return HttpResponse(html)
+    else:
+        html = '''<div class="ui red message">
+            <div class="header">
+                Info
+            </div>
+            <p>
+                Kegiatan hanya boleh dihapus oleh admin.
+            </p>
+        </div>'''
+        return HttpResponse(html)
 
 
 def kegiatan_berdasarkan_kategori(request, slug, pk):
