@@ -19,9 +19,27 @@ def bantu_kegiatan(request):
 
 def index(request):
     data_kegiatan = Kegiatan.objects.all()
+    paginator = Paginator(data_kegiatan, 15, 1)
+    page = request.GET.get('halaman')
+
+    try:
+        kegiatan = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        kegiatan = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        kegiatan = paginator.page(paginator.num_pages)
+
+    maks = len(paginator.page_range)
+
+    start_number = kegiatan.number - 3 if kegiatan.number >= 4 else 0
+    end_number = kegiatan.number + 2 if kegiatan.number <= maks else maks
+    page_range = paginator.page_range[start_number:end_number]
 
     data = {
-        'kegiatan': data_kegiatan
+        'kegiatan': kegiatan,
+        'page_range': page_range,
     }
 
     return render(request, 'utama/halaman_utama.html', data)
