@@ -68,6 +68,31 @@ $(document).ready(function(){
                     $("form").empty().prepend(dt).prepend(html);
                     $("a#hapus_kategori").remove();
                 });
+            },
+            onShow : function(){
+                var selector = $("div#latar-samping");
+                selector.css('min-height', selector.height()+28);
+            }
+        }).modal('show');
+    });
+
+    $("a#hapus_kegiatan").click(function(e){
+        e.preventDefault();
+        $("div#modal_hapus_kegiatan").modal({
+            closable  : false,
+            onApprove : function(){
+                $.get($("a#hapus_kegiatan").attr('data-value'), function(dt){
+                    var html = '<a href="/" class="ui icon green button" title=" Kembali ke utama " style="position: absolute;top: -75px;right: -4px;">';
+                    html += '<i class="reply icon"></i>';
+                    html += '</a>';
+
+                    $("form").empty().prepend(dt).prepend(html);
+                    $("a#hapus_kegiatan").remove();
+                });
+            },
+            onShow : function(){
+                var selector = $("div#latar-samping");
+                selector.css('min-height', selector.height()+28);
             }
         }).modal('show');
     });
