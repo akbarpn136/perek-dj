@@ -94,7 +94,7 @@
                             {% endif %}
                         {% endblock %}
                         {% block header %}
-                            <div class="ui inverted small borderless menu">
+                            <div class="ui inverted small borderless menu" style="background-color: #962D3E;">
                                 <a href="{% url 'halaman_utama' %}" class="item">
                                     <img src="{% static 'logo.svg' %}" class="ui fluid image">
                                 </a>
@@ -161,7 +161,7 @@
                                         </div>
                                     </div>
                                     <div class="mobile hidden item">
-                                        <a href="{% url 'halaman_tambah_kategori' %}" class="ui circular facebook icon button" title=" Tambah Kategori ">
+                                        <a href="{% url 'halaman_tambah_kategori' %}" class="ui circular green icon button" title=" Tambah Kategori ">
                                             <i class="sitemap icon"></i>
                                         </a>
                                         <a href="{% url 'halaman_tambah_kegiatan' %}" class="ui circular twitter icon button" title=" Tambah Kegiatan ">
