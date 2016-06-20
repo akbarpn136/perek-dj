@@ -16,7 +16,7 @@ class Kategori(models.Model):
 class Kegiatan(models.Model):
     nama = models.CharField(max_length=255, verbose_name='Nama kegiatan')
     slug = models.SlugField(verbose_name='Slug')
-    kapan_dibuat = models.DateField(verbose_name='Kapan dibuat', auto_now_add=True)
+    kapan_dibuat = models.DateField(verbose_name='Kapan dibuat')
     kode = models.CharField(max_length=200, verbose_name='Kode')
     referensi = models.TextField(verbose_name='Referensi')
     kategori_kegiatan = models.ManyToManyField(Kategori, verbose_name='Kategori', blank=True)
