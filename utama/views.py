@@ -53,8 +53,12 @@ def tambah_kegiatan(request):
         formulir = FormKegiatan(request.POST, instance=a)
 
         if formulir.is_valid():
-            messages.success(request, 'Kegiatan berhasil disimpan.')
-            formulir.save()
+            if request.user.is_authenticated():
+                messages.success(request, 'Kegiatan berhasil disimpan.')
+                formulir.save()
+
+            else:
+                messages.warning(request, 'Hanya admin yang boleh menambahkan kegiatan!')
 
             return redirect('halaman_utama')
     else:
@@ -63,7 +67,46 @@ def tambah_kegiatan(request):
     data = {
         'form_kegiatan': formulir
     }
-    return render(request, 'utama/halaman_modif_kegiatan.html', data)
+
+    if request.user.is_authenticated():
+        return render(request, 'utama/halaman_modif_kegiatan.html', data)
+    else:
+        messages.warning(request, 'Halaman khusus admin')
+        return redirect('halaman_utama')
+
+
+@login_required
+def ubah_kegiatan(request, slug, pk):
+    kegiatan_ubah = get_object_or_404(Kegiatan, pk=pk)
+    if slug is None:
+        pass
+
+    if request.method == 'POST':
+        slg = slugify(request.POST.get('nama'))
+        kegiatan_ubah.slug = slg
+        formulir = FormKegiatan(request.POST, instance=kegiatan_ubah)
+
+        if formulir.is_valid():
+            if request.user.is_authenticated():
+                messages.success(request, 'Kegiatan berhasil disimpan.')
+                formulir.save()
+
+            else:
+                messages.warning(request, 'Hanya admin yang boleh mengubah kegiatan!')
+
+            return redirect('halaman_utama')
+    else:
+        formulir = FormKegiatan(instance=kegiatan_ubah)
+
+    data = {
+        'form_kegiatan': formulir,
+    }
+
+    if request.user.is_authenticated():
+        return render(request, 'utama/halaman_modif_kegiatan.html', data)
+    else:
+        messages.warning(request, 'Halaman khusus admin')
+        return redirect('halaman_utama')
 
 
 def kegiatan_berdasarkan_kategori(request, slug, pk):
