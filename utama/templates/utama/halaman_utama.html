@@ -13,6 +13,7 @@
                     <div class="menu">
                         <div class="header">Aturan</div>
                         <a class="item"><i class="users icon"></i>Personil</a>
+                        <a class="item"><i class="options icon"></i>Format</a>
                         <a class="item"><i class="write icon"></i>Ubah</a>
                     </div>
                 </div>
@@ -70,6 +71,30 @@
             </div>
         </div>
         {% endfor %}
+    </div>
+    <div class="gap"></div>
+    <div class="row">
+        <div class="sixteen wide column">
+            <div class="ui pagination menu" style="padding-left: 0; padding-right: 0; {% if page_range|length < 2 %}display: none;{% endif %}">
+                {% if kegiatan.has_previous %}
+                    <a href="?halaman={{ kegiatan.previous_page_number }}" class="item"><i class="chevron left fitted icon" style="margin-right: 0;"></i></a>
+                {% endif %}
+
+                {% if page_range|length != 1 %}
+                    {% for pg in page_range %}
+                        {% if kegiatan.number == pg %}
+                            <a href="?halaman={{ pg }}" class="active item">{{ pg }}</a>
+                        {% else %}
+                            <a href="?halaman={{ pg }}" class="item">{{ pg }}</a>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+
+                {% if kegiatan.has_next %}
+                    <a href="?halaman={{ kegiatan.next_page_number }}" class="item"><i class="chevron right fitted icon" style="margin-right: 0;"></i></a>
+                {% endif %}
+            </div>
+        </div>
     </div>
 {% endblock %}
 {% block js %}
