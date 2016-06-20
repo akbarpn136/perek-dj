@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.index, name='halaman_utama'),
-    url(r'^logout/$', views.keluar, name='halaman_logout'),
+    url(r'^kegiatan/tambah/$', views.tambah_kegiatan, name='halaman_tambah_kegiatan'),
 
     url(r'^kategori/$', views.lihat_kategori, name='halaman_kategori'),
     url(r'^kategori/(?P<slug>[\w-]+)-(?P<pk>[0-9]+)/$', views.kegiatan_berdasarkan_kategori,
@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^kategori/(?P<slug>[\w-]+)-(?P<pk>[0-9]+)/hapus/$', views.hapus_kategori, name='halaman_hapus_kategori'),
 
     url(r'^cari/(?P<slug>[\w-]+)/$', views.cari_kegiatan, name='halaman_cari_kegiatan'),
+    url(r'^logout/$', views.keluar, name='halaman_logout'),
 
     url(r'^json_kegiatan/$', views.bantu_kegiatan, name='json_kegiatan'),
 ]
