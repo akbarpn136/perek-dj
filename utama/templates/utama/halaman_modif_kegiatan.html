@@ -1,0 +1,119 @@
+{% extends 'master/base.html' %}
+{% load staticfiles %}
+{% block style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'zebra/bootstrap.css' %}">
+{% endblock %}
+{% block script %}
+    <script src="{% static 'zebra/zebra_datepicker.js' %}"></script>
+{% endblock %}
+
+{% block grafik %}
+    <div class="gap"></div>
+    <div class="ui fluid container">
+        <div class="ui grid">
+            <div class="sixteen wide column">
+                <h2 class="ui top attached header">
+                    <i class="save icon"></i>
+                    <div class="content">
+                        {% block judul_formulir %}
+                            Rekam Data Kegiatan
+                        {% endblock %}
+                    </div>
+                </h2>
+                <div class="ui attached segment">
+                    {% block formulir %}
+                    {% if '/ubah/' in request.path and request.user.is_authenticated %}
+                    <a id="hapus_kegiatan" class="ui icon red button" title=" Hapus kegiatan " style="position: absolute;top: -47px;right: 10px;" data-value="/kegiatan/{{ kegiatan.slug }}-{{ kegiatan.pk }}/hapus/">
+                        <i class="trash icon"></i>
+                    </a>
+                    <div id="modal_hapus_kegiatan" class="ui small modal">
+                        <div class="header">Anda yakin?</div>
+                        <div class="content">
+                            <p>Sekali dihapus, maka tidak dapat dikembalikan.</p>
+                        </div>
+
+                        <div class="actions">
+                            <div class="ui positive button">Ya</div>
+                            <div class="ui deny button">Batal</div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <form class="ui form" method="post">
+                        {% csrf_token %}
+                        <div class="three fields">
+                            <div class="field">
+                            {% if form_kegiatan.nama.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in form_kegiatan.nama.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ form_kegiatan.nama.label_tag }}
+                            {{ form_kegiatan.nama }}
+                        </div>
+                            <div class="field">
+                            {% if form_kegiatan.kapan_dibuat.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in form_kegiatan.kapan_dibuat.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ form_kegiatan.kapan_dibuat.label_tag }}
+                            <div class="ui icon input">
+                                <i class="calendar icon"></i>
+                                {{ form_kegiatan.kapan_dibuat }}
+                            </div>
+                        </div>
+                            <div class="field">
+                            {% if form_kegiatan.kode.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in form_kegiatan.kode.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ form_kegiatan.kode.label_tag }}
+                            {{ form_kegiatan.kode }}
+                        </div>
+                        </div>
+                        <div class="field">
+                            {% if form_kegiatan.kategori_kegiatan.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in form_kegiatan.kategori_kegiatan.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ form_kegiatan.kategori_kegiatan.label_tag }}
+                            {{ form_kegiatan.kategori_kegiatan }}
+                        </div>
+                        <div class="field">
+                            {% if form_kegiatan.referensi.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in form_kegiatan.referensi.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ form_kegiatan.referensi.label_tag }}
+                            {{ form_kegiatan.referensi }}
+                        </div>
+
+                        <input type="submit" class="ui submit button" value="Simpan">
+                    </form>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+
+{% endblock %}
