@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     url(r'^$', views.index, name='halaman_utama'),
     url(r'^kegiatan/tambah/$', views.tambah_kegiatan, name='halaman_tambah_kegiatan'),
+    url(r'^kegiatan/(?P<slug>[\w-]+)-(?P<pk>[0-9]+)/ubah/$', views.ubah_kegiatan, name='halaman_ubah_kegiatan'),
 
     url(r'^kategori/$', views.lihat_kategori, name='halaman_kategori'),
     url(r'^kategori/(?P<slug>[\w-]+)-(?P<pk>[0-9]+)/$', views.kegiatan_berdasarkan_kategori,
