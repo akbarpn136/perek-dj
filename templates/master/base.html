@@ -36,25 +36,17 @@
                         </div>
 
                         <div class="ui simple dropdown item">
-                            UTAMA
+                            PENILAIAN
                             <i class="home icon"></i>
                             <div class="menu">
-                                <a href="{% url 'halaman_kategori' %}" class="item"><i class="angle right icon"></i>Kategori</a>
-                                <div class="divider"></div>
-                                <div class="item">
-                                    <i class="dropdown icon"></i>
-                                    Umum
-                                    <div class="menu">
-                                        <a class="item"><i class="angle right icon"></i>Pendidikan</a>
-                                        <a class="item"><i class="angle right icon"></i>Profesi</a>
-                                        <a class="item"><i class="angle right icon"></i>Penunjang</a>
-                                    </div>
-                                </div>
+                                <a class="item"><i class="external icon"></i>Pendidikan</a>
+                                <a class="item"><i class="external icon"></i>Profesi</a>
+                                <a class="item"><i class="external icon"></i>Penunjang</a>
                             </div>
                         </div>
 
                         <div class="ui simple dropdown item">
-                            DOK.
+                            SURAT
                             <i class="newspaper icon"></i>
                             <div class="menu">
                                 <a class="item"><i class="student icon"></i>Pendidikan</a>
@@ -67,12 +59,26 @@
                         </div>
 
                         <div class="ui simple dropdown item">
-                            SETEL
+                            PENGATURAN
                             <i class="setting icon"></i>
                             <div class="menu">
                                 <a class="item"><i class="edit icon"></i>Ubah Profil</a>
                                 <a class="item"><i class="lock icon"></i>Ubah Sandi</a>
-                                <a class="item"><i class="idea icon"></i> Info Aplikasi</a>
+                                <a id="tentang_aplikasi" class="item"><i class="idea icon"></i>Info Aplikasi</a>
+                                <div id="modal_tentang_aplikasi" class="ui small modal">
+                                    <div class="header">Sekilas Aplikasi</div>
+                                    <div class="content">
+                                        <p>
+                                            Aplikasi ini dibuat dengan senang <i class="red heart fitted icon"></i> oleh
+                                            <a href="https://github.com/akbarpn136" title="Lihat!">TRIE</a> dan
+                                            ditenagai oleh python django. Semoga bermanfaat.
+                                        </p>
+                                    </div>
+
+                                    <div class="actions">
+                                        <div class="ui deny button">Oke</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -161,9 +167,14 @@
                                         </div>
                                     </div>
                                     <div class="mobile hidden item">
-                                        <a href="{% url 'halaman_tambah_kategori' %}" class="ui circular green icon button" title=" Tambah Kategori ">
+                                        <div class="ui pointing top right circular yellow icon dropdown button" style="margin-right: 4px;">
                                             <i class="sitemap icon"></i>
-                                        </a>
+                                            <div class="menu">
+                                                <a href="{% url 'halaman_kategori' %}" class="item"><i class="unhide icon"></i>Lihat Kategori</a>
+                                                <a href="{% url 'halaman_tambah_kategori' %}" class="item"><i class="plus icon"></i>Tambah Baru</a>
+                                            </div>
+                                        </div>
+
                                         <a href="{% url 'halaman_tambah_kegiatan' %}" class="ui circular twitter icon button" title=" Tambah Kegiatan ">
                                             <i class="book icon"></i>
                                         </a>
