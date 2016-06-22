@@ -5,6 +5,13 @@
 {% endblock %}
 {% block script %}
     <script src="{% static 'zebra/zebra_datepicker.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+            $("input.tanggal").Zebra_DatePicker({
+                show_icon: false
+            });
+        });
+    </script>
 {% endblock %}
 
 {% block grafik %}
