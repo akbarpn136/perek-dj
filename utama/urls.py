@@ -15,6 +15,9 @@ urlpatterns = [
     url(r'^kategori/(?P<slug>[\w-]+)-(?P<pk>[0-9]+)/ubah/$', views.ubah_kategori, name='halaman_ubah_kategori'),
     url(r'^kategori/(?P<slug>[\w-]+)-(?P<pk>[0-9]+)/hapus/$', views.hapus_kategori, name='halaman_hapus_kategori'),
 
+    url(r'^format/(?P<pk>[0-9]+)/$', views.lihat_format, name='halaman_format'),
+    url(r'^format/tambah-(?P<pk>[0-9]+)/$', views.tambah_format, name='halaman_tambah_format'),
+
     url(r'^cari/(?P<slug>[\w-]+)/$', views.cari_kegiatan, name='halaman_cari_kegiatan'),
     url(r'^logout/$', views.keluar, name='halaman_logout'),
 
