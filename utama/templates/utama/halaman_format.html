@@ -1,0 +1,43 @@
+{% extends 'master/base.html' %}
+{% load staticfiles %}
+
+{% block grafik %}
+    <div class="gap"></div>
+    <div class="ui fluid container">
+        {% if request.user.is_superuser %}
+        <a href="{% url 'halaman_tambah_format' pk=keg.pk %}" class="ui primary button">
+            Format baru
+        </a>
+        {% endif %}
+
+        <div class="gap"></div>
+        <div class="ui four stackable cards">
+            {% for frmt in format %}
+            <div class="card">
+                <div class="content">
+                    <div class="header">{{ frmt.nama }}</div>
+                    <div class="description" style="word-break: break-all;">
+                        {{ frmt.formasi }}
+                    </div>
+                </div>
+                <a class="ui bottom attached button">
+                    <i class="pencil icon"></i>
+                    Ubah
+                </a>
+            </div>
+            {% empty %}
+            <div class="card">
+                <div class="content">
+                    <div class="header">NIHIL</div>
+                    <div class="description">
+                        Silahkan tambah format untuk pengkodean dokumentasi.
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+
+{% endblock %}
