@@ -97,11 +97,10 @@ $(document).ready(function(){
         }).modal('show');
     });
 
-    $("input.tanggal").Zebra_DatePicker({
-        show_icon: false
-    });
-
     $("select#select_kategori_multi").dropdown();
+    $("select#select_format").dropdown({
+        placeholder: true
+    });
 
     $(window).resize(function(){
         $("div#latar-samping").css('width', lebar_latar_samping_selector.width())
