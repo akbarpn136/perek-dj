@@ -6,8 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.text import slugify
 
-from .models import Kategori, Kegiatan
-from .forms import FormKategori, FormKegiatan
+from .models import Kategori, Kegiatan, Format
+from .forms import FormKategori, FormKegiatan, FormFormat
 
 
 # Create your views here.
@@ -119,7 +119,6 @@ def hapus_kegiatan(request, slug, pk):
 
     if request.user.is_superuser:
         if kegiatan_ubah.delete():
-            messages.success(request, 'Sekali lagi, Kegiatan berhasil dihapus.')
             html = '''<div class="ui green message">
                 <div class="header">
                     Info
@@ -244,13 +243,119 @@ def hapus_kategori(request, slug, pk):
     kategori_ubah = get_object_or_404(Kategori, pk=pk)
 
     if kategori_ubah.delete():
-        messages.success(request, 'Sekali lagi, kategori berhasil dihapus.')
         html = '''<div class="ui green message">
             <div class="header">
                 Info
             </div>
             <p>
                 Kategori berhasil dihapus.
+            </p>
+        </div>'''
+        return HttpResponse(html)
+
+
+@login_required
+def lihat_format(request, pk):
+    data_format = Format.objects.all()
+    data_keg = get_object_or_404(Kegiatan, pk=pk)
+
+    data = {
+        'format': data_format,
+        'keg': data_keg
+    }
+
+    return render(request, 'utama/halaman_format.html', data)
+
+
+@login_required
+def tambah_format(request, pk):
+    kegiatan = get_object_or_404(Kegiatan, pk=pk)
+    if request.method == 'POST':
+        a = Format(format_kegiatan=kegiatan)
+        formulir = FormFormat(request.POST, instance=a)
+
+        if formulir.is_valid():
+            if request.user.is_superuser:
+                messages.success(request, 'Format berhasil disimpan.')
+                formulir.save()
+
+            else:
+                messages.warning(request, 'hanya dapat dilakukan oleh admin.')
+
+            return redirect('halaman_format', pk=pk)
+    else:
+        formulir = FormFormat()
+
+    data = {
+        'form_format': formulir,
+        'index': kegiatan
+    }
+
+    if request.user.is_superuser:
+        return render(request, 'utama/halaman_modif_format.html', data)
+
+    else:
+        messages.warning(request, 'hanya dapat dilakukan oleh admin.')
+        return redirect('halaman_format', pk=pk)
+
+
+@login_required
+def ubah_format(request, pk, keg_id):
+    frmt = get_object_or_404(Format, pk=pk)
+    kegiatan = get_object_or_404(Kegiatan, pk=keg_id)
+
+    if request.method == 'POST':
+        formulir = FormFormat(request.POST, instance=frmt)
+
+        if formulir.is_valid():
+            if request.user.is_superuser:
+                messages.success(request, 'Format berhasil disimpan.')
+                formulir.save()
+
+            else:
+                messages.warning(request, 'hanya dapat dilakukan oleh admin.')
+
+            return redirect('halaman_format', pk=keg_id)
+    else:
+        formulir = FormFormat(instance=frmt)
+
+    data = {
+        'form_format': formulir,
+        'index': kegiatan,
+        'format': frmt
+    }
+
+    if request.user.is_superuser:
+        return render(request, 'utama/halaman_modif_format.html', data)
+
+    else:
+        messages.warning(request, 'hanya dapat dilakukan oleh admin.')
+        return redirect('halaman_format', pk=pk)
+
+
+@login_required
+def hapus_format(request, pk):
+
+    format_ubah = get_object_or_404(Format, pk=pk)
+
+    if request.user.is_superuser:
+        if format_ubah.delete():
+            html = '''<div class="ui green message">
+                <div class="header">
+                    Info
+                </div>
+                <p>
+                    Format berhasil dihapus.
+                </p>
+            </div>'''
+            return HttpResponse(html)
+    else:
+        html = '''<div class="ui red message">
+            <div class="header">
+                Info
+            </div>
+            <p>
+                Format hanya boleh dihapus oleh admin.
             </p>
         </div>'''
         return HttpResponse(html)
