@@ -13,7 +13,7 @@
                     <div class="menu">
                         <div class="header">Aturan</div>
                         <a class="item"><i class="users icon"></i>Personil</a>
-                        <a class="item"><i class="options icon"></i>Format</a>
+                        <a href="{% url 'halaman_format' pk=keg.pk %}" class="item"><i class="options icon"></i>Format</a>
                         <a href="{% url 'halaman_ubah_kegiatan' slug=keg.slug pk=keg.pk %}" class="item"><i class="write icon"></i>Ubah</a>
                     </div>
                 </div>
