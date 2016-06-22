@@ -20,7 +20,7 @@
                         {{ frmt.formasi }}
                     </div>
                 </div>
-                <a class="ui bottom attached button">
+                <a href="{% url 'halaman_ubah_format' pk=frmt.pk keg_id=keg.pk %}" class="ui bottom attached button">
                     <i class="pencil icon"></i>
                     Ubah
                 </a>
