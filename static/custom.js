@@ -118,6 +118,17 @@ $(document).ready(function(){
         }).modal('show');
     });
 
+    $("a#tentang_aplikasi").click(function(e){
+        e.preventDefault();
+        $("div#modal_tentang_aplikasi").modal({
+            closable  : false,
+            onShow : function(){
+                var selector = $("div#latar-samping");
+                selector.css('min-height', selector.height()+28);
+            }
+        }).modal('show');
+    });
+
     $("select#select_kategori_multi").dropdown();
     $("select#select_format").dropdown({
         placeholder: true
