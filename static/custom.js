@@ -97,6 +97,27 @@ $(document).ready(function(){
         }).modal('show');
     });
 
+    $("a#hapus_format").click(function(e){
+        e.preventDefault();
+        $("div#modal_hapus_format").modal({
+            closable  : false,
+            onApprove : function(){
+                $.get($("a#hapus_format").attr('data-value'), function(dt){
+                    var html = '<a href="'+ $("a#tbl_kembali").attr('href') +'" class="ui icon green button" title=" Kembali ke utama " style="position: absolute;top: -75px;right: -4px;">';
+                    html += '<i class="reply icon"></i>';
+                    html += '</a>';
+
+                    $("form").empty().prepend(dt).prepend(html);
+                    $("a#hapus_format").remove();
+                });
+            },
+            onShow : function(){
+                var selector = $("div#latar-samping");
+                selector.css('min-height', selector.height()+28);
+            }
+        }).modal('show');
+    });
+
     $("select#select_kategori_multi").dropdown();
     $("select#select_format").dropdown({
         placeholder: true
