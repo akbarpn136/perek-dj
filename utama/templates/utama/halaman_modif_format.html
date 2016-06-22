@@ -1,0 +1,82 @@
+{% extends 'master/base.html' %}
+{% load staticfiles %}
+{% block style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'zebra/bootstrap.css' %}">
+{% endblock %}
+{% block script %}
+    <script src="{% static 'zebra/zebra_datepicker.js' %}"></script>
+{% endblock %}
+
+{% block grafik %}
+    <div class="gap"></div>
+    <div class="ui fluid container">
+        <div class="ui grid">
+            <div class="sixteen wide column">
+                <h2 class="ui top attached header">
+                    <i class="save icon"></i>
+                    <div class="content">
+                        {% block judul_formulir %}
+                            Rekam Data Format
+                        {% endblock %}
+                    </div>
+                </h2>
+                <div class="ui attached segment">
+                    {% block formulir %}
+                    {% if '/ubah/' in request.path and request.user.is_superuser %}
+                    <a id="hapus_format" class="ui icon red button" title=" Hapus format " style="position: absolute;top: -47px;right: 10px;" data-value="/format/{{ format.pk }}/hapus/">
+                        <i class="trash icon"></i>
+                    </a>
+                    <div id="modal_hapus_format" class="ui small modal">
+                        <div class="header">Anda yakin?</div>
+                        <div class="content">
+                            <p>Sekali dihapus, maka tidak dapat dikembalikan.</p>
+                        </div>
+
+                        <div class="actions">
+                            <div class="ui positive button">Ya</div>
+                            <div class="ui deny button">Batal</div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    <form class="ui form" method="post">
+                        {% csrf_token %}
+                        <div class="two fields">
+                            <div class="field">
+                                {% if form_format.nama.errors %}
+                                    <div class="ui error visible message">
+                                        {% for error in form_format.nama.errors %}
+                                            <div class="header">Ada Kesalahan</div>
+                                            <p>{{ error|escape }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                {{ form_format.nama.label_tag }}
+                                {{ form_format.nama }}
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            {% if form_format.formasi.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in form_format.formasi.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ form_format.formasi.label_tag }}
+                            {{ form_format.formasi }}
+                        </div>
+
+                        <input type="submit" class="ui primary submit button" value="Simpan">
+                        <a id="tbl_kembali" href="{% url 'halaman_format' pk=index.pk %}" class="ui submit button">Kembali</a>
+                    </form>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+
+{% endblock %}
