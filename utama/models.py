@@ -35,3 +35,40 @@ class Format(models.Model):
 
     def __str__(self):
         return self.nama
+
+
+class Personil(models.Model):
+    default = ''
+    PILIHAN = (
+        (default, '----'),
+        ('WBS', 'WBS'),
+        ('WP', 'WP'),
+    )
+
+    awal = ''
+    PERAN = (
+        (awal, '----'),
+        ('ES', 'Engineering Staff'),
+        ('L', 'Leader'),
+        ('GL', 'Group Leader'),
+        ('CE', 'Chief Engineering'),
+        ('ACE', 'Assistant Chief Engineering'),
+        ('PM', 'Program Manager'),
+        ('PD', 'Program Director'),
+    )
+
+    wbs_wp_pilihan = models.CharField(max_length=3, verbose_name='WBS/WP', choices=PILIHAN, default=default)
+    wbs_wp_nama = models.CharField(max_length=180, verbose_name='Nama')
+    wbs_wp_kode = models.CharField(max_length=10, verbose_name='Kode', blank=True)
+    peran = models.CharField(max_length=3, verbose_name='Peran', choices=PERAN, default=awal)
+    peran_kode = models.CharField(max_length=10, verbose_name='Kode', blank=True)
+    index = models.IntegerField(verbose_name='Index', default=0)
+
+    orang = models.ForeignKey('auth.User', verbose_name='Anggota', on_delete=models.CASCADE)
+    personil_kegiatan = models.ForeignKey(Kegiatan, verbose_name='Kegiatan', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.peran + self.wbs_wp_nama + self.wbs_wp_kode + '.' + self.peran_kode
+
+    class Meta:
+        ordering = ['index']
