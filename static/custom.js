@@ -13,8 +13,14 @@ $(document).ready(function(){
     //var lebar_latar_samping_pad = lebar_latar_samping_selector.css('padding-right').replace("px", "");
     //var lebar_max = lebar_latar_samping;
 
+    $("div.ui.fixed.menu").css('width', lebar_latar_samping);
     $("div#latar-samping").css('width', lebar_latar_samping).css('min-height', menu_samping_selector.height()+28);
-    $('.ui.accordion').accordion();
+    $('.ui.accordion').accordion({
+        onOpen: function(){
+            var selector = $("div#latar-samping");
+            selector.css('min-height', $("div#kolom_samping").height()+28);
+        }
+    });
 
     if(menu_samping_selector.is(':hidden'))
     {
@@ -134,9 +140,20 @@ $(document).ready(function(){
         placeholder: true
     });
 
+    $("a.kode.header").click(function(e){
+        e.preventDefault();
+        var box = $("textarea#id_formasi");
+        box.val(box.val() + $(this).text());
+    });
+
     $(window).resize(function(){
+        var lebar_latar_samping_selector = $(".three.wide.column");
+        var lebar_latar_samping = lebar_latar_samping_selector.width();
+
         $("div#latar-samping").css('width', lebar_latar_samping_selector.width())
                                 .css('min-height', menu_samping_selector.height()+28);
+        $("div.ui.fixed.menu").css('width', lebar_latar_samping);
+
         if(menu_samping_selector.is(':hidden'))
         {
             $("body").css('padding-right', 0);
