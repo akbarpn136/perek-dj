@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.text import slugify
 
-from .models import Kategori, Kegiatan, Format
+from .models import Kategori, Kegiatan, Format, Personil
 from .forms import FormKategori, FormKegiatan, FormFormat
 
 
@@ -359,6 +359,16 @@ def hapus_format(request, pk):
             </p>
         </div>'''
         return HttpResponse(html)
+
+
+def lihat_personil(request, pk):
+    data_personil = Personil.objects.filter(personil_kegiatan=pk)
+
+    data = {
+        'personil': data_personil,
+    }
+
+    return render(request, 'utama/halaman_personil.html', data)
 
 
 def keluar(request):
