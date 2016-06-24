@@ -21,7 +21,7 @@
                         {{ prsn.wbs_wp_pilihan }} {{ prsn.wbs_wp_kode }} {{ prsn.wbs_wp_nama }}
                     </div>
                 </div>
-                 <a class="ui bottom attached button">
+                 <a href="{% url 'halaman_ubah_personil' pk=kegiatan.pk pk_personil=prsn.pk %}" class="ui bottom attached button">
                      <i class="pencil fitted icon"></i>
                      Ubah
                  </a>
