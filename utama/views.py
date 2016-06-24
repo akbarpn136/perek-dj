@@ -335,7 +335,6 @@ def ubah_format(request, pk, keg_id):
 
 @login_required
 def hapus_format(request, pk):
-
     format_ubah = get_object_or_404(Format, pk=pk)
 
     if request.user.is_superuser:
@@ -425,7 +424,8 @@ def ubah_personil(request, pk, pk_personil):
 
     data = {
         'formulir': formulir,
-        'kegiatan': kegiatan_tertentu
+        'kegiatan': kegiatan_tertentu,
+        'personil': personil_tertentu
     }
 
     if request.user.is_superuser:
@@ -433,6 +433,33 @@ def ubah_personil(request, pk, pk_personil):
     else:
         messages.warning(request, 'Hanya dapat dilakukan oleh admin.')
         return redirect('halaman_utama')
+
+
+@login_required
+def hapus_personil(request, pk):
+    personil_ubah = get_object_or_404(Personil, pk=pk)
+
+    if request.user.is_superuser:
+        if personil_ubah.delete():
+            html = '''<div class="ui green message">
+                    <div class="header">
+                        Info
+                    </div>
+                    <p>
+                        Personil berhasil dihapus.
+                    </p>
+                </div>'''
+            return HttpResponse(html)
+    else:
+        html = '''<div class="ui red message">
+                <div class="header">
+                    Info
+                </div>
+                <p>
+                    Personil hanya boleh dihapus oleh admin.
+                </p>
+            </div>'''
+        return HttpResponse(html)
 
 
 def keluar(request):
