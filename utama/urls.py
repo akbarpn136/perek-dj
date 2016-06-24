@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^personil/(?P<pk>[0-9]+)/tambah/$', views.tambah_personil, name='halaman_tambah_personil'),
     url(r'^personil/(?P<pk>[0-9]+)/ubah/(?P<pk_personil>[0-9]+)/$', views.ubah_personil,
         name='halaman_ubah_personil'),
+    url(r'^personil/(?P<pk>[0-9]+)/hapus/$', views.hapus_personil, name='halaman_hapus_personil'),
 
     url(r'^cari/(?P<slug>[\w-]+)/$', views.cari_kegiatan, name='halaman_cari_kegiatan'),
     url(r'^logout/$', views.keluar, name='halaman_logout'),
