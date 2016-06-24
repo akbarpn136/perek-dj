@@ -5,7 +5,7 @@
     <div class="gap"></div>
     <div class="ui fluid container">
         {% if request.user.is_superuser %}
-        <a href="" class="ui primary button">
+        <a href="{% url 'halaman_tambah_personil' pk=kegiatan.pk %}" class="ui primary button">
             Personil baru
         </a>
         {% endif %}
@@ -21,6 +21,10 @@
                         {{ prsn.wbs_wp_pilihan }} {{ prsn.wbs_wp_kode }} {{ prsn.wbs_wp_nama }}
                     </div>
                 </div>
+                 <a class="ui bottom attached button">
+                     <i class="pencil fitted icon"></i>
+                     Ubah
+                 </a>
             </div>
             {% empty %}
             <div class="card">
