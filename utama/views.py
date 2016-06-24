@@ -404,6 +404,37 @@ def tambah_personil(request, pk):
         return redirect('halaman_utama')
 
 
+@login_required
+def ubah_personil(request, pk, pk_personil):
+    kegiatan_tertentu = get_object_or_404(Kegiatan, pk=pk)
+    personil_tertentu = get_object_or_404(Personil, pk=pk_personil)
+
+    if request.method == 'POST':
+        formulir = FormPersonil(request.POST, instance=personil_tertentu)
+
+        if formulir.is_valid():
+            if request.user.is_superuser:
+                messages.success(request, 'Data personil berhasil disimpan')
+                formulir.save()
+
+            else:
+                messages.warning(request, 'Simpan data personil hanya dapat dilakukan oleh admin.')
+            return redirect('halaman_personil', pk=kegiatan_tertentu.pk)
+    else:
+        formulir = FormPersonil(instance=personil_tertentu)
+
+    data = {
+        'formulir': formulir,
+        'kegiatan': kegiatan_tertentu
+    }
+
+    if request.user.is_superuser:
+        return render(request, 'utama/halaman_modif_personil.html', data)
+    else:
+        messages.warning(request, 'Hanya dapat dilakukan oleh admin.')
+        return redirect('halaman_utama')
+
+
 def keluar(request):
     messages.info(request, 'Berhasil logout.')
     logout(request)
