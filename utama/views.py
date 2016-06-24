@@ -7,7 +7,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.text import slugify
 
 from .models import Kategori, Kegiatan, Format, Personil
-from .forms import FormKategori, FormKegiatan, FormFormat
+from .forms import FormKategori, FormKegiatan, FormFormat, FormPersonil
 
 
 # Create your views here.
@@ -363,12 +363,45 @@ def hapus_format(request, pk):
 
 def lihat_personil(request, pk):
     data_personil = Personil.objects.filter(personil_kegiatan=pk)
+    kegiatan_tertentu = get_object_or_404(Kegiatan, pk=pk)
 
     data = {
         'personil': data_personil,
+        'kegiatan': kegiatan_tertentu,
     }
 
     return render(request, 'utama/halaman_personil.html', data)
+
+
+@login_required
+def tambah_personil(request, pk):
+    kegiatan_tertentu = get_object_or_404(Kegiatan, pk=pk)
+
+    if request.method == 'POST':
+        a = Personil(personil_kegiatan=kegiatan_tertentu)
+        formulir = FormPersonil(request.POST, instance=a)
+
+        if formulir.is_valid():
+            if request.user.is_superuser:
+                messages.success(request, 'Data personil berhasil disimpan')
+                formulir.save()
+
+            else:
+                messages.warning(request, 'Simpan data personil hanya dapat dilakukan oleh admin.')
+            return redirect('halaman_personil', pk=kegiatan_tertentu.pk)
+    else:
+        formulir = FormPersonil()
+
+    data = {
+        'formulir': formulir,
+        'kegiatan': kegiatan_tertentu
+    }
+
+    if request.user.is_superuser:
+        return render(request, 'utama/halaman_modif_personil.html', data)
+    else:
+        messages.warning(request, 'Hanya dapat dilakukan oleh admin.')
+        return redirect('halaman_utama')
 
 
 def keluar(request):
