@@ -48,6 +48,7 @@ class Personil(models.Model):
     awal = ''
     PERAN = (
         (awal, '----'),
+        ('TS', 'Technical Staff'),
         ('ES', 'Engineering Staff'),
         ('L', 'Leader'),
         ('GL', 'Group Leader'),
