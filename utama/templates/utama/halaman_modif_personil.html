@@ -28,10 +28,10 @@
                 <div class="ui attached segment">
                     {% block formulir %}
                     {% if '/ubah/' in request.path and request.user.is_authenticated %}
-                    <a id="hapus_kegiatan" class="ui icon red button" title=" Hapus kegiatan " style="position: absolute;top: -47px;right: 10px;" data-value="/kegiatan/{{ kegiatan.slug }}-{{ kegiatan.pk }}/hapus/">
+                    <a id="hapus_personil" class="ui icon red button" title=" Hapus kegiatan " style="position: absolute;top: -47px;right: 10px;" data-value="/personil/{{ personil.pk }}/hapus/">
                         <i class="trash icon"></i>
                     </a>
-                    <div id="modal_hapus_kegiatan" class="ui small modal">
+                    <div id="modal_hapus_personil" class="ui small modal">
                         <div class="header">Anda yakin?</div>
                         <div class="content">
                             <p>Sekali dihapus, maka tidak dapat dikembalikan.</p>
