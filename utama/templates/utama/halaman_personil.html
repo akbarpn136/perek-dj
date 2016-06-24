@@ -2,41 +2,49 @@
 {% load staticfiles %}
 
 {% block grafik %}
-    <div class="gap"></div>
-    <div class="ui fluid container">
-        {% if request.user.is_superuser %}
-        <a href="{% url 'halaman_tambah_personil' pk=kegiatan.pk %}" class="ui primary button">
-            Personil baru
-        </a>
-        {% endif %}
 
+    <div class="ui fluid container">
         <div class="gap"></div>
-        <div class="ui four stackable cards">
+
+        <table class="ui celled striped table">
+            <thead>
+            <tr>
+                <th colspan="4">
+                {% if request.user.is_superuser %}
+                    <a href="{% url 'halaman_tambah_personil' pk=kegiatan.pk %}" class="ui primary button">
+                        Personil baru
+                    </a>
+                {% endif %}
+                </th>
+            </tr>
+            </thead>
+
+            <tbody>
             {% for prsn in personil %}
-            <div class="card">
-                <div class="content">
-                    <div class="header">{{ prsn.orang.first_name }} {{ prsn.orang.last_name }}</div>
-                    <div class="meta">{{ prsn.peran }} {{ prsn.wbs_wp_kode }}.{{ prsn.peran_kode }}</div>
-                    <div class="description">
-                        {{ prsn.wbs_wp_pilihan }} {{ prsn.wbs_wp_kode }} {{ prsn.wbs_wp_nama }}
-                    </div>
-                </div>
-                 <a href="{% url 'halaman_ubah_personil' pk=kegiatan.pk pk_personil=prsn.pk %}" class="ui bottom attached button">
-                     <i class="pencil fitted icon"></i>
-                     Ubah
-                 </a>
-            </div>
+            <tr>
+                <td class="collapsing">
+                    {{ forloop.counter }}. {{ prsn.orang.first_name }} {{ prsn.orang.last_name }}
+                </td>
+                <td>{{ prsn.peran }} {{ prsn.wbs_wp_kode }}.{{ prsn.peran_kode }}</td>
+                <td>{{ prsn.wbs_wp_pilihan }} {{ prsn.wbs_wp_kode }} {{ prsn.wbs_wp_nama }}</td>
+                <td class="right aligned collapsing">
+                    <a href="{% url 'halaman_ubah_personil' pk=kegiatan.pk pk_personil=prsn.pk %}" class="ui icon button">
+                        <i class="pencil fitted icon"></i>
+                    </a>
+                </td>
+            </tr>
             {% empty %}
-            <div class="card">
-                <div class="content">
-                    <div class="header">NIHIL</div>
-                    <div class="description">
-                        Silahkan tambah personil kedalam kegiatan.
-                    </div>
-                </div>
-            </div>
+            <tr>
+                <td class="collapsing">
+                    -
+                </td>
+                <td>-</td>
+                <td>-</td>
+                <td class="right aligned collapsing">-</td>
+            </tr>
             {% endfor %}
-        </div>
+            </tbody>
+        </table>
     </div>
 {% endblock %}
 {% block js %}
