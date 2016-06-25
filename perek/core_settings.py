@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'utama',
+    'utiliti.apps.UtilitiConfig',
 ]
 
 MIDDLEWARE_CLASSES = [
