@@ -1,4 +1,5 @@
 from django.forms import ModelForm, TextInput, SelectMultiple, Textarea, Select
+from django import forms
 
 from .models import Kategori, Kegiatan, Format, Personil
 
@@ -55,3 +56,8 @@ class FormPersonil(ModelForm):
             'index': TextInput(attrs={'placeholder': 'Nomor urutan'}),
             'referensi': Textarea(attrs={'rows': '0'}),
         }
+
+
+class FormMasuk(forms.Form):
+    username = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'username'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'password'}))
