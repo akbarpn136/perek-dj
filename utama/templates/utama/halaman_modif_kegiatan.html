@@ -48,7 +48,7 @@
                     <form class="ui form" method="post">
                         {% csrf_token %}
                         <div class="three fields">
-                            <div class="field">
+                            <div class="field {% if form_kegiatan.nama.errors %}error{% endif %}">
                             {% if form_kegiatan.nama.errors %}
                                 <div class="ui error visible message">
                                     {% for error in form_kegiatan.nama.errors %}
@@ -60,7 +60,7 @@
                             {{ form_kegiatan.nama.label_tag }}
                             {{ form_kegiatan.nama }}
                         </div>
-                            <div class="field">
+                            <div class="field {% if form_kegiatan.kapan_dibuat.errors %}error{% endif %}">
                             {% if form_kegiatan.kapan_dibuat.errors %}
                                 <div class="ui error visible message">
                                     {% for error in form_kegiatan.kapan_dibuat.errors %}
@@ -75,7 +75,7 @@
                                 {{ form_kegiatan.kapan_dibuat }}
                             </div>
                         </div>
-                            <div class="field">
+                            <div class="field {% if form_kegiatan.kode.errors %}error{% endif %}">
                             {% if form_kegiatan.kode.errors %}
                                 <div class="ui error visible message">
                                     {% for error in form_kegiatan.kode.errors %}
@@ -88,7 +88,7 @@
                             {{ form_kegiatan.kode }}
                         </div>
                         </div>
-                        <div class="field">
+                        <div class="field {% if form_kegiatan.kategori_kegiatan.errors %}error{% endif %}">
                             {% if form_kegiatan.kategori_kegiatan.errors %}
                                 <div class="ui error visible message">
                                     {% for error in form_kegiatan.kategori_kegiatan.errors %}
@@ -100,7 +100,7 @@
                             {{ form_kegiatan.kategori_kegiatan.label_tag }}
                             {{ form_kegiatan.kategori_kegiatan }}
                         </div>
-                        <div class="field">
+                        <div class="field {% if form_kegiatan.referensi.errors %}error{% endif %}">
                             {% if form_kegiatan.referensi.errors %}
                                 <div class="ui error visible message">
                                     {% for error in form_kegiatan.referensi.errors %}

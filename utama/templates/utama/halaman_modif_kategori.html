@@ -34,7 +34,7 @@
                     {% endif %}
                     <form class="ui form" method="post">
                         {% csrf_token %}
-                        <div class="field">
+                        <div class="field {% if form_kategori.nama.errors %}error{% endif %}">
                             {% if form_kategori.nama.errors %}
                                 <div class="ui error visible message">
                                     {% for error in form_kategori.nama.errors %}

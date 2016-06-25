@@ -49,7 +49,7 @@
                         <div class="two fields">
                             <div class="field">
                                 <div class="two fields">
-                                    <div class="field">
+                                    <div class="field {% if formulir.wbs_wp_pilihan.errors %}error{% endif %}">
                                         {% if formulir.wbs_wp_pilihan.errors %}
                                             <div class="ui error visible message">
                                                 {% for error in formulir.wbs_wp_pilihan.errors %}
@@ -62,7 +62,7 @@
                                         {{ formulir.wbs_wp_pilihan }}
                                     </div>
 
-                                    <div class="field">
+                                    <div class="field {% if formulir.wbs_wp_kode.errors %}error{% endif %}">
                                         {% if formulir.wbs_wp_kode.errors %}
                                             <div class="ui error visible message">
                                                 {% for error in formulir.wbs_wp_kode.errors %}
@@ -76,7 +76,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="field">
+                            <div class="field {% if formulir.wbs_wp_nama.errors %}error{% endif %}">
                                 {% if formulir.wbs_wp_nama.errors %}
                                     <div class="ui error visible message">
                                         {% for error in formulir.wbs_wp_nama.errors %}
@@ -92,7 +92,7 @@
 
                         <h4 class="ui dividing header">Informasi Peran & Pendukung</h4>
                         <div class="two fields">
-                            <div class="field">
+                            <div class="field {% if formulir.peran.errors %}error{% endif %}">
                                 {% if formulir.peran.errors %}
                                     <div class="ui error visible message">
                                         {% for error in formulir.peran.errors %}
@@ -104,7 +104,7 @@
                                 {{ formulir.peran.label_tag }}
                                 {{ formulir.peran }}
                             </div>
-                            <div class="field">
+                            <div class="field {% if formulir.peran_kode.errors %}error{% endif %}">
                                 {% if formulir.peran_kode.errors %}
                                     <div class="ui error visible message">
                                         {% for error in formulir.peran_kode.errors %}
@@ -118,7 +118,7 @@
                             </div>
                         </div>
                         <div class="two fields">
-                            <div class="field">
+                            <div class="field {% if formulir.orang.errors %}error{% endif %}">
                                 {% if formulir.orang.errors %}
                                     <div class="ui error visible message">
                                         {% for error in formulir.orang.errors %}
@@ -130,7 +130,7 @@
                                 {{ formulir.orang.label_tag }}
                                 {{ formulir.orang }}
                             </div>
-                            <div class="field">
+                            <div class="field {% if formulir.index.errors %}error{% endif %}">
                                 {% if formulir.index.errors %}
                                     <div class="ui error visible message">
                                         {% for error in formulir.index.errors %}
