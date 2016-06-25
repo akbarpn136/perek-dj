@@ -87,17 +87,21 @@
                     <div class="mobile hidden gap"></div>
                     <div class="ui fluid container" style="margin-left: 0 !important; margin-right: 0 !important;">
                         {% block message %}
-                            {% if messages %}
-                                <div class="ui positive message">
-                                    <i class="close icon"></i>
-                                    <div class="header">
-                                        Pesan
-                                    </div>
-                                    {% for message in messages %}
-                                        <p>{{ message }}</p>
-                                    {% endfor %}
+                            <div id="bagian_pesan" class="ui {% if messages %}visible{% else %}hidden{% endif %} message">
+                                <i class="close icon"></i>
+                                <div class="header">
+                                    {% if messages %}Pesan{% endif %}
                                 </div>
-                            {% endif %}
+                                {% for message in messages %}
+                                    <p>{{ message }}</p>
+                                    <span id="pesan_tag" data-value="{{ message.tags }}"></span>
+                                {% endfor %}
+                            </div>
+                            <script>
+                                $(document).ready(function(){
+                                    $("div#bagian_pesan").addClass($("span#pesan_tag").attr('data-value'));
+                                });
+                            </script>
                         {% endblock %}
                         {% block header %}
                             <div class="ui inverted small borderless menu" style="background-color: #962D3E;">
