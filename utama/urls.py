@@ -27,7 +27,8 @@ urlpatterns = [
     url(r'^personil/(?P<pk>[0-9]+)/hapus/$', views.hapus_personil, name='halaman_hapus_personil'),
 
     url(r'^cari/(?P<slug>[\w-]+)/$', views.cari_kegiatan, name='halaman_cari_kegiatan'),
-    url(r'^logout/$', views.keluar, name='halaman_logout'),
+    url(r'^masuk/$', views.masuk, name='halaman_login'),
+    url(r'^keluar/$', views.keluar, name='halaman_logout'),
 
     url(r'^json_kegiatan/$', views.bantu_kegiatan, name='json_kegiatan'),
 ]
