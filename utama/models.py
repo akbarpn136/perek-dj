@@ -11,6 +11,7 @@ class Kategori(models.Model):
 
     class Meta:
         ordering = ['nama']
+        verbose_name_plural = 'Kategori'
 
 
 class Kegiatan(models.Model):
@@ -26,6 +27,7 @@ class Kegiatan(models.Model):
 
     class Meta:
         ordering = ['-kapan_dibuat']
+        verbose_name_plural = 'Kegiatan'
 
 
 class Format(models.Model):
@@ -35,6 +37,9 @@ class Format(models.Model):
 
     def __str__(self):
         return self.nama
+
+    class Meta:
+        verbose_name_plural = 'Format'
 
 
 class Personil(models.Model):
@@ -73,3 +78,4 @@ class Personil(models.Model):
 
     class Meta:
         ordering = ['index']
+        verbose_name_plural = 'Personil'
