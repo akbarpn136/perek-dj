@@ -1,13 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.http import JsonResponse
 from django.contrib import messages
-from django.contrib.auth import logout
+from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.utils.text import slugify
 
 from .models import Kategori, Kegiatan, Format, Personil
-from .forms import FormKategori, FormKegiatan, FormFormat, FormPersonil
+from .forms import FormKategori, FormKegiatan, FormFormat, FormPersonil, FormMasuk
 
 
 # Create your views here.
@@ -460,6 +460,36 @@ def hapus_personil(request, pk):
                 </p>
             </div>'''
         return HttpResponse(html)
+
+
+def masuk(request):
+    if request.user.is_authenticated():
+        messages.warning(request, 'Sudah terotentikasi...')
+        return redirect('halaman_utama')
+    else:
+        if request.method == 'POST':
+            a = request.POST.get('username')
+            b = request.POST.get('password')
+
+            formulir = FormMasuk(request.POST)
+            if formulir.is_valid():
+                user = authenticate(username=a, password=b)
+
+                if user is None:
+                    messages.warning(request, 'username atau password salah.')
+                    return redirect('halaman_login')
+                else:
+                    login(request, user)
+                    messages.success(request, 'Selamat datang, ' + request.user.username)
+                    return redirect('halaman_utama')
+
+        else:
+            formulir = FormMasuk()
+
+        data = {
+            'formulir': formulir
+        }
+        return render(request, 'registration/halaman_masuk.html', data)
 
 
 def keluar(request):
