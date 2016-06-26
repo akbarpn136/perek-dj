@@ -1,0 +1,176 @@
+{% extends 'master/base.html' %}
+{% load staticfiles %}
+{% block script %}
+    <script>
+        $(document).ready(function(){
+            $("select#select_jenjang").dropdown({
+                placeholder: true
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block grafik %}
+    <div class="gap"></div>
+    <div class="ui fluid container">
+        <div class="ui grid">
+            <div class="sixteen wide column">
+                <h2 class="ui top attached header">
+                    <i class="save icon"></i>
+                    <div class="content">
+                        {% block judul_formulir %}
+                            Rekam Data Profil
+                        {% endblock %}
+                    </div>
+                </h2>
+                <div class="ui attached segment">
+                    {% block formulir %}
+                    <form class="ui form" method="post">
+                        {% csrf_token %}
+                        <div class="four fields">
+                            <div class="field {% if formulir.nip.errors %}error{% endif %}">
+                                {% if formulir.nip.errors %}
+                                    <div class="ui error visible message">
+                                        {% for error in formulir.nip.errors %}
+                                            <div class="header">Ada Kesalahan</div>
+                                            <p>{{ error|escape }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                {{ formulir.nip.label_tag }}
+                                {{ formulir.nip }}
+                            </div>
+
+                            <div class="field {% if formulir.pendidikan.errors %}error{% endif %}">
+                                {% if formulir.pendidikan.errors %}
+                                    <div class="ui error visible message">
+                                        {% for error in formulir.pendidikan.errors %}
+                                            <div class="header">Ada Kesalahan</div>
+                                            <p>{{ error|escape }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                {{ formulir.pendidikan.label_tag }}
+                                {{ formulir.pendidikan }}
+                            </div>
+
+                            <div class="field {% if formulir.jabatan.errors %}error{% endif %}">
+                                {% if formulir.jabatan.errors %}
+                                    <div class="ui error visible message">
+                                        {% for error in formulir.jabatan.errors %}
+                                            <div class="header">Ada Kesalahan</div>
+                                            <p>{{ error|escape }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                {{ formulir.jabatan.label_tag }}
+                                {{ formulir.jabatan }}
+                            </div>
+
+                            <div class="field {% if formulir.instansi_kode.errors %}error{% endif %}">
+                                {% if formulir.instansi_kode.errors %}
+                                    <div class="ui error visible message">
+                                        {% for error in formulir.instansi_kode.errors %}
+                                            <div class="header">Ada Kesalahan</div>
+                                            <p>{{ error|escape }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                {{ formulir.instansi_kode.label_tag }}
+                                {{ formulir.instansi_kode }}
+                            </div>
+                        </div>
+                        <div class="two fields">
+                            <div class="field {% if formulir.instansi.errors %}error{% endif %}">
+                                {% if formulir.instansi.errors %}
+                                    <div class="ui error visible message">
+                                        {% for error in formulir.instansi.errors %}
+                                            <div class="header">Ada Kesalahan</div>
+                                            <p>{{ error|escape }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                {{ formulir.instansi.label_tag }}
+                                {{ formulir.instansi }}
+                            </div>
+
+                            <div class="field {% if formulir.pangkat.errors %}error{% endif %}">
+                                {% if formulir.pangkat.errors %}
+                                    <div class="ui error visible message">
+                                        {% for error in formulir.pangkat.errors %}
+                                            <div class="header">Ada Kesalahan</div>
+                                            <p>{{ error|escape }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                {{ formulir.pangkat.label_tag }}
+                                {{ formulir.pangkat }}
+                            </div>
+                        </div>
+                        <div class="field {% if formulir.jenjang.errors %}error{% endif %}">
+                            {% if formulir.jenjang.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in formulir.jenjang.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ formulir.jenjang.label_tag }}
+                            {{ formulir.jenjang }}
+                        </div>
+
+                        <h4 class="ui dividing header">Umum</h4>
+                        <div class="three fields">
+                            <div class="field {% if formulir_user.first_name.errors %}error{% endif %}">
+                                {% if formulir_user.first_name.errors %}
+                                    <div class="ui error visible message">
+                                        {% for error in formulir_user.first_name.errors %}
+                                            <div class="header">Ada Kesalahan</div>
+                                            <p>{{ error|escape }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                {{ formulir_user.first_name.label_tag }}
+                                {{ formulir_user.first_name }}
+                            </div>
+
+                            <div class="field {% if formulir_user.last_name.errors %}error{% endif %}">
+                                {% if formulir_user.last_name.errors %}
+                                    <div class="ui error visible message">
+                                        {% for error in formulir_user.last_name.errors %}
+                                            <div class="header">Ada Kesalahan</div>
+                                            <p>{{ error|escape }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                {{ formulir_user.last_name.label_tag }}
+                                {{ formulir_user.last_name }}
+                            </div>
+
+                            <div class="field {% if formulir_user.email.errors %}error{% endif %}">
+                                {% if formulir_user.email.errors %}
+                                    <div class="ui error visible message">
+                                        {% for error in formulir_user.email.errors %}
+                                            <div class="header">Ada Kesalahan</div>
+                                            <p>{{ error|escape }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                {{ formulir_user.email.label_tag }}
+                                {{ formulir_user.email }}
+                            </div>
+                        </div>
+
+                        <input type="submit" class="ui submit primary button" value="Simpan">
+                        <a href="{% url 'halaman_profil' %}" class="ui button">Kembali</a>
+                    </form>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+
+{% endblock %}
