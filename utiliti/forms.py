@@ -1,4 +1,5 @@
 from django.forms import ModelForm, TextInput, Textarea, Select, EmailInput
+from django import forms
 from django.contrib.auth.models import User
 
 from .models import Profil
@@ -29,3 +30,12 @@ class FormUser(ModelForm):
             'last_name': TextInput(attrs={'placeholder': 'Misal: Fulan, ST'}),
             'email': EmailInput(attrs={'placeholder': 'Misal: contoh@contoh.com'}),
         }
+
+
+class FormGantiSandi(forms.Form):
+    password_lama = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'password lama'}),
+                                    label='Password Lama')
+    password_baru = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'password baru'}),
+                                    label='Password Baru')
+    password_konfirm = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'konfirmasi password'}),
+                                       label='Konfirmasi Password')
