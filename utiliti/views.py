@@ -1,11 +1,12 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.contrib import messages
 
 from .models import Profil
-from .forms import FormPersonil, FormUser
+from .forms import FormPersonil, FormUser, FormGantiSandi
 
 
 # Create your views here.
@@ -68,3 +69,42 @@ def modifikasi_profil(request):
     }
 
     return render(request, 'utiliti/halaman_modif_profil.html', data)
+
+
+@login_required
+def ganti_password(request):
+    try:
+        u = get_object_or_404(User, username=request.user.username)
+    except Http404:
+        messages.warning(request, 'Maaf, user tidak ditemukan')
+        return redirect('halaman_profil')
+
+    if request.method == 'POST':
+        sandi_lama = request.POST.get('password_lama')
+        sandi_baru = request.POST.get('password_baru')
+        sandi_konfirm = request.POST.get('password_konfirm')
+
+        user = authenticate(username=request.user.username, password=sandi_lama)
+
+        formulir = FormGantiSandi(request.POST)
+        if formulir.is_valid():
+            if user is not None:
+                if sandi_baru == sandi_konfirm:
+                    u.set_password(sandi_baru)
+                    u.save()
+
+                    messages.success(request, 'Password baru berhasil disimpan')
+                    return redirect('halaman_utama')
+                else:
+                    messages.warning(request, 'Gagal konfirmasi password!')
+            else:
+                messages.warning(request, 'Password lama tidak ditemukan!')
+
+    else:
+        formulir = FormGantiSandi()
+
+    data = {
+        'formulir': formulir
+    }
+
+    return render(request, 'registration/halaman_ganti_sandi.html', data)
