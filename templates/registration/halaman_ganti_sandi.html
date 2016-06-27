@@ -1,0 +1,66 @@
+{% extends 'master/base.html' %}
+{% load staticfiles %}
+
+{% block grafik %}
+    <div class="gap"></div>
+    <div class="ui fluid container">
+        <div class="ui two column centered grid">
+            <div class="column">
+                <form method="post" class="ui form">
+                    {% csrf_token %}
+                    <div class="field {% if formulir.password_lama.errors %}error{% endif %}">
+                        {% if formulir.password_lama.errors %}
+                            <div class="ui error visible message">
+                                {% for error in formulir.password_lama.errors %}
+                                    <div class="header">Ada Kesalahan</div>
+                                    <p>{{ error|escape }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        {{ formulir.password_lama.label_tag }}
+                        <div class="ui left icon input">
+                            {{ formulir.password_lama }}
+                            <i class="lock icon"></i>
+                        </div>
+                    </div>
+
+                    <div class="field {% if formulir.password_baru.errors %}error{% endif %}">
+                        {% if formulir.password_baru.errors %}
+                            <div class="ui error visible message">
+                                {% for error in formulir.password_baru.errors %}
+                                    <div class="header">Ada Kesalahan</div>
+                                    <p>{{ error|escape }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        {{ formulir.password_baru.label_tag }}
+                        <div class="ui left icon input">
+                            {{ formulir.password_baru }}
+                            <i class="lock icon"></i>
+                        </div>
+                    </div>
+
+                    <div class="field {% if formulir.password_konfirm.errors %}error{% endif %}">
+                        {% if formulir.password_konfirm.errors %}
+                            <div class="ui error visible message">
+                                {% for error in formulir.password_konfirm.errors %}
+                                    <div class="header">Ada Kesalahan</div>
+                                    <p>{{ error|escape }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        {{ formulir.password_konfirm.label_tag }}
+                        <div class="ui left icon input">
+                            {{ formulir.password_konfirm }}
+                            <i class="lock icon"></i>
+                        </div>
+                  </div>
+                  <input type="submit" class="ui blue submit button" value="SIMPAN">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+
+{% endblock %}
