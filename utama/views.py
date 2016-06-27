@@ -330,7 +330,7 @@ def ubah_format(request, pk, keg_id):
 
     else:
         messages.warning(request, 'hanya dapat dilakukan oleh admin.')
-        return redirect('halaman_format', pk=pk)
+        return redirect('halaman_format', pk=keg_id)
 
 
 @login_required
