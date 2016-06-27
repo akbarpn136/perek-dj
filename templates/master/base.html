@@ -63,7 +63,7 @@
                             <i class="setting icon"></i>
                             <div class="menu">
                                 <a href="{% url 'halaman_profil' %}" class="item"><i class="edit icon"></i>Profil</a>
-                                <a class="item"><i class="lock icon"></i>Ubah Sandi</a>
+                                <a href="{% url 'halaman_modifikasi_sandi' %}" class="item"><i class="lock icon"></i>Ubah Sandi</a>
                                 <a id="tentang_aplikasi" class="item"><i class="idea icon"></i>Info Aplikasi</a>
                                 <div id="modal_tentang_aplikasi" class="ui small modal">
                                     <div class="header">Sekilas Aplikasi</div>
@@ -157,7 +157,7 @@
                                                     {% if request.user.is_authenticated %}{{ request.user.username|upper }}{% else %}SETEL{% endif %}
                                                     <div class="menu" style="left: -100px !important;">
                                                         <a href="{% url 'halaman_profil' %}" class="item"><i class="edit icon"></i>Profil</a>
-                                                        <a class="item"><i class="lock icon"></i>Ubah Sandi</a>
+                                                        <a href="{% url 'halaman_modifikasi_sandi' %}" class="item"><i class="lock icon"></i>Ubah Sandi</a>
                                                         <a href="https://github.com/akbarpn136/perek-dj" class="item"><i class="share alternate icon"></i>App</a>
                                                     </div>
                                                 </div>
