@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'utama',
     'utiliti.apps.UtilitiConfig',
+    'tugas.apps.TugasConfig',
 ]
 
 MIDDLEWARE_CLASSES = [
