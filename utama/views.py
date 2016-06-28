@@ -470,6 +470,8 @@ def masuk(request):
         if request.method == 'POST':
             a = request.POST.get('username')
             b = request.POST.get('password')
+            lanjut = request.GET.get('next')
+            print(lanjut)
 
             formulir = FormMasuk(request.POST)
             if formulir.is_valid():
@@ -481,7 +483,7 @@ def masuk(request):
                 else:
                     login(request, user)
                     messages.success(request, 'Selamat datang, ' + request.user.username)
-                    return redirect('halaman_utama')
+                    return redirect(lanjut)
 
         else:
             formulir = FormMasuk()
