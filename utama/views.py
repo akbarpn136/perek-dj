@@ -471,7 +471,6 @@ def masuk(request):
             a = request.POST.get('username')
             b = request.POST.get('password')
             lanjut = request.GET.get('next')
-            print(lanjut)
 
             formulir = FormMasuk(request.POST)
             if formulir.is_valid():
