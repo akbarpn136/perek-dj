@@ -20,4 +20,5 @@ urlpatterns = [
     url(r'^super/', admin.site.urls),
     url(r'', include('utama.urls')),
     url(r'^utiliti/', include('utiliti.urls')),
+    url(r'^tugas/', include('tugas.urls')),
 ]
