@@ -14,7 +14,9 @@ def cek_keanggotaan(user, pk_kegiatan):
 
 def index(request, pk):
     if cek_keanggotaan(request.user, pk):
-        data = {}
+        data = {
+            'email': request.user.email
+        }
 
         return render(request, 'tugas/halaman_tugas_anggota.html', data)
     else:
