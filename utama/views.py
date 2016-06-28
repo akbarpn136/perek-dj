@@ -161,6 +161,15 @@ def cari_kegiatan(request, slug):
     return render(request, 'utama/halaman_utama.html', data)
 
 
+def user_kegiatan(request):
+    data_keg_user = Kegiatan.objects.filter(personil__orang__pk=request.user.pk)
+
+    data = {
+        'kegiatan': data_keg_user
+    }
+    return render(request, 'utama/halaman_utama.html', data)
+
+
 def lihat_kategori(request):
     data_kategori = Kategori.objects.all()
     paginator = Paginator(data_kategori, 50, 1)
