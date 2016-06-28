@@ -482,7 +482,10 @@ def masuk(request):
                 else:
                     login(request, user)
                     messages.success(request, 'Selamat datang, ' + request.user.username)
-                    return redirect(lanjut)
+                    if lanjut is None:
+                        return redirect('halaman_utama')
+                    else:
+                        return redirect(lanjut)
 
         else:
             formulir = FormMasuk()
