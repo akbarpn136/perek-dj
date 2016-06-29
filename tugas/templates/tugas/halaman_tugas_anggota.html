@@ -27,14 +27,50 @@ Tugas | Aplikasi PERK
                     <div class="right floated author">
                         <img class="ui avatar image" src="https://www.gravatar.com/avatar/{{ email|hash_email }}?d=retro&f=y"> Penerima tugas
                     </div>
-                    <a href="" class="ui basic blue tiny button">Masuk</a>
+                    <a href="" class="ui basic tiny button">Masuk</a>
                 </div>
             </div>
         </div>
-
-        
     </div>
 {% endblock %}
 {% block js %}
+<button class="circular ui icon red button muncul" style="position: absolute; bottom: 24px; right: 14px;">
+    <i class="icon settings"></i>
+</button>
+<div class="ui flowing popup top left transition hidden">
+    <div class="ui four column center aligned grid">
+        <div class="column">
+            <h4 class="ui header">LI</h4>
+            <p><i>Total:</i> -</p>
+            <a class="ui green mini button">Tambah</a>
+        </div>
 
+        <div class="column">
+            <h4 class="ui header">LK</h4>
+            <p><i>Total:</i> -</p>
+            <a class="ui green mini button">Tambah</a>
+        </div>
+
+        <div class="column">
+            <h4 class="ui header">TN</h4>
+            <p><i>Total:</i> -</p>
+            <a class="ui green mini button">Tambah</a>
+        </div>
+
+        <div class="column">
+            <h4 class="ui header">LB</h4>
+            <p><i>Total:</i> -</p>
+            <a class="ui green mini button">Tambah</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $("button.muncul").popup({
+            inline: true,
+            on: 'click'
+        });
+    });
+</script>
 {% endblock %}
