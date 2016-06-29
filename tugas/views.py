@@ -12,6 +12,7 @@ def cek_keanggotaan(user, pk_kegiatan):
     return user.pk in anggota_kegiatan.values_list('pk', flat=True)
 
 
+@login_required
 def index(request, pk):
     if cek_keanggotaan(request.user, pk):
         data = {
