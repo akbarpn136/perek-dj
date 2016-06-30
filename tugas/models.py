@@ -10,6 +10,7 @@ class LembarInstruksi(models.Model):
     referensi = models.TextField(verbose_name='Referensi')
     tanggal = models.DateField(verbose_name='Tanggal')
     butir = models.CharField(max_length=20, verbose_name='Butir Kegiatan')
+    isi = models.TextField(verbose_name='Isi', default=None)
     kegiatan = models.ForeignKey(Kegiatan, verbose_name='Kegiatan', on_delete=models.CASCADE)
     pemberi = models.ForeignKey('auth.User', related_name='pemberi_tugas', verbose_name='Pemberi Tugas',
                                 on_delete=models.SET_NULL, null=True)
@@ -30,6 +31,7 @@ class LembarKerja(models.Model):
     referensi = models.TextField(verbose_name='Referensi')
     tanggal = models.DateField(verbose_name='Tanggal')
     butir = models.CharField(max_length=20, verbose_name='Butir Kegiatan')
+    isi = models.TextField(verbose_name='Isi', default=None)
     kegiatan = models.ForeignKey(Kegiatan, verbose_name='Kegiatan', on_delete=models.CASCADE)
     pemberi = models.ForeignKey('auth.User', related_name='pemberi_tugas_lk', verbose_name='Pemberi Tugas',
                                 on_delete=models.SET_NULL, null=True)
