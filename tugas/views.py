@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
-from .models import *
+from .models import LembarInstruksi, LembarKerja
 
 
 # Create your views here.
@@ -14,9 +14,13 @@ def cek_keanggotaan(user, pk_kegiatan):
 
 @login_required
 def index(request, pk):
-    if cek_keanggotaan(request.user, pk):
+    if cek_keanggotaan(request.user, pk) or request.user.is_superuser:
+        data_li = LembarInstruksi.objects.filter(kegiatan=pk)
+        data_lk = LembarKerja.objects.filter(kegiatan=pk)
+
         data = {
-            'email': request.user.email
+            'instruksi': data_li[:9],
+            'kerja': data_lk[:9],
         }
 
         return render(request, 'tugas/halaman_tugas_anggota.html', data)
