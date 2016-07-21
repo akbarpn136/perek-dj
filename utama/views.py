@@ -441,7 +441,7 @@ def ubah_personil(request, pk, pk_personil):
         return render(request, 'utama/halaman_modif_personil.html', data)
     else:
         messages.warning(request, 'Hanya dapat dilakukan oleh admin.')
-        return redirect('halaman_utama')
+        return redirect('halaman_personil', pk=kegiatan_tertentu.pk)
 
 
 @login_required
