@@ -33,6 +33,7 @@ class LembarKerja(models.Model):
     butir = models.CharField(max_length=20, verbose_name='Butir Kegiatan')
     isi = models.TextField(verbose_name='Isi', default=None)
     kegiatan = models.ForeignKey(Kegiatan, verbose_name='Kegiatan', on_delete=models.CASCADE)
+    li = models.ForeignKey(LembarInstruksi, verbose_name='Lembar Instruksi', on_delete=models.CASCADE, default=1)
     pemberi = models.ForeignKey('auth.User', related_name='pemberi_tugas_lk', verbose_name='Pemberi Tugas',
                                 on_delete=models.SET_NULL, null=True)
     penerima = models.ForeignKey('auth.User', related_name='penerima_tugas_lk', verbose_name='Penerima Tugas',
