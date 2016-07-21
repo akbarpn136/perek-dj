@@ -1,0 +1,73 @@
+{% extends 'tugas/halaman_tugas_anggota.html' %}
+{% load gravatar %}
+
+{% block title %}
+{{ li.nomor }} | Aplikasi PERK
+{% endblock %}
+
+{% block kontainer %}
+    <div class="ui fluid teal card">
+        <div class="content">
+            <img class="ui avatar image" src="https://www.gravatar.com/avatar/{{ li.pemberi.email|hash_email }}?d=retro&f=y"> {{ li.pemberi.first_name|default:li.pemberi.username }}
+        </div>
+
+        <div class="content">
+            <div class="header">{{ li.nomor }}</div>
+            <div class="meta">{{ li.tanggal|date:'d F Y' }}</div>
+
+            <div class="description">
+                <p>
+                    {{ li.isi|safe }}
+                </p>
+            </div>
+        </div>
+
+        {% block ekstra_li %}
+        <div class="extra content">
+            <div class="ui horizontal relaxed list">
+                {% for ws in kerja %}
+                <div class="item">
+                    <img class="ui avatar image" src="https://www.gravatar.com/avatar/{{ ws.penerima.email|hash_email }}?d=retro&f=y">
+
+                    <div class="content">
+                        <a class="header">{{ ws.nomor }}</a>
+                        <div class="description">
+                            {{ ws.butir }}
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                    <p>Bukti laporan masih kosong.</p>
+                {% endfor %}
+            </div>
+        </div>
+        {% endblock %}
+        <div class="content">
+            <div class="right floated meta">
+                <a href="{% url 'halaman_tugas_anggota' pk=keg %}" class="ui icon basic tiny button" title=" kembali ">
+                    <i class="reply icon"></i>
+                </a>
+
+                <a href="" class="ui icon basic tiny button" title=" lihat ">
+                    <i class="unhide icon"></i>
+                </a>
+
+                <a href="" class="ui icon basic tiny button" title=" ubah ">
+                    <i class="pencil icon"></i>
+                </a>
+
+                <div href="" class="ui icon top right pointing dropdown primary tiny button">
+                    <i class="plus icon"></i>
+                    <div class="menu">
+                        <a class="item">
+                            Lembar Kerja
+                        </a>
+                        <a class="item">
+                            Logbook
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
