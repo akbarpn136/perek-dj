@@ -95,7 +95,7 @@ def lihat_li(request, slug, pk, keg):
         'instruksi': data_li_semua,
         'kerja': data_lk,
         'li': data_li,
-        'keg': keg,
+        'pk': keg,
     }
 
     return render(request, 'tugas/halaman_tugas_anggota_rinci.html', data)
