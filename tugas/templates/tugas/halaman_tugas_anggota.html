@@ -160,6 +160,7 @@ $(document).ready(function(){
     }
 
     $("div#filter_personil").dropdown({
+        fullTextSearch: 'exact',
         onChange: function(){
             var ab = $("img.avatar.image").attr('data-value');
 
