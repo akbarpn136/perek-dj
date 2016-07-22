@@ -3,20 +3,44 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import JsonResponse
+
+import hashlib
 
 from .models import LembarInstruksi, LembarKerja
 
 
 # Create your views here.
+def bantu_gravatar(request, usr):
+    u = get_object_or_404(User, username=usr)
+    data_raw = [{
+        'hash': hashlib.md5(u.email.encode()).hexdigest(),
+        'full_name': u.get_full_name(),
+        'username': u.username,
+    }]
+
+    return JsonResponse(data_raw, safe=False)
+
+
 def cek_keanggotaan(user, pk_kegiatan):
     anggota_kegiatan = User.objects.filter(personil__personil_kegiatan=pk_kegiatan)
     return user.pk in anggota_kegiatan.values_list('pk', flat=True)
 
 
 @login_required
-def index(request, pk):
+def index(request, pk, usr=None):
     if cek_keanggotaan(request.user, pk) or request.user.is_superuser:
-        data_li = LembarInstruksi.objects.filter(kegiatan=pk)
+        if usr is None:
+            data_li = LembarInstruksi.objects.filter(kegiatan=pk)
+        else:
+            try:
+                u = get_object_or_404(User, username=usr)
+                u_value = u.pk
+            except Http404:
+                u_value = 0
+
+            data_li = LembarInstruksi.objects.filter(kegiatan=pk, penerima=u_value)
+
         data_lk = LembarKerja.objects.filter(kegiatan=pk)
 
         paginator = Paginator(data_li, 12, 1)
@@ -37,11 +61,14 @@ def index(request, pk):
         end_number = li.number + 2 if li.number <= maks else maks
         page_range = paginator.page_range[start_number:end_number]
 
+        anggota_kegiatan = User.objects.filter(personil__personil_kegiatan=pk)
+
         data = {
             'instruksi': li,
             'kerja': data_lk,
             'pk': pk,
             'page_range': page_range,
+            'personil': anggota_kegiatan,
         }
 
         return render(request, 'tugas/halaman_tugas_anggota.html', data)
