@@ -61,7 +61,7 @@ def index(request, pk, usr=None):
         end_number = li.number + 2 if li.number <= maks else maks
         page_range = paginator.page_range[start_number:end_number]
 
-        anggota_kegiatan = User.objects.filter(personil__personil_kegiatan=pk)
+        anggota_kegiatan = User.objects.filter(personil__personil_kegiatan=pk).distinct()
 
         data = {
             'instruksi': li,
