@@ -1,5 +1,6 @@
 {% extends 'master/base.html' %}
 {% load staticfiles %}
+{% load gravatar %}
 
 {% block title %}
 Tugas | Aplikasi PERK
@@ -14,8 +15,40 @@ Tugas | Aplikasi PERK
             <i class="circular calendar icon"></i>
             PENUGASAN
         </h2>
+
+        <div id="filter_personil" class="ui labeled icon top left pointing scrolling dropdown button">
+            <i class="filter icon"></i>
+            <span class="text">Filter Penugasan</span>
+
+            <div class="menu">
+                <div class="ui search icon input">
+                    <i class="search icon"></i>
+                    <input name="search" placeholder="Nama personil..." type="text">
+                </div>
+                <div class="divider"></div>
+
+                <div class="header">
+                    <span id="kgtn_kd" data-value="{{ pk }}"></span>
+                    <i class="tags icon"></i>
+                    Filter penerima tugas
+                </div>
+
+                <div class="item">
+                    <img class="ui avatar image" src="https://www.gravatar.com/avatar/0?d=retro&f=y" data-value="">
+                    Semua Personil
+                </div>
+                {% for prsn in personil %}
+                <div class="item">
+                    <img class="ui avatar image" src="https://www.gravatar.com/avatar/{{ prsn.email|hash_email }}?d=retro&f=y" data-value="{{ prsn.username }}">
+                    {{ prsn.get_full_name }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
         <div class="gap"></div>
 
+        <span id="url_ori" data-value="{% url 'halaman_tugas_anggota' pk=pk %}"></span>
+        <span id="url_fltr" data-value="{{ request.path }}"></span>
         <div class="ui four stackable cards">
             {% for ins in instruksi %}
             <div class="ui raised card">
@@ -60,7 +93,6 @@ Tugas | Aplikasi PERK
                         </div>
                     </div>
                 </div>
-                {% load gravatar %}
                 <div class="extra content">
                     <div class="author">
                         <img class="ui avatar image" src="https://www.gravatar.com/avatar/{{ ins.penerima.email|hash_email }}?d=retro&f=y"> {{ ins.penerima.first_name|default:ins.penerima.username }}
@@ -111,7 +143,31 @@ Tugas | Aplikasi PERK
     </div>
 {% endblock %}
 {% block js %}
+<script type="text/javascript">
+$(document).ready(function(){
+    var ori = $("span#url_ori").attr('data-value');
+    var fltr = $("span#url_fltr").attr('data-value');
 
+    if( ori != fltr)
+    {
+        var url = '/tugas/'+fltr.substr(fltr.lastIndexOf('/')+1)+'/anggota/';
+        $.get(url, function(val){
+            var tmp = '<img class="ui avatar image" src="https://www.gravatar.com/avatar/'+ val[0]['hash'] +'?d=retro&amp;f=y" data-value="'+ val[0]['username'] +'">';
+            tmp += val[0]['full_name'];
+
+            $("div#filter_personil span.text").empty().append(tmp);
+        });
+    }
+
+    $("div#filter_personil").dropdown({
+        onChange: function(){
+            var ab = $("img.avatar.image").attr('data-value');
+
+            window.location.href = '/tugas/'+$("span#kgtn_kd").attr('data-value')+'/anggota/'+ab;
+        }
+    });
+});
+</script>
 {% endblock %}
 
 {% if '/tugas/' in request.path %}
