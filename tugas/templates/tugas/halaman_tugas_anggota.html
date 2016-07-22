@@ -82,22 +82,46 @@ Tugas | Aplikasi PERK
             </div>
             {% endfor %}
         </div>
+
+        <div class="gap"></div>
+        <div class="row">
+            <div class="sixteen wide column">
+                <div class="ui pagination menu" style="padding-left: 0; padding-right: 0; {% if page_range|length < 2 %}display: none;{% endif %}">
+                    {% if instruksi.has_previous %}
+                        <a href="?halaman={{ instruksi.previous_page_number }}" class="item"><i class="chevron left fitted icon" style="margin-right: 0;"></i></a>
+                    {% endif %}
+
+                    {% if page_range|length != 1 %}
+                        {% for pg in page_range %}
+                            {% if instruksi.number == pg %}
+                                <a href="?halaman={{ pg }}" class="active item">{{ pg }}</a>
+                            {% else %}
+                                <a href="?halaman={{ pg }}" class="item">{{ pg }}</a>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if instruksi.has_next %}
+                        <a href="?halaman={{ instruksi.next_page_number }}" class="item"><i class="chevron right fitted icon" style="margin-right: 0;"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
         {% endblock %}
     </div>
 {% endblock %}
 {% block js %}
 
 {% endblock %}
+
 {% if '/tugas/' in request.path %}
     {% block menu_tombol %}
     <div class="ui simple dropdown item">
         TUGAS
-        <i class="settings icon"></i>
+        <i class="tasks icon"></i>
         <div class="menu">
-            <a class="item"><i class="plus icon"></i>Lembar Instruksi <div class="ui red horizontal label">{{ instruksi|length }}</div></a>
-            <a class="item"><i class="plus icon"></i>Lembar Kerja <div class="ui red horizontal label">{{ kerja|length }}</div></a>
-            <a class="item"><i class="plus chart icon"></i>Technical Note <div class="ui red horizontal label">-</div></a>
-            <a class="item"><i class="plus outline icon"></i>Logbook <div class="ui red horizontal label">-</div></a>
+            <a href="{% url 'halaman_tugas_anggota' pk=pk %}" class="item"><i class="star icon"></i>PENUGASAN</a>
+            <a class="item"><i class="list icon"></i>DOKUMEN</a>
         </div>
     </div>
     {% endblock %}
