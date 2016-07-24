@@ -7,7 +7,7 @@ from django.http import JsonResponse
 
 import hashlib
 
-from .models import LembarInstruksi, LembarKerja
+from .models import LembarInstruksi, LembarKerja, Kegiatan
 
 
 # Create your views here.
@@ -63,10 +63,17 @@ def index(request, pk, usr=None):
 
         anggota_kegiatan = User.objects.filter(personil__personil_kegiatan=pk).distinct()
 
+        try:
+            data_kegiatan = get_object_or_404(Kegiatan, pk=pk)
+        except Http404:
+            messages.warning(request, 'Kegiatan tidak ditemukan')
+            data_kegiatan = Kegiatan()
+
         data = {
             'instruksi': li,
             'kerja': data_lk,
             'pk': pk,
+            'kegiatan': data_kegiatan,
             'page_range': page_range,
             'personil': anggota_kegiatan,
         }
