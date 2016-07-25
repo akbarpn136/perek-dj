@@ -106,3 +106,29 @@ def lihat_li(request, slug, pk, keg):
     }
 
     return render(request, 'tugas/halaman_tugas_anggota_rinci.html', data)
+
+
+# @login_required
+def lihat_li_rinci(request, slug, pk, keg):
+    if slug is None:
+        pass
+
+    try:
+        data_li = get_object_or_404(LembarInstruksi, pk=pk)
+    except Http404:
+        messages.warning(request, 'Lembar instruksi tidak ditemukan!')
+        return redirect('halaman_tugas_anggota', pk=keg)
+
+    try:
+        data_keg = get_object_or_404(Kegiatan, pk=keg)
+    except Http404:
+        messages.warning(request, 'Kegiatan/Program tidak ditemukan!')
+        return redirect('halaman_tugas_anggota', pk=keg)
+
+    data = {
+        'li': data_li,
+        'pk': keg,
+        'kegiatan': data_keg,
+    }
+
+    return render(request, 'tugas/halaman_cetak_lembaran.html', data)
