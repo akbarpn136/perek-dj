@@ -48,7 +48,7 @@
                     <i class="reply icon"></i>
                 </a>
 
-                <a href="" class="ui icon basic tiny button" title=" lihat ">
+                <a href="{% url 'halaman_tugas_anggota_rinci_cetak' slug=li.nomor|slugify pk=li.pk keg=pk %}" class="ui icon basic tiny button" title=" lihat ">
                     <i class="unhide icon"></i>
                 </a>
 
