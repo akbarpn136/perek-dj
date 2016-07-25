@@ -1,0 +1,30 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+    <title>
+        {% block title %}Cetak Laporan{% endblock %}
+    </title>
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="{% static 'semantic.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'custom.css' %}">
+    {% block style %}{% endblock %}
+    <script src="{% static 'jquery-2.1.4.min.js' %}"></script>
+    <script src="{% static 'semantic.min.js' %}"></script>
+    <script src="{% static 'custom.js' %}"></script>
+    {% block script %}{% endblock %}
+</head>
+<body>
+    {% block container %}
+        <div class="ui text container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    {% endblock %}
+    {% block js %}{% endblock %}
+</body>
+</html>
