@@ -102,11 +102,12 @@ def lihat_li(request, slug, pk, keg):
     data = {
         'instruksi': data_li_semua,
         'kerja': data_lk,
-        'li': data_li,
+        'lmbr': data_li,
         'pk': keg,
+        'is_exist': True,
     }
 
-    return render(request, 'tugas/halaman_tugas_anggota_rinci.html', data)
+    return render(request, 'tugas/halaman_li_anggota_rinci.html', data)
 
 
 @login_required
@@ -133,7 +134,59 @@ def lihat_li_rinci(request, slug, pk, keg):
     }
 
     if data_li.penerima.username == request.user.username or request.user.is_superuser:
-        return render(request, 'tugas/halaman_cetak_lembaran.html', data)
+        return render(request, 'tugas/halaman_cetak_li_lembaran.html', data)
+    else:
+        messages.warning(request, 'Hanya pemilik yang mendapatkan hak akses!')
+        # return redirect('/tugas/%s-%s-%s/rincian/' % (slugify(data_li.nomor, allow_unicode=True), pk, keg))
+        return redirect('halaman_tugas_anggota_rinci', slug=slugify(data_li.nomor, allow_unicode=True), pk=pk, keg=keg)
+
+
+@login_required
+def lihat_lk(request, slug, pk, keg, li):
+    if slug is None:
+        pass
+
+    try:
+        data_lk = get_object_or_404(LembarKerja, pk=pk)
+    except Http404:
+        messages.warning(request, 'Lembar kerja tidak ditemukan!')
+        return redirect('halaman_tugas_anggota', pk=keg)
+
+    data = {
+        'lmbr': data_lk,
+        'pk': keg,
+        'li': li,
+        'is_exist': False,
+    }
+
+    return render(request, 'tugas/halaman_lk_anggota_rinci.html', data)
+
+
+@login_required
+def lihat_lk_rinci(request, slug, pk, keg):
+    if slug is None:
+        pass
+
+    try:
+        data_li = get_object_or_404(LembarKerja, pk=pk)
+    except Http404:
+        messages.warning(request, 'Lembar kerja tidak ditemukan!')
+        return redirect('halaman_tugas_anggota', pk=keg)
+
+    try:
+        data_keg = get_object_or_404(Kegiatan, pk=keg)
+    except Http404:
+        messages.warning(request, 'Kegiatan/Program tidak ditemukan!')
+        return redirect('halaman_tugas_anggota', pk=keg)
+
+    data = {
+        'lmbr': data_li,
+        'pk': keg,
+        'kegiatan': data_keg,
+    }
+
+    if data_li.penerima.username == request.user.username or request.user.is_superuser:
+        return render(request, 'tugas/halaman_cetak_lk_lembaran.html', data)
     else:
         messages.warning(request, 'Hanya pemilik yang mendapatkan hak akses!')
         # return redirect('/tugas/%s-%s-%s/rincian/' % (slugify(data_li.nomor, allow_unicode=True), pk, keg))
