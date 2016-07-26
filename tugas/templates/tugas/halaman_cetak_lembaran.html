@@ -8,10 +8,12 @@
 
 {% block style %}
 <style>
-    @page:first
-    {
-        @top-center {
-            content: 'lalala';
+    * {overflow: visible !important;}
+    @media print {
+        footer{
+            position: fixed;
+            bottom: 0;
+            width: 100%;
         }
     }
 </style>
@@ -25,10 +27,10 @@
                 <img src="{% static 'logo_bppt.png' %}" alt="logo BPPT" class="ui centered tiny image">
             </td>
             <td class="center aligned">
-                <h2 class="ui brown header">{{ li.nama|upper }}</h2>
+                <h2 class="ui {% block warna_header %}brown{% endblock %} header">{{ lmbr.nama|upper }}</h2>
             </td>
             <td colspan="2">
-                {{ li.pemberi|ambil_peran_tertentu:'long' }}
+                {{ lmbr.pemberi|ambil_peran_tertentu:'long' }}
             </td>
         </tr>
 
@@ -40,36 +42,37 @@
                 </h3>
             </td>
             <td style="font-size: 0.8em;">No.</td>
-            <td style="word-break: break-all; font-size: 0.8em;">{{ li.nomor }}</td>
+            <td style="word-break: break-all; font-size: 0.8em;">{{ lmbr.nomor }}</td>
         </tr>
 
         <tr>
             <td style="font-size: 0.8em;">Ref.</td>
-            <td style="word-break: break-all; font-size: 0.8em;">{{ li.referensi }}</td>
+            <td style="word-break: break-all; font-size: 0.8em;">{{ lmbr.referensi }}</td>
         </tr>
 
         <tr>
             <td>
                 <h3 class="ui centered header">
-                    <div class="sub header">{{ li.pemberi|ambil_peran_tertentu:'wbs_wp' }}</div>
-                    {{ li.pemberi|ambil_peran_tertentu:'wbs_wp_nama' }}
+                    <div class="sub header">{{ lmbr.pemberi|ambil_peran_tertentu:'wbs_wp' }}</div>
+                    {{ lmbr.pemberi|ambil_peran_tertentu:'wbs_wp_nama' }}
                 </h3>
             </td>
             <td colspan="2">
-                {{ li.tanggal }}
+                {{ lmbr.tanggal }}
             </td>
         </tr>
 
         <tr>
             <td colspan="4">
-               No. Butir Kegiatan: {{ li.butir }}
+               No. Butir Kegiatan: {{ lmbr.butir }}
             </td>
         </tr>
     </tbody>
 </table>
 <p>
-    {{ li.isi|safe }}
+    {{ lmbr.isi|safe }}
 </p>
+<footer>
 <table class="ui celled structured compact table">
     <tr>
         <td colspan="2">Dari:</td>
@@ -79,37 +82,38 @@
     <tr>
         <td>Nama</td>
         <td>
-            {{ li.pemberi.get_full_name }}
+            {{ lmbr.pemberi.get_full_name }}
         </td>
 
         <td>Nama</td>
         <td>
-            {{ li.penerima.get_full_name }}
+            {{ lmbr.penerima.get_full_name }}
         </td>
     </tr>
 
     <tr>
         <td>Peran</td>
         <td>
-            {{ li.pemberi|ambil_peran_tertentu:'long' }}
+            {{ lmbr.pemberi|ambil_peran_tertentu:'long' }}
         </td>
 
         <td>Peran</td>
         <td>
-            {{ li.penerima|ambil_peran_tertentu:'long' }}
+            {{ lmbr.penerima|ambil_peran_tertentu:'long' }}
         </td>
     </tr>
 
     <tr>
         <td>Ttd</td>
         <td>
-            <br><br><br>
+            <br><br>
         </td>
 
         <td>Ttd</td>
         <td>
-            <br><br><br>
+            <br><br>
         </td>
     </tr>
 </table>
+</footer>
 {% endblock %}
