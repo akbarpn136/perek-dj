@@ -2,27 +2,28 @@
 {% load gravatar %}
 
 {% block title %}
-{{ li.nomor }} | Aplikasi PERK
+{{ lmbr.nomor }} | Aplikasi PERK
 {% endblock %}
 
 {% block kontainer %}
     <div class="ui fluid teal card">
         <div class="content">
-            <img class="ui avatar image" src="https://www.gravatar.com/avatar/{{ li.pemberi.email|hash_email }}?d=retro&f=y"> {{ li.pemberi.first_name|default:li.pemberi.username }}
+            <img class="ui avatar image" src="https://www.gravatar.com/avatar/{{ lmbr.pemberi.email|hash_email }}?d=retro&f=y"> {{ lmbr.pemberi.first_name|default:lmbr.pemberi.username }}
         </div>
 
         <div class="content">
-            <div class="header">{{ li.nomor }}</div>
-            <div class="meta">{{ li.tanggal|date:'d F Y' }}</div>
+            <div class="header">{{ lmbr.nomor }}</div>
+            <div class="meta">{{ lmbr.tanggal|date:'d F Y' }}</div>
 
             <div class="description">
                 <p>
-                    {{ li.isi|safe }}
+                    {{ lmbr.isi|safe }}
                 </p>
             </div>
         </div>
 
         {% block ekstra_li %}
+        {% if is_exist %}
         <div class="extra content">
             <div class="ui horizontal relaxed list">
                 {% for ws in kerja %}
@@ -30,7 +31,7 @@
                     <img class="ui avatar image" src="https://www.gravatar.com/avatar/{{ ws.penerima.email|hash_email }}?d=retro&f=y">
 
                     <div class="content">
-                        <a class="header">{{ ws.nomor }}</a>
+                        <a href="{% url 'halaman_lk_anggota_rinci' slug=ws.nomor|slugify pk=ws.pk keg=pk li=lmbr.pk %}" class="header">{{ ws.nomor }}</a>
                         <div class="description">
                             {{ ws.butir }}
                         </div>
@@ -41,21 +42,27 @@
                 {% endfor %}
             </div>
         </div>
+        {% endif %}
         {% endblock %}
         <div class="content">
             <div class="right floated meta">
-                <a href="{% url 'halaman_tugas_anggota' pk=pk %}" class="ui icon basic tiny button" title=" kembali ">
+                {% block tombol_kembali %}
+                <a href="{% url 'halaman_tugas_anggota' pk=pk %}" class="ui icon tiny button" title=" kembali ">
                     <i class="reply icon"></i>
                 </a>
+                {% endblock %}
 
-                <a href="{% url 'halaman_tugas_anggota_rinci_cetak' slug=li.nomor|slugify pk=li.pk keg=pk %}" class="ui icon basic tiny button" title=" lihat ">
+                {% block tombol_cetak %}
+                <a href="{% url 'halaman_li_anggota_rinci_cetak' slug=lmbr.nomor|slugify pk=lmbr.pk keg=pk %}" class="ui icon basic tiny button" title=" lihat ">
                     <i class="unhide icon"></i>
                 </a>
+                {% endblock %}
 
                 <a href="" class="ui icon basic tiny button" title=" ubah ">
                     <i class="pencil icon"></i>
                 </a>
 
+                {% block tombol_aksi %}
                 <div href="" class="ui icon top right pointing dropdown primary tiny button">
                     <i class="plus icon"></i>
                     <div class="menu">
@@ -67,6 +74,7 @@
                         </a>
                     </div>
                 </div>
+                {% endblock %}
             </div>
         </div>
     </div>
