@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import JsonResponse
+from django.utils.text import slugify
 
 import hashlib
 
@@ -108,7 +109,7 @@ def lihat_li(request, slug, pk, keg):
     return render(request, 'tugas/halaman_tugas_anggota_rinci.html', data)
 
 
-# @login_required
+@login_required
 def lihat_li_rinci(request, slug, pk, keg):
     if slug is None:
         pass
@@ -126,9 +127,14 @@ def lihat_li_rinci(request, slug, pk, keg):
         return redirect('halaman_tugas_anggota', pk=keg)
 
     data = {
-        'li': data_li,
+        'lmbr': data_li,
         'pk': keg,
         'kegiatan': data_keg,
     }
 
-    return render(request, 'tugas/halaman_cetak_lembaran.html', data)
+    if data_li.penerima.username == request.user.username or request.user.is_superuser:
+        return render(request, 'tugas/halaman_cetak_lembaran.html', data)
+    else:
+        messages.warning(request, 'Hanya pemilik yang mendapatkan hak akses!')
+        # return redirect('/tugas/%s-%s-%s/rincian/' % (slugify(data_li.nomor, allow_unicode=True), pk, keg))
+        return redirect('halaman_tugas_anggota_rinci', slug=slugify(data_li.nomor, allow_unicode=True), pk=pk, keg=keg)
