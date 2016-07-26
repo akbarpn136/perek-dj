@@ -3,7 +3,7 @@
 {% load peran_terkait %}
 
 {% block title %}
-    Cetak Laporan
+    {{ lmbr.nama }} {{ lmbr.nomor }}
 {% endblock %}
 
 {% block style %}
@@ -30,7 +30,7 @@
                 <h2 class="ui {% block warna_header %}brown{% endblock %} header">{{ lmbr.nama|upper }}</h2>
             </td>
             <td colspan="2">
-                {{ lmbr.pemberi|ambil_peran_tertentu:'long' }}
+                {% block penerima_lk %}{{ lmbr.pemberi|ambil_peran_tertentu:'long' }}{% endblock %}
             </td>
         </tr>
 
@@ -58,7 +58,7 @@
                 </h3>
             </td>
             <td colspan="2">
-                {{ lmbr.tanggal }}
+                {{ lmbr.tanggal|date:'d F Y' }}
             </td>
         </tr>
 
@@ -76,30 +76,30 @@
 <table class="ui celled structured compact table">
     <tr>
         <td colspan="2">Dari:</td>
-        <td colspan="2">Kepada:</td>
+        <td colspan="2">{% block diperiksa %}Kepada:{% endblock %}</td>
     </tr>
 
     <tr>
         <td>Nama</td>
         <td>
-            {{ lmbr.pemberi.get_full_name }}
+            {% block dari %}{{ lmbr.pemberi.get_full_name }}{% endblock %}
         </td>
 
         <td>Nama</td>
         <td>
-            {{ lmbr.penerima.get_full_name }}
+            {% block pemeriksa %}{{ lmbr.penerima.get_full_name }}{% endblock %}
         </td>
     </tr>
 
     <tr>
         <td>Peran</td>
         <td>
-            {{ lmbr.pemberi|ambil_peran_tertentu:'long' }}
+            {% block peran_dari %}{{ lmbr.pemberi|ambil_peran_tertentu:'long' }}{% endblock %}
         </td>
 
         <td>Peran</td>
         <td>
-            {{ lmbr.penerima|ambil_peran_tertentu:'long' }}
+            {% block peran_pemeriksa %}{{ lmbr.penerima|ambil_peran_tertentu:'long' }}{% endblock %}
         </td>
     </tr>
 
