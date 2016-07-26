@@ -96,7 +96,7 @@ Tugas | Aplikasi PERK
                     <div class="author">
                         <img class="ui avatar image" src="https://www.gravatar.com/avatar/{{ ins.penerima.email|hash_email }}?d=retro&f=y"> {{ ins.penerima.first_name|default:ins.penerima.username }}
                     </div>
-                    <a href="{% url 'halaman_tugas_anggota_rinci' slug=ins.nomor|slugify pk=ins.pk keg=pk%}" class="ui orange right ribbon label">Masuk</a>
+                    <a href="{% url 'halaman_li_anggota_rinci' slug=ins.nomor|slugify pk=ins.pk keg=pk%}" class="ui orange right ribbon label">Masuk</a>
                     <div class="gap"></div>
                 </div>
             </div>
