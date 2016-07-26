@@ -1,4 +1,19 @@
 {% extends 'tugas/halaman_li_anggota_rinci.html' %}
+{% load gravatar %}
+{% load li_terkait %}
+
+{% block ruas_dua %}
+    <a href="{% url 'halaman_li_anggota_rinci' slug=lmbr.nomor|slugify pk=li keg=pk %}" class="section">{{ li|ambil_li_tertentu }}</a>
+    <i class="right chevron icon divider"></i>
+{% endblock %}
+
+{% block ruas_tiga %}
+    <div class="active section">{{ lmbr.nama }}</div>
+{% endblock %}
+
+{% block gambar %}
+<img class="ui avatar image" src="https://www.gravatar.com/avatar/{{ lmbr.penerima.email|hash_email }}?d=retro&f=y"> {{ lmbr.penerima.get_full_name|default:lmbr.penerima.username }}
+{% endblock %}
 
 {% block tombol_kembali %}
 <a href="{% url 'halaman_li_anggota_rinci' slug=lmbr.nomor|slugify pk=li keg=pk %}" class="ui icon tiny button" title=" kembali ">
