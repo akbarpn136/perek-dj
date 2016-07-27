@@ -10,7 +10,16 @@ register = template.Library()
 @register.filter(name='ambil_peran_tertentu')
 def ambil_peran_tertentu(value, args=None):
     try:
-        data_peran = get_object_or_404(Personil, orang=value)
+        org, keg = value
+    except ValueError:
+        org = value
+        keg = 0
+    except TypeError:
+        org = value
+        keg = 0
+
+    try:
+        data_peran = get_object_or_404(Personil, orang=org, personil_kegiatan=keg)
 
     except Http404:
         data_peran = Personil()
@@ -22,9 +31,12 @@ def ambil_peran_tertentu(value, args=None):
     kode = data_peran.peran_kode
 
     if args is None:
+        return None
+
+    elif args == 'singkatan':
         return peran
 
-    elif args is None or args == 'short':
+    elif args == 'short':
         return peran + ' ' + wbs_wp + '.' + kode if kode != '' else peran + ' ' + wbs_wp
 
     elif args == 'long':
