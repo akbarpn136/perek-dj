@@ -2,12 +2,12 @@
 {% load gravatar %}
 {% load li_terkait %}
 
-{% block ruas_dua %}
+{% block ruas_tiga %}
     <a href="{% url 'halaman_li_anggota_rinci' slug=lmbr.nomor|slugify pk=li keg=pk %}" class="section">{{ li|ambil_li_tertentu }}</a>
     <i class="right chevron icon divider"></i>
 {% endblock %}
 
-{% block ruas_tiga %}
+{% block ruas_empat %}
     <div class="active section">{{ lmbr.nama }}</div>
 {% endblock %}
 

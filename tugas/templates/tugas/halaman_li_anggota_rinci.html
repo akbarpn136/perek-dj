@@ -5,20 +5,16 @@
 {{ lmbr.nomor }} | Aplikasi PERK
 {% endblock %}
 
+{% block ruas_dua %}
+<a href="{% url 'halaman_tugas_anggota' pk=pk %}" class="section">Tugas</a>
+<i class="right chevron icon divider"></i>
+{% endblock %}
+
+{% block ruas_tiga %}
+    <div class="active section">{{ lmbr.nama }}</div>
+{% endblock %}
+
 {% block kontainer %}
-    {% block breadcrumb %}
-    <div class="ui breadcrumb">
-        <a href="{% url 'halaman_tugas_anggota' pk=pk %}" class="section">Tugas</a>
-        <i class="right chevron icon divider"></i>
-
-        {% block ruas_dua %}{% endblock %}
-
-        {% block ruas_tiga %}
-            <div class="active section">{{ lmbr.nama }}</div>
-        {% endblock %}
-    </div>
-    {% endblock %}
-
     <div class="ui fluid teal card">
         <div class="content">
             {% block gambar %}
