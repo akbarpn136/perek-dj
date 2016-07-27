@@ -30,7 +30,7 @@
                 <h2 class="ui {% block warna_header %}brown{% endblock %} header">{{ lmbr.nama|upper }}</h2>
             </td>
             <td colspan="2">
-                {% block penerima_lk %}{{ lmbr.pemberi|ambil_peran_tertentu:'long' }}{% endblock %}
+                {% block penerima_lk %}{{ peran|ambil_peran_tertentu:'long' }}{% endblock %}
             </td>
         </tr>
 
@@ -53,8 +53,8 @@
         <tr>
             <td>
                 <h3 class="ui centered header">
-                    <div class="sub header">{{ lmbr.pemberi|ambil_peran_tertentu:'wbs_wp' }}</div>
-                    {{ lmbr.pemberi|ambil_peran_tertentu:'wbs_wp_nama' }}
+                    <div class="sub header">{{ peran|ambil_peran_tertentu:'wbs_wp' }}</div>
+                    {{ peran|ambil_peran_tertentu:'wbs_wp_nama' }}
                 </h3>
             </td>
             <td colspan="2">
@@ -94,12 +94,12 @@
     <tr>
         <td>Peran</td>
         <td>
-            {% block peran_dari %}{{ lmbr.pemberi|ambil_peran_tertentu:'long' }}{% endblock %}
+            {% block peran_dari %}{{ peran|ambil_peran_tertentu:'long' }}{% endblock %}
         </td>
 
         <td>Peran</td>
         <td>
-            {% block peran_pemeriksa %}{{ lmbr.penerima|ambil_peran_tertentu:'long' }}{% endblock %}
+            {% block peran_pemeriksa %}{{ peran|ambil_peran_tertentu:'long' }}{% endblock %}
         </td>
     </tr>
 

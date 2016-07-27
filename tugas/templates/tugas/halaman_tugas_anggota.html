@@ -1,6 +1,7 @@
 {% extends 'master/base.html' %}
 {% load staticfiles %}
 {% load gravatar %}
+{% load peran_terkait %}
 
 {% block title %}
 Tugas | Aplikasi PERK
@@ -44,6 +45,14 @@ Tugas | Aplikasi PERK
                 {% endfor %}
             </div>
         </div>
+        
+        {% if peran|ambil_peran_tertentu:'singkatan' == 'GL' or peran|ambil_peran_tertentu:'singkatan' == 'L' %}
+        <a href="{% url 'halaman_tambah_li_anggota' slug=kegiatan.nama|slugify keg=kegiatan.pk %}" class="ui right labeled primary icon button">
+            <i class="plus icon"></i>
+            Tugas baru
+        </a>
+        {% endif %}
+
         <div class="gap"></div>
 
         <span id="url_ori" data-value="{% url 'halaman_tugas_anggota' pk=pk %}"></span>

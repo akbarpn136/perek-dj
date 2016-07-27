@@ -3,7 +3,7 @@
 
 {% block warna_header %}blue{% endblock %}
 
-{% block penerima_lk %}{{ lmbr.penerima|ambil_peran_tertentu:'long' }}{% endblock %}
+{% block penerima_lk %}{{ peran|ambil_peran_tertentu:'long' }}{% endblock %}
 
 {% block diperiksa %}Diperiksa:{% endblock %}
 
@@ -11,6 +11,6 @@
 
 {% block pemeriksa %}{{ lmbr.pemberi.get_full_name }}{% endblock %}
 
-{% block peran_dari %}{{ lmbr.penerima|ambil_peran_tertentu:'long' }}{% endblock %}
+{% block peran_dari %}{{ peran|ambil_peran_tertentu:'long' }}{% endblock %}
 
-{% block peran_pemeriksa %}{{ lmbr.pemberi|ambil_peran_tertentu:'long' }}{% endblock %}
+{% block peran_pemeriksa %}{{ peran|ambil_peran_tertentu:'long' }}{% endblock %}
