@@ -1,0 +1,43 @@
+{% extends 'tugas/halaman_li_anggota_rinci.html' %}
+{% load gravatar %}
+{% load peran_terkait %}
+
+{% block title %}
+Tambah LI | Aplikasi PERK
+{% endblock %}
+
+{% block ruas_tiga %}
+    <div class="active section">Tambah tugas</div>
+{% endblock %}
+
+{% block kontainer %}
+    <div class="ui fluid teal card">
+        <div class="content">
+            {% block gambar %}
+            <img class="ui avatar image" src="https://www.gravatar.com/avatar/{{ request.user.email|hash_email }}?d=retro&f=y"> {{ request.user.get_full_name|default:request.user.username }}
+            <div class="right floated meta">{{ peran|ambil_peran_tertentu:'long' }}</div>
+            {% endblock %}
+        </div>
+
+        <div class="content">
+            <div class="header">header</div>
+            <div class="meta">meta</div>
+
+            <div class="description">
+                <p>
+                    isi
+                </p>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="right floated meta">
+                {% block tombol_kembali %}
+                <a href="" class="ui icon tiny button" title=" kembali ">
+                    <i class="reply icon"></i>
+                </a>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
