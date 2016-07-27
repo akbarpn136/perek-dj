@@ -77,6 +77,7 @@ def index(request, pk, usr=None):
             'kegiatan': data_kegiatan,
             'page_range': page_range,
             'personil': anggota_kegiatan,
+            'peran': [request.user.pk, data_kegiatan.pk],
         }
 
         return render(request, 'tugas/halaman_tugas_anggota.html', data)
@@ -131,14 +132,28 @@ def lihat_li_rinci(request, slug, pk, keg):
         'lmbr': data_li,
         'pk': keg,
         'kegiatan': data_keg,
+        'peran': [data_li.pemberi.pk, data_keg.pk],
     }
 
-    if data_li.penerima.username == request.user.username or request.user.is_superuser:
+    if data_li.pemberi.username == request.user.username or request.user.is_superuser:
         return render(request, 'tugas/halaman_cetak_li_lembaran.html', data)
     else:
         messages.warning(request, 'Hanya pemilik yang mendapatkan hak akses!')
         # return redirect('/tugas/%s-%s-%s/rincian/' % (slugify(data_li.nomor, allow_unicode=True), pk, keg))
-        return redirect('halaman_tugas_anggota_rinci', slug=slugify(data_li.nomor, allow_unicode=True), pk=pk, keg=keg)
+        return redirect('halaman_li_anggota_rinci', slug=slugify(data_li.nomor, allow_unicode=True), pk=pk, keg=keg)
+
+
+@login_required
+def tambah_li(request, slug, keg):
+    if slug is None:
+        pass
+
+    data = {
+        'pk': keg,
+        'peran': [request.user, keg]
+    }
+
+    return render(request, 'tugas/halaman_li_anggota_tambah.html', data)
 
 
 @login_required
@@ -183,6 +198,7 @@ def lihat_lk_rinci(request, slug, pk, keg):
         'lmbr': data_li,
         'pk': keg,
         'kegiatan': data_keg,
+        'peran': [data_li.penerima.pk, data_keg.pk],
     }
 
     if data_li.penerima.username == request.user.username or request.user.is_superuser:
@@ -190,4 +206,5 @@ def lihat_lk_rinci(request, slug, pk, keg):
     else:
         messages.warning(request, 'Hanya pemilik yang mendapatkan hak akses!')
         # return redirect('/tugas/%s-%s-%s/rincian/' % (slugify(data_li.nomor, allow_unicode=True), pk, keg))
-        return redirect('halaman_tugas_anggota_rinci', slug=slugify(data_li.nomor, allow_unicode=True), pk=pk, keg=keg)
+        return redirect('halaman_lk_anggota_rinci', slug=slugify(data_li.nomor, allow_unicode=True), pk=pk, keg=keg,
+                        li=data_li.pk)
