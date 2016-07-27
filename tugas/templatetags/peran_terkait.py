@@ -21,7 +21,10 @@ def ambil_peran_tertentu(value, args=None):
     peran = data_peran.peran
     kode = data_peran.peran_kode
 
-    if args is None or args == 'short':
+    if args is None:
+        return peran
+
+    elif args is None or args == 'short':
         return peran + ' ' + wbs_wp + '.' + kode if kode != '' else peran + ' ' + wbs_wp
 
     elif args == 'long':
