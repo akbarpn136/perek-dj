@@ -25,16 +25,32 @@ Tambah LI | Aplikasi PERK
             });
 
             tinymce.init({
-                selector: 'textarea#isi'
+                selector: 'textarea#isi',
+                theme: 'modern',
+                plugins: [
+                    'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+                    'searchreplace wordcount visualblocks visualchars code fullscreen',
+                    'insertdatetime media nonbreaking save table contextmenu directionality',
+                    'emoticons template paste textcolor colorpicker textpattern imagetools'
+                ],
+                toolbar1: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+                toolbar2: 'print preview media | forecolor backcolor emoticons',
+                image_advtab: true,
+                setup : function(ed)
+                {
+                    ed.on('init', function()
+                    {
+                        this.getDoc().body.style.fontSize = '14px';
+                        var selector = $("div#latar-samping");
+                        selector.css('min-height', $("div.ui.grid").height());
+                    });
+                }
             });
 
             $("select.ui.dropdown").dropdown({
                 placeholder: true,
                 fullTextSearch: 'exact'
             });
-
-            var selector = $("div#latar-samping");
-            selector.css('min-height', $("div.ui.grid").height()+170);
         });
     </script>
 {% endblock %}
