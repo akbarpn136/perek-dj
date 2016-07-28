@@ -9,6 +9,7 @@ from django.utils.text import slugify
 import hashlib
 
 from .models import LembarInstruksi, LembarKerja, Kegiatan
+from .forms import FormLI
 
 
 # Create your views here.
@@ -149,9 +150,20 @@ def tambah_li(request, slug, keg):
     if slug is None:
         pass
 
+    if request.method == 'POST':
+        formulir = FormLI()
+
+    else:
+        formulir = FormLI()
+
+    formulir.fields['penerima'].choices = \
+        [('', '-----')] + [(user.pk, user.get_full_name()) for user in
+                           User.objects.filter(personil__personil_kegiatan=keg).order_by('username').distinct()]
+
     data = {
         'pk': keg,
-        'peran': [request.user, keg]
+        'peran': [request.user, keg],
+        'formulir': formulir
     }
 
     return render(request, 'tugas/halaman_li_anggota_tambah.html', data)
