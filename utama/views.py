@@ -389,10 +389,24 @@ def tambah_personil(request, pk):
         a = Personil(personil_kegiatan=kegiatan_tertentu)
         formulir = FormPersonil(request.POST, instance=a)
 
+        org = request.POST.get('orang')
+        banyak_peran = Personil.objects.filter(orang=org, peran_utama=True).count()
+
         if formulir.is_valid():
             if request.user.is_superuser:
-                messages.success(request, 'Data personil berhasil disimpan')
-                formulir.save()
+                if banyak_peran == 0:
+                    messages.success(request, 'Data personil berhasil disimpan')
+                    formulir.save()
+                elif banyak_peran == 1:
+                    personil_terkait = get_object_or_404(Personil, orang=org, peran_utama=True)
+                    personil_terkait.peran_utama = False
+                    personil_terkait.save()
+
+                    messages.success(request, 'Data personil berhasil disimpan')
+                    formulir.save()
+                else:
+                    messages.warning(request, 'Jumlah peran utama tidak boleh lebih dari 1 (satu) untuk tiap kegiatan, '
+                                              'silahkan pilih salah satu')
 
             else:
                 messages.warning(request, 'Simpan data personil hanya dapat dilakukan oleh admin.')
@@ -420,10 +434,24 @@ def ubah_personil(request, pk, pk_personil):
     if request.method == 'POST':
         formulir = FormPersonil(request.POST, instance=personil_tertentu)
 
+        org = request.POST.get('orang')
+        banyak_peran = Personil.objects.filter(orang=org, peran_utama=True).count()
+
         if formulir.is_valid():
             if request.user.is_superuser:
-                messages.success(request, 'Data personil berhasil disimpan')
-                formulir.save()
+                if banyak_peran == 0:
+                    messages.success(request, 'Data personil berhasil disimpan')
+                    formulir.save()
+                elif banyak_peran == 1:
+                    personil_terkait = get_object_or_404(Personil, orang=org, peran_utama=True)
+                    personil_terkait.peran_utama = False
+                    personil_terkait.save()
+
+                    messages.success(request, 'Data personil berhasil disimpan')
+                    formulir.save()
+                else:
+                    messages.warning(request, 'Jumlah peran utama tidak boleh lebih dari 1 (satu) untuk tiap kegiatan, '
+                                              'silahkan pilih salah satu')
 
             else:
                 messages.warning(request, 'Simpan data personil hanya dapat dilakukan oleh admin.')
