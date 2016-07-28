@@ -19,7 +19,7 @@ def ambil_peran_tertentu(value, args=None):
         keg = 0
 
     try:
-        data_peran = get_object_or_404(Personil, orang=org, personil_kegiatan=keg)
+        data_peran = get_object_or_404(Personil, orang=org, personil_kegiatan=keg, peran_utama=True)
 
     except Http404:
         data_peran = Personil()
