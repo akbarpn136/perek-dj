@@ -1,5 +1,6 @@
 {% extends 'tugas/halaman_li_anggota_rinci.html' %}
 {% load gravatar %}
+{% load staticfiles %}
 {% load peran_terkait %}
 
 {% block title %}
@@ -8,6 +9,34 @@ Tambah LI | Aplikasi PERK
 
 {% block ruas_tiga %}
     <div class="active section">Tambah tugas</div>
+{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'zebra/bootstrap.css' %}">
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'zebra/zebra_datepicker.js' %}"></script>
+    <script src="{% static 'tinymce/tinymce.min.js' %}"></script>
+    <script>
+        $(document).ready(function(){
+            $("input.tanggal").Zebra_DatePicker({
+                show_icon: false
+            });
+
+            tinymce.init({
+                selector: 'textarea#isi'
+            });
+
+            $("select.ui.dropdown").dropdown({
+                placeholder: true,
+                fullTextSearch: 'exact'
+            });
+
+            var selector = $("div#latar-samping");
+            selector.css('min-height', $("div.ui.grid").height()+170);
+        });
+    </script>
 {% endblock %}
 
 {% block kontainer %}
@@ -20,23 +49,127 @@ Tambah LI | Aplikasi PERK
         </div>
 
         <div class="content">
-            <div class="header">header</div>
-            <div class="meta">meta</div>
+            <div class="header">Rekam Lembar Instruksi</div>
 
             <div class="description">
-                <p>
-                    isi
-                </p>
-            </div>
-        </div>
+                <form class="ui form" method="post">
+                    {% csrf_token %}
+                    <div class="two fields">
+                        <div class="field {% if formulir.nomor.errors %}error{% endif %}">
+                            {% if formulir.nomor.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in formulir.nomor.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ formulir.nomor.label_tag }}
+                            {{ formulir.nomor }}
+                            <div class="gap"></div>
+                            <a class="ui icon button" title=" Gunakan format laporan ">
+                              <i class="arrow circle outline up icon"></i>
+                            </a>
+                        </div>
 
-        <div class="content">
-            <div class="right floated meta">
-                {% block tombol_kembali %}
-                <a href="" class="ui icon tiny button" title=" kembali ">
-                    <i class="reply icon"></i>
-                </a>
-                {% endblock %}
+                        <div class="field {% if formulir.referensi.errors %}error{% endif %}">
+                            {% if formulir.referensi.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in formulir.referensi.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ formulir.referensi.label_tag }}
+                            {{ formulir.referensi }}
+                        </div>
+                    </div>
+
+                    <div class="two fields">
+                        <div class="field {% if formulir.penerima.errors %}error{% endif %}">
+                            {% if formulir.penerima.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in formulir.penerima.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ formulir.penerima.label_tag }}
+                            {{ formulir.penerima }}
+                        </div>
+
+                        <div class="field {% if formulir.tanggal.errors %}error{% endif %}">
+                            {% if formulir.tanggal.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in formulir.tanggal.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ formulir.tanggal.label_tag }}
+                            <div class="ui icon input">
+                                <i class="calendar icon"></i>
+                                {{ formulir.tanggal }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="two fields">
+                        <div class="field {% if formulir.butir.errors %}error{% endif %}">
+                            {% if formulir.butir.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in formulir.butir.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ formulir.butir.label_tag }}
+                            <input type="hidden" name="butir_hid" id="butir_hid" value="">
+                            <input type="hidden" name="angka_hid" id="angka_hid" value="">
+                            <div class="ui action input">
+                                {{ formulir.butir }}
+                                <a class="ui icon button" title=" Gunakan template ">
+                                    <i class="arrow circle outline left icon"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="field {% if formulir.index.errors %}error{% endif %}">
+                            {% if formulir.index.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in formulir.index.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ formulir.index.label_tag }}
+                            {{ formulir.index }}
+                        </div>
+                    </div>
+
+                    <div class="field {% if formulir.isi.errors %}error{% endif %}">
+                        {% if formulir.isi.errors %}
+                            <div class="ui error visible message">
+                                {% for error in formulir.isi.errors %}
+                                    <div class="header">Ada Kesalahan</div>
+                                    <p>{{ error|escape }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        {{ formulir.isi.label_tag }}
+                        {{ formulir.isi }}
+                    </div>
+
+                    <input type="submit" class="ui submit primary button" value="Simpan">
+                    <a href="{% url 'halaman_tugas_anggota' pk=pk %}" class="ui icon tiny button" title=" kembali ">
+                        <i class="reply icon"></i>
+                    </a>
+                </form>
             </div>
         </div>
     </div>
