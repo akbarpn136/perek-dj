@@ -68,6 +68,7 @@ class Personil(models.Model):
     wbs_wp_kode = models.CharField(max_length=10, verbose_name='Kode', blank=True)
     peran = models.CharField(max_length=3, verbose_name='Peran', choices=PERAN, default=awal)
     peran_kode = models.CharField(max_length=10, verbose_name='Kode', blank=True)
+    peran_utama = models.BooleanField(verbose_name='Peran utama?', default=True)
     index = models.IntegerField(verbose_name='Index', default=0)
 
     orang = models.ForeignKey('auth.User', verbose_name='Anggota', on_delete=models.CASCADE)
