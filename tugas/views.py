@@ -133,6 +133,7 @@ def lihat_li_rinci(request, slug, pk, keg):
         'pk': keg,
         'kegiatan': data_keg,
         'peran': [data_li.pemberi.pk, data_keg.pk],
+        'peran_penerima': [data_li.penerima.pk, data_keg.pk],
     }
 
     if data_li.pemberi.username == request.user.username or request.user.is_superuser:
@@ -199,6 +200,7 @@ def lihat_lk_rinci(request, slug, pk, keg):
         'pk': keg,
         'kegiatan': data_keg,
         'peran': [data_li.penerima.pk, data_keg.pk],
+        'peran_pemeriksa': [data_li.pemberi.pk, data_keg.pk],
     }
 
     if data_li.penerima.username == request.user.username or request.user.is_superuser:
