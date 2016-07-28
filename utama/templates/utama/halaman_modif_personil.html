@@ -144,6 +144,34 @@
                             </div>
                         </div>
 
+                        <div class="ui divider"></div>
+
+                        <div class="two fields">
+                            <div class="field {% if formulir.peran_utama.errors %}error{% endif %}">
+                                <div class="ui show message">
+                                    <div class="header">Peran Ganda</div>
+                                    <p>
+                                        Apabila personil memiliki lebih dari satu peran dalam kegiatan, maka personil harus memiliki satu peran utama.
+                                    </p>
+                                </div>
+
+                                {% if formulir.peran_utama.errors %}
+                                    <div class="ui error visible message">
+                                        {% for error in formulir.peran_utama.errors %}
+                                            <div class="header">Ada Kesalahan</div>
+                                            <p>{{ error|escape }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+
+                                {{ formulir.peran_utama.label_tag }}
+                                {{ formulir.peran_utama }}
+                            </div>
+
+                            <div class="field">
+                            </div>
+                        </div>
+
                         <input type="submit" class="ui primary submit button" value="Simpan">
                         <a id="tbl_kembali" href="{% url 'halaman_personil' pk=kegiatan.pk %}" class="ui submit button">Kembali</a>
                     </form>
