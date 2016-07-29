@@ -109,7 +109,11 @@ def lihat_li(request, slug, pk, keg):
         'is_exist': True,
     }
 
-    return render(request, 'tugas/halaman_li_anggota_rinci.html', data)
+    if request.user.username == data_li.pemberi.username or request.user.username == data_li.penerima.username:
+        return render(request, 'tugas/halaman_li_anggota_rinci.html', data)
+    else:
+        messages.warning(request, 'Hanya pemberi dan penerima tugas saja yang memiliki hak akses!')
+        return redirect('halaman_tugas_anggota', pk=keg)
 
 
 @login_required
@@ -166,7 +170,7 @@ def tambah_li(request, slug, keg):
         'formulir': formulir
     }
 
-    return render(request, 'tugas/halaman_li_anggota_tambah.html', data)
+    return render(request, 'tugas/halaman_li_anggota_modifikasi.html', data)
 
 
 @login_required
