@@ -69,4 +69,28 @@ $(document).ready(function(){
         nomor.text(baru);
         e.preventDefault();
     });
+
+    $("a#tbl_ref").click(function(e){
+        e.preventDefault();
+
+        $("div#modal_referensi").modal({
+            closable  : false,
+            onShow : function(){
+                var selector = $("div#latar-samping");
+                selector.css('min-height', selector.height()+28);
+            }
+        }).modal('show');
+    });
+
+    $(".ui.checkbox").checkbox({
+        onChecked: function(){
+            var nilai = $(this).val();
+
+            $("textarea#referensi").text(nilai);
+        },
+
+        onUnchecked: function(){
+            $("textarea#referensi").text();
+        }
+    });
 });
