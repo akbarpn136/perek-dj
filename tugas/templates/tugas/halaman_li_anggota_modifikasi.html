@@ -103,9 +103,46 @@ Tambah LI | Aplikasi PERK
                             {% endif %}
                             {{ formulir.referensi.label_tag }}
                             {{ formulir.referensi }}
+                            <div class="gap"></div>
+                            <a id="tbl_ref" class="ui icon button" title=" Pilih referensi ">
+                                <i class="arrow circle outline up icon"></i>
+                            </a>
+                            <div id="modal_referensi" class="ui small long modal">
+                                <div class="header">Pilih Referensi</div>
+                                <div class="content">
+                                    <div class="ui form">
+                                        <div class="grouped fields">
+                                            <label>Referensi:</label>
+                                            <div class="field">
+                                                <div class="ui radio checkbox">
+                                                    <input type="radio" name="tugas" value="{{ kegiatan.referensi }}" title="{{ kegiatan.referensi }}">
+                                                    <label>{{ kegiatan.referensi }}</label>
+                                                </div>
+                                            </div>
+                                            <div class="gap"></div>
+
+                                            {% for i in li %}
+                                            <div class="field">
+                                                <div class="ui radio checkbox">
+                                                    <input type="radio" name="tugas" value="{{ i.nomor }}" title="{{ i.nomor }}">
+                                                    <label>{{ i.nomor }} <b style="color: red;">dari</b> {{ i.pemberi.get_full_name }}</label>
+                                                </div>
+                                            </div>
+                                            <div class="gap"></div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="actions">
+                                    <div class="ui deny button">Oke</div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
+                    <div class="gap"></div>
+                    <div class="gap"></div>
                     <div class="two fields">
                         <div class="field {% if formulir.butir.errors %}error{% endif %}">
                             {% if formulir.butir.errors %}
