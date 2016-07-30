@@ -37,40 +37,76 @@ def ambil_peran_tertentu(value, args=None):
         return peran
 
     elif args == 'short':
-        return peran + ' ' + wbs_wp + '.' + kode if kode != '' else peran + ' ' + wbs_wp
+        if wbs_wp == '0' and kode == '0':
+            return peran
+
+        else:
+            return peran + ' ' + wbs_wp + '.' + kode if kode != '' else peran + ' ' + wbs_wp
 
     elif args == 'long':
         if peran == 'TS':
             peran = 'Technical Staff'
-            return peran + ' ' + wbs_wp + '.' + kode if kode != '' else peran + ' ' + wbs_wp
+            if wbs_wp == '0' and kode == '0':
+                return peran
+
+            else:
+                return peran + ' ' + wbs_wp + '.' + kode if kode != '' else peran + ' ' + wbs_wp
 
         elif peran == 'ES':
             peran = 'Engineering Staff'
-            return peran + ' ' + wbs_wp + '.' + kode if kode != '' else peran + ' ' + wbs_wp
+            if wbs_wp == '0' and kode == '0':
+                return peran
+
+            else:
+                return peran + ' ' + wbs_wp + '.' + kode if kode != '' else peran + ' ' + wbs_wp
 
         elif peran == 'L':
             peran = 'Leader'
-            return peran + ' ' + wbs_wp + '.' + kode if kode != '' else peran + ' ' + wbs_wp
+            if wbs_wp == '0' and kode == '0':
+                return peran
+
+            else:
+                return peran + ' ' + wbs_wp + '.' + kode if kode != '' else peran + ' ' + wbs_wp
 
         elif peran == 'GL':
             peran = 'Group Leader'
-            return peran + ' ' + wbs_wp + '.' + kode if kode != '' else peran + ' ' + wbs_wp
+            if wbs_wp == '0' and kode == '0':
+                return peran
+
+            else:
+                return peran + ' ' + wbs_wp + '.' + kode if kode != '' else peran + ' ' + wbs_wp
 
         elif peran == 'CE':
             peran = 'Chief Engineering'
-            return peran + ' ' + wbs_wp + '.' + kode if kode != '' else peran + ' ' + wbs_wp
+            if wbs_wp == '0' and kode == '0':
+                return peran
+
+            else:
+                return peran + ' ' + wbs_wp + '.' + kode if kode != '' else peran + ' ' + wbs_wp
 
         elif peran == 'ACE':
             peran = 'Assistant Chief Engineering'
-            return peran + ' ' + wbs_wp + '.' + kode if kode != '' else peran + ' ' + wbs_wp
+            if wbs_wp == '0' and kode == '0':
+                return peran
+
+            else:
+                return peran + ' ' + wbs_wp + '.' + kode if kode != '' else peran + ' ' + wbs_wp
 
         elif peran == 'PM':
             peran = 'Program Manager'
-            return peran + ' ' + wbs_wp + '.' + kode if kode != '' else peran + ' ' + wbs_wp
+            if wbs_wp == '0' and kode == '0':
+                return peran
+
+            else:
+                return peran + ' ' + wbs_wp + '.' + kode if kode != '' else peran + ' ' + wbs_wp
 
         elif peran == 'PD':
             peran = 'Program Director'
-            return peran + ' ' + wbs_wp + '.' + kode if kode != '' else peran + ' ' + wbs_wp
+            if wbs_wp == '0' and kode == '0':
+                return peran
+
+            else:
+                return peran + ' ' + wbs_wp + '.' + kode if kode != '' else peran + ' ' + wbs_wp
 
     elif args == 'wbs_wp':
         return w
