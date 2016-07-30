@@ -36,6 +36,8 @@ class FormFormat(ModelForm):
                 attrs={'class': 'ui fluid search dropdown', 'id': 'select_format'}),
             'nama': TextInput(attrs={'placeholder': 'Nama'}),
             'formasi': Textarea(attrs={'rows': '0'}),
+            'kode': Select(
+                attrs={'class': 'ui fluid search dropdown', 'id': 'select_kode'}),
         }
 
 
