@@ -175,6 +175,7 @@ def tambah_li(request, slug, keg, kode):
 
     data_peran = get_object_or_404(Personil, orang=request.user, personil_kegiatan=keg, peran_utama=True)
     data_kegiatan = get_object_or_404(Kegiatan, pk=keg)
+    data_li = LembarInstruksi.objects.filter(kegiatan=keg, penerima=request.user).exclude(pemberi=request.user)
 
     try:
         data_format = get_object_or_404(Format, format_kegiatan=keg, kode=kode)
@@ -227,6 +228,7 @@ def tambah_li(request, slug, keg, kode):
 
     data = {
         'pk': keg,
+        'li': data_li,
         'kegiatan': data_kegiatan,
         'peran': [request.user, keg],
         'formulir': formulir,
