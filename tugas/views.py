@@ -9,6 +9,7 @@ from django.utils.text import slugify
 import hashlib
 
 from .models import LembarInstruksi, LembarKerja, Kegiatan
+from utama.models import Format, Personil
 from .forms import FormLI
 
 
@@ -19,6 +20,23 @@ def bantu_gravatar(request, usr):
         'hash': hashlib.md5(u.email.encode()).hexdigest(),
         'full_name': u.get_full_name(),
         'username': u.username,
+    }]
+
+    return JsonResponse(data_raw, safe=False)
+
+
+def bantu_peran(request, usr, keg):
+    try:
+        data_peran = get_object_or_404(Personil, orang=usr, personil_kegiatan=keg, peran_utama=True)
+
+    except Http404:
+        data_peran = Personil()
+
+    data_raw = [{
+        'peran': data_peran.peran,
+        'kode': data_peran.peran_kode,
+        'wbs_wp': data_peran.wbs_wp_nama,
+        'wbs_wp_kode': data_peran.wbs_wp_kode,
     }]
 
     return JsonResponse(data_raw, safe=False)
@@ -72,6 +90,7 @@ def index(request, pk, usr=None):
             data_kegiatan = Kegiatan()
 
         data = {
+            'kode_tugas': 'IS',
             'instruksi': li,
             'kerja': data_lk,
             'pk': pk,
@@ -150,9 +169,19 @@ def lihat_li_rinci(request, slug, pk, keg):
 
 
 @login_required
-def tambah_li(request, slug, keg):
+def tambah_li(request, slug, keg, kode):
     if slug is None:
         pass
+
+    data_peran = get_object_or_404(Personil, orang=request.user, personil_kegiatan=keg, peran_utama=True)
+    data_kegiatan = get_object_or_404(Kegiatan, pk=keg)
+
+    try:
+        data_format = get_object_or_404(Format, format_kegiatan=keg, kode=kode)
+
+    except Http404:
+        messages.warning(request, 'Format lemabr instruksi tidak ditemukan...')
+        return redirect('halaman_tugas_anggota', pk=keg)
 
     if request.method == 'POST':
         formulir = FormLI()
@@ -160,17 +189,55 @@ def tambah_li(request, slug, keg):
     else:
         formulir = FormLI()
 
-    formulir.fields['penerima'].choices = \
-        [('', '-----')] + [(user.pk, user.get_full_name()) for user in
-                           User.objects.filter(personil__personil_kegiatan=keg).order_by('username').distinct()]
+    if data_peran.peran == 'GL':
+        if data_peran.wbs_wp_kode == '0':
+            formulir.fields['penerima'].choices = \
+                [('', '-----')] + [(user.pk, '[' +
+                                    user.personil_set.filter(orang=user.pk, peran_utama=True).values_list('peran',
+                                                                                                          flat=True)[
+                                        0] + ']' + ' ' + user.get_full_name()) for user in
+                                   User.objects.filter(personil__personil_kegiatan=keg,
+                                                       personil__peran__in=['L']).order_by(
+                                       'username').distinct().exclude(
+                                       pk=request.user.pk)]
+
+        else:
+            formulir.fields['penerima'].choices = \
+                [('', '-----')] + [(user.pk, '[' +
+                                    user.personil_set.filter(orang=user.pk, peran_utama=True).values_list('peran',
+                                                                                                          flat=True)[
+                                        0] + ']' + ' ' + user.get_full_name()) for user in
+                                   User.objects.filter(personil__personil_kegiatan=keg,
+                                                       personil__peran__in=['L'],
+                                                       personil__wbs_wp_kode=data_peran.wbs_wp_kode).order_by(
+                                       'username').distinct().exclude(
+                                       pk=request.user.pk)]
+
+    elif data_peran.peran == 'L':
+        formulir.fields['penerima'].choices = \
+            [('', '-----')] + [(user.pk, '[' +
+                                user.personil_set.filter(orang=user.pk, peran_utama=True).values_list('peran',
+                                                                                                      flat=True)[
+                                    0] + ']' + ' ' + user.get_full_name()) for user in
+                               User.objects.filter(personil__personil_kegiatan=keg,
+                                                   personil__peran__in=['ES'],
+                                                   personil__wbs_wp_kode=data_peran.wbs_wp_kode).order_by(
+                                   'username').distinct().exclude(
+                                   pk=request.user.pk)]
 
     data = {
         'pk': keg,
+        'kegiatan': data_kegiatan,
         'peran': [request.user, keg],
-        'formulir': formulir
+        'formulir': formulir,
+        'format': data_format,
     }
 
-    return render(request, 'tugas/halaman_li_anggota_modifikasi.html', data)
+    if data_peran.peran in ['GL', 'L']:
+        return render(request, 'tugas/halaman_li_anggota_modifikasi.html', data)
+    else:
+        messages.warning(request, 'Hanya dapat dilakukan oleh Group Leader atau Leader')
+        return redirect('halaman_tugas_anggota', pk=keg)
 
 
 @login_required
@@ -191,7 +258,11 @@ def lihat_lk(request, slug, pk, keg, li):
         'is_exist': False,
     }
 
-    return render(request, 'tugas/halaman_lk_anggota_rinci.html', data)
+    if request.user.username == data_lk.pemberi.username or request.user.username == data_lk.penerima.username:
+        return render(request, 'tugas/halaman_lk_anggota_rinci.html', data)
+    else:
+        messages.warning(request, 'Hanya pemberi dan penerima tugas saja yang memiliki hak akses!')
+        return redirect('halaman_tugas_anggota', pk=keg)
 
 
 @login_required
