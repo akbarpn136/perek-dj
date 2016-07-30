@@ -18,41 +18,7 @@ Tambah LI | Aplikasi PERK
 {% block script %}
     <script src="{% static 'zebra/zebra_datepicker.js' %}"></script>
     <script src="{% static 'tinymce/tinymce.min.js' %}"></script>
-    <script>
-        $(document).ready(function(){
-            $("input.tanggal").Zebra_DatePicker({
-                show_icon: false
-            });
-
-            tinymce.init({
-                selector: 'textarea#isi',
-                theme: 'modern',
-                plugins: [
-                    'advlist autolink lists link image charmap print preview hr anchor pagebreak',
-                    'searchreplace wordcount visualblocks visualchars code fullscreen',
-                    'insertdatetime media nonbreaking save table contextmenu directionality',
-                    'emoticons template paste textcolor colorpicker textpattern imagetools'
-                ],
-                toolbar1: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-                toolbar2: 'print preview media | forecolor backcolor emoticons',
-                image_advtab: true,
-                setup : function(ed)
-                {
-                    ed.on('init', function()
-                    {
-                        this.getDoc().body.style.fontSize = '14px';
-                        var selector = $("div#latar-samping");
-                        selector.css('min-height', $("div#kolom_samping").height()+28);
-                    });
-                }
-            });
-
-            $("select.ui.dropdown").dropdown({
-                placeholder: true,
-                fullTextSearch: 'exact'
-            });
-        });
-    </script>
+    <script src="{% static 'li.js' %}"></script>
 {% endblock %}
 
 {% block kontainer %}
@@ -70,38 +36,6 @@ Tambah LI | Aplikasi PERK
             <div class="description">
                 <form class="ui form" method="post">
                     {% csrf_token %}
-                    <div class="two fields">
-                        <div class="field {% if formulir.nomor.errors %}error{% endif %}">
-                            {% if formulir.nomor.errors %}
-                                <div class="ui error visible message">
-                                    {% for error in formulir.nomor.errors %}
-                                        <div class="header">Ada Kesalahan</div>
-                                        <p>{{ error|escape }}</p>
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                            {{ formulir.nomor.label_tag }}
-                            {{ formulir.nomor }}
-                            <div class="gap"></div>
-                            <a class="ui icon button" title=" Gunakan format laporan ">
-                              <i class="arrow circle outline up icon"></i>
-                            </a>
-                        </div>
-
-                        <div class="field {% if formulir.referensi.errors %}error{% endif %}">
-                            {% if formulir.referensi.errors %}
-                                <div class="ui error visible message">
-                                    {% for error in formulir.referensi.errors %}
-                                        <div class="header">Ada Kesalahan</div>
-                                        <p>{{ error|escape }}</p>
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                            {{ formulir.referensi.label_tag }}
-                            {{ formulir.referensi }}
-                        </div>
-                    </div>
-
                     <div class="two fields">
                         <div class="field {% if formulir.penerima.errors %}error{% endif %}">
                             {% if formulir.penerima.errors %}
@@ -130,6 +64,45 @@ Tambah LI | Aplikasi PERK
                                 <i class="calendar icon"></i>
                                 {{ formulir.tanggal }}
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="two fields">
+                        <div class="field {% if formulir.nomor.errors %}error{% endif %}">
+                            {% if formulir.nomor.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in formulir.nomor.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ formulir.nomor.label_tag }}
+                            {{ formulir.nomor }}
+                            <div class="gap"></div>
+                            <a id="tbl_nmr" class="ui icon button" title=" Gunakan format laporan ">
+                                <i class="arrow circle outline up icon"></i>
+                            </a>
+                            <span id="format" data-value="{{ format.formasi }}"></span>
+                            <span id="kode_peran_pemberi" data-value="{{ peran|ambil_peran_tertentu:'short'|cut:' ' }}"></span>
+                            <span id="kode_peran_penerima" data-value=""></span>
+                            <span id="kegiatan" data-value="{{ kegiatan.pk }}"></span>
+                            <span id="kode_kegiatan" data-value="{{ kegiatan.kode }}"></span>
+                            <span id="bulan" data-value=""></span>
+                            <span id="tahun" data-value=""></span>
+                        </div>
+
+                        <div class="field {% if formulir.referensi.errors %}error{% endif %}">
+                            {% if formulir.referensi.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in formulir.referensi.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ formulir.referensi.label_tag }}
+                            {{ formulir.referensi }}
                         </div>
                     </div>
 
