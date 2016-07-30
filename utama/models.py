@@ -31,9 +31,22 @@ class Kegiatan(models.Model):
 
 
 class Format(models.Model):
+    default = ''
+    PILIHAN = (
+        ('TN', 'Technical Note'),
+        ('TR', 'Technical Report'),
+        ('TM', 'Technical Memorandum'),
+        ('TD', 'Technical Document'),
+        ('PCM', 'Progress Control and Monitoring'),
+        ('IS', 'Instruction Sheet'),
+        ('WS', 'Working Sheet'),
+        ('DS', 'Decision Sheet'),
+    )
+
     nama = models.CharField(max_length=150, verbose_name='Nama format')
     formasi = models.TextField(verbose_name='Kode dokumen')
     format_kegiatan = models.ForeignKey(Kegiatan, verbose_name='Kegiatan', on_delete=models.CASCADE)
+    kode = models.CharField(max_length=3, choices=PILIHAN, default=default, unique=True)
 
     def __str__(self):
         return self.nama
@@ -76,6 +89,9 @@ class Personil(models.Model):
 
     def __str__(self):
         return self.peran + self.wbs_wp_nama + self.wbs_wp_kode + '.' + self.peran_kode
+
+    def get_peran(self):
+        pass
 
     class Meta:
         ordering = ['index']
