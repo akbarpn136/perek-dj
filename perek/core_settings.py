@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'utama',
     'utiliti.apps.UtilitiConfig',
     'tugas.apps.TugasConfig',
+    'butir.apps.ButirConfig',
 ]
 
 MIDDLEWARE_CLASSES = [
