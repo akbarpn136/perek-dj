@@ -12,7 +12,7 @@ class FormLI(ModelForm):
             'penerima': Select(
                 attrs={'class': 'ui fluid search dropdown', 'id': 'select_orang'}),
             'tanggal': TextInput(attrs={'placeholder': 'Tanggal pelaksanaan', 'class': 'tanggal'}),
-            'butir': TextInput(attrs={'placeholder': 'Nomor butir', 'id': 'butir'}),
+            'butir': TextInput(attrs={'placeholder': 'Nomor butir', 'id': 'butir', 'readonly': 'readonly'}),
             'index': TextInput(attrs={'placeholder': 'Nomor urutan'}),
             'nomor': Textarea(attrs={'rows': '0', 'id': 'nomor'}),
             'referensi': Textarea(attrs={'rows': '0', 'id': 'referensi'}),
