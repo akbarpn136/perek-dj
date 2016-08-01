@@ -7,6 +7,21 @@
 Tugas | Aplikasi PERK
 {% endblock %}
 
+{% block script %}
+<script>
+    $(document).ready(function(){
+        $("h2.ui.header").transition({
+            animation: 'fade down in',
+            duration: 800,
+            onComplete: function(){
+                var selector = $("div#latar-samping");
+                selector.css('min-height', $("div#kolom_samping").height()+28);
+            }
+        });
+    });
+</script>
+{% endblock %}
+
 {% block grafik %}
     <div class="gap"></div>
     <div class="ui fluid container">
@@ -29,7 +44,7 @@ Tugas | Aplikasi PERK
         </div>
         {% endblock %}
         {% block kontainer %}
-        <h2 class="ui center aligned icon header">
+        <h2 class="ui center aligned icon header" style="display: none;">
             <i class="circular calendar icon"></i>
             PENUGASAN <br> {{ kegiatan.nama }} <br> {{ kegiatan.referensi }}
         </h2>
