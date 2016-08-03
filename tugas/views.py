@@ -11,6 +11,7 @@ import hashlib
 from .models import LembarInstruksi, LembarKerja, Kegiatan
 from butir.models import ButirPerekayasa
 from utama.models import Format, Personil
+from utiliti.models import Profil
 from .forms import FormLI
 
 
@@ -245,7 +246,12 @@ def tambah_li(request, slug, keg, kode):
                                    'username').distinct().exclude(
                                    pk=request.user.pk)]
 
-    data_butir = ButirPerekayasa.objects.filter(kodebutir__startswith='II.A')
+    jenjang = request.user.profil_set.values_list('jenjang')[0]
+
+    if jenjang == 'Pertama':
+        data_butir = ButirPerekayasa.objects.filter(kodebutir__startswith='II.A', pelaksana__in=[])
+    else:
+        data_butir = ButirPerekayasa.objects.filter(kodebutir__startswith='II.A')
 
     data = {
         'pk': keg,
