@@ -246,12 +246,32 @@ def tambah_li(request, slug, keg, kode):
                                    'username').distinct().exclude(
                                    pk=request.user.pk)]
 
-    jenjang = request.user.profil_set.values_list('jenjang')[0]
+    try:
+        peran = request.user.personil_set.values_list('peran', flat=True)[0]
+    except IndexError:
+        peran = ''
 
-    if jenjang == 'Pertama':
-        data_butir = ButirPerekayasa.objects.filter(kodebutir__startswith='II.A', pelaksana__in=[])
+    if peran == 'ES':
+        data_butir = ButirPerekayasa.objects.filter(kodebutir__startswith='II.A', hasil__contains='Lembar Instruksi',
+                                                    pelaksana__in=['Pertama', 'Pertama/Muda', 'Muda'])
+    elif peran == 'L':
+        data_butir = ButirPerekayasa.objects.filter(kodebutir__startswith='II.A', hasil__contains='Lembar Instruksi',
+                                                    pelaksana__in=['Pertama', 'Pertama/Muda', 'Muda', 'Madya'])
+    elif peran == 'GL':
+        data_butir = ButirPerekayasa.objects.filter(kodebutir__startswith='II.A', hasil__contains='Lembar Instruksi',
+                                                    pelaksana__in=['Muda', 'Muda/Madya', 'Madya', 'Utama'])
+    elif peran == 'PM':
+        data_butir = ButirPerekayasa.objects.filter(kodebutir__startswith='II.A', hasil__contains='Lembar Instruksi',
+                                                    pelaksana__in=['Muda', 'Muda/Madya', 'Madya', 'Utama'])
+    elif peran == 'CE':
+        data_butir = ButirPerekayasa.objects.filter(kodebutir__startswith='II.A', hasil__contains='Lembar Instruksi',
+                                                    pelaksana__in=['Madya', 'Madya/Utama', 'Utama'])
+    elif peran == 'PD':
+        data_butir = ButirPerekayasa.objects.filter(kodebutir__startswith='II.A', hasil__contains='Lembar Instruksi',
+                                                    pelaksana__in=['Madya', 'Madya/Utama', 'Utama'])
+
     else:
-        data_butir = ButirPerekayasa.objects.filter(kodebutir__startswith='II.A')
+        data_butir = ButirPerekayasa.objects.filter(kodebutir__startswith='III.A')
 
     data = {
         'pk': keg,
