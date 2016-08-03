@@ -170,7 +170,7 @@ Tambah LI | Aplikasi PERK
                                                 <select id="pilih_butir" class="ui search fluid dropdown">
                                                     <option value="">--- Pilihan Butir ---</option>
                                                     {% for btr in butir %}
-                                                    <option value="{{ btr.kodebutir }}">{{ btr.butir }}</option>
+                                                    <option value="{{ btr.kodebutir }}">[{{ btr.angka }} - {{ btr.hasil }}] {{ btr.butir }} #{{ btr.pelaksana }}</option>
                                                     {% endfor %}
                                                 </select>
                                             </div>
@@ -182,6 +182,7 @@ Tambah LI | Aplikasi PERK
                                     </div>
                                 </div>
                             </div>
+                            <div id="label_info" class="ui pointing label"></div>
                         </div>
 
                         <div class="field {% if formulir.index.errors %}error{% endif %}">
