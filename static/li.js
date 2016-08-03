@@ -3,6 +3,8 @@
  */
 
 $(document).ready(function(){
+    $("div#label_info").hide();
+
     $("input.tanggal").Zebra_DatePicker({
         show_icon: false,
         onSelect: function(a, b){
@@ -57,10 +59,13 @@ $(document).ready(function(){
         placeholder: true,
         fullTextSearch: 'exact',
         onChange: function(butir){
+            var info = $("div#label_info");
             $("input#butir").val(butir);
 
             $.get('/tugas/'+butir+'/butir/', function(nilai){
                 $("input#angka_hid").val(nilai['angka']);
+                info.text('Hasil: '+nilai['hasil']+', Angka: '+nilai['angka']);
+                info.show();
             });
         }
     });
@@ -101,7 +106,6 @@ $(document).ready(function(){
                 selector.css('min-height', selector.height()+28);
             }
         }).modal('show');
-        console.log(e);
 
         e.preventDefault();
     });
