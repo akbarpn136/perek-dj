@@ -53,6 +53,18 @@ $(document).ready(function(){
         }
     });
 
+    $("select#pilih_butir").dropdown({
+        placeholder: true,
+        fullTextSearch: 'exact',
+        onChange: function(butir){
+            $("input#butir").val(butir);
+
+            $.get('/tugas/'+butir+'/butir/', function(nilai){
+                $("input#angka_hid").val(nilai['angka']);
+            });
+        }
+    });
+
     $("a#tbl_nmr").click(function(e){
         var nomor = $('textarea#nomor');
         var baru = $("span#format").attr('data-value');
@@ -71,8 +83,6 @@ $(document).ready(function(){
     });
 
     $("a#tbl_ref").click(function(e){
-        e.preventDefault();
-
         $("div#modal_referensi").modal({
             closable  : false,
             onShow : function(){
@@ -80,6 +90,20 @@ $(document).ready(function(){
                 selector.css('min-height', selector.height()+28);
             }
         }).modal('show');
+        e.preventDefault();
+    });
+
+    $("a#tbl_butir").click(function(e){
+        $("div#modal_butir").modal({
+            closable  : false,
+            onShow : function(){
+                var selector = $("div#latar-samping");
+                selector.css('min-height', selector.height()+28);
+            }
+        }).modal('show');
+        console.log(e);
+
+        e.preventDefault();
     });
 
     $(".ui.checkbox").checkbox({

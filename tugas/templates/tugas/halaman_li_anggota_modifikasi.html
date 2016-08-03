@@ -154,13 +154,32 @@ Tambah LI | Aplikasi PERK
                                 </div>
                             {% endif %}
                             {{ formulir.butir.label_tag }}
-                            <input type="hidden" name="butir_hid" id="butir_hid" value="">
                             <input type="hidden" name="angka_hid" id="angka_hid" value="">
                             <div class="ui action input">
                                 {{ formulir.butir }}
-                                <a class="ui icon button" title=" Gunakan template ">
+                                <a id="tbl_butir" class="ui icon button" title=" Gunakan template ">
                                     <i class="arrow circle outline left icon"></i>
                                 </a>
+                                <div id="modal_butir" class="ui small modal">
+                                    <div class="header">Pilih Butir</div>
+                                    <div class="content">
+                                        <div class="ui form">
+                                            <div class="grouped fields">
+                                                <label for="pilih_butir">Butir:</label>
+                                                <select id="pilih_butir" class="ui search fluid dropdown">
+                                                    <option value="">--- Pilihan Butir ---</option>
+                                                    {% for btr in butir %}
+                                                    <option value="{{ btr.kodebutir }}">{{ btr.butir }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="actions">
+                                        <div class="ui deny button">Oke</div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

@@ -9,6 +9,7 @@ from django.utils.text import slugify
 import hashlib
 
 from .models import LembarInstruksi, LembarKerja, Kegiatan
+from butir.models import ButirPerekayasa
 from utama.models import Format, Personil
 from .forms import FormLI
 
@@ -38,6 +39,19 @@ def bantu_peran(request, usr, keg):
         'wbs_wp': data_peran.wbs_wp_nama,
         'wbs_wp_kode': data_peran.wbs_wp_kode,
     }]
+
+    return JsonResponse(data_raw, safe=False)
+
+
+def bantu_butir_perekayasa(request, cond):
+    data_butir = get_object_or_404(ButirPerekayasa, kodebutir=cond)
+    data_raw = {
+        'butir': data_butir.butir,
+        'kodebutir': data_butir.kodebutir,
+        'hasil': data_butir.hasil,
+        'angka': data_butir.angka,
+        'pelaksana': data_butir.pelaksana,
+    }
 
     return JsonResponse(data_raw, safe=False)
 
@@ -173,7 +187,12 @@ def tambah_li(request, slug, keg, kode):
     if slug is None:
         pass
 
-    data_peran = get_object_or_404(Personil, orang=request.user, personil_kegiatan=keg, peran_utama=True)
+    try:
+        data_peran = get_object_or_404(Personil, orang=request.user, personil_kegiatan=keg, peran_utama=True)
+    except Http404:
+        messages.warning(request, 'Anda tidak memiliki peran dalam kegiatan ini!')
+        return redirect('halaman_tugas_anggota', pk=keg)
+
     data_kegiatan = get_object_or_404(Kegiatan, pk=keg)
     data_li = LembarInstruksi.objects.filter(kegiatan=keg, penerima=request.user).exclude(pemberi=request.user)
 
@@ -226,6 +245,8 @@ def tambah_li(request, slug, keg, kode):
                                    'username').distinct().exclude(
                                    pk=request.user.pk)]
 
+    data_butir = ButirPerekayasa.objects.filter(kodebutir__startswith='II.A')
+
     data = {
         'pk': keg,
         'li': data_li,
@@ -233,6 +254,7 @@ def tambah_li(request, slug, keg, kode):
         'peran': [request.user, keg],
         'formulir': formulir,
         'format': data_format,
+        'butir': data_butir,
     }
 
     if data_peran.peran in ['GL', 'L']:
