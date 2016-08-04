@@ -19,6 +19,7 @@ urlpatterns = [
         name='halaman_tambah_li_anggota'),
 
     url(r'^(?P<usr>[\w.]+)/anggota/$', views.bantu_gravatar, name='json_bantu_gravatar'),
-    url(r'^(?P<cond>[\w.()]+)/butir/$', views.bantu_butir_perekayasa, name='json_bantu_butir_perekayasa'),
+    url(r'^(?P<cond>[\w.()]+)/butir/(?P<keg>[0-9]+)/$', views.bantu_butir_perekayasa,
+        name='json_bantu_butir_perekayasa'),
     url(r'^(?P<usr>[0-9]+)/peran/(?P<keg>[0-9]+)/$', views.bantu_peran, name='json_bantu_peran'),
 ]
