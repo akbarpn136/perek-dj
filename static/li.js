@@ -60,11 +60,13 @@ $(document).ready(function(){
         fullTextSearch: 'exact',
         onChange: function(butir){
             var info = $("div#label_info");
+            var keg = $("span#kegiatan").attr('data-value');
+
             $("input#butir").val(butir);
 
-            $.get('/tugas/'+butir+'/butir/', function(nilai){
+            $.get('/tugas/'+butir+'/butir/'+keg+'/', function(nilai){
                 $("input#angka_hid").val(nilai['angka']);
-                info.text('Hasil: '+nilai['hasil']+', Angka: '+nilai['angka']);
+                info.text('Hasil: '+nilai['hasil']+', Angka: '+nilai['angka']+' ('+nilai['persentase']+'% dari '+nilai['angka_asli']+')');
                 info.show();
             });
         }
