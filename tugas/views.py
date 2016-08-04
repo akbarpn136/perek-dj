@@ -44,7 +44,7 @@ def bantu_peran(request, usr, keg):
     return JsonResponse(data_raw, safe=False)
 
 
-def bantu_butir_perekayasa(request, cond, keg):
+def bantu_butir_perekayasa(request, cond, keg, json=None):
     try:
         data_peran = get_object_or_404(Personil, orang=request.user, personil_kegiatan=keg, peran_utama=True)
         peran = data_peran.peran
@@ -144,7 +144,10 @@ def bantu_butir_perekayasa(request, cond, keg):
         'jenjang': jenjang,
     }
 
-    return JsonResponse(data_raw, safe=False)
+    if json is None:
+        return JsonResponse(data_raw, safe=False)
+    else:
+        return faktor * data_butir.angka
 
 
 def cek_keanggotaan(user, pk_kegiatan):
@@ -168,7 +171,7 @@ def index(request, pk, usr=None):
 
         data_lk = LembarKerja.objects.filter(kegiatan=pk)
 
-        paginator = Paginator(data_li, 12, 1)
+        paginator = Paginator(data_li.order_by('-tanggal'), 12, 1)
         page = request.GET.get('halaman')
 
         try:
@@ -295,7 +298,21 @@ def tambah_li(request, slug, keg, kode):
         return redirect('halaman_tugas_anggota', pk=keg)
 
     if request.method == 'POST':
-        formulir = FormLI()
+        butir = request.POST.get('butir')
+        angka = request.POST.get('angka_hid')
+        cek_angka = bantu_butir_perekayasa(request, butir, keg, 'na')
+
+        a = LembarInstruksi(kegiatan=Kegiatan.objects.get(pk=keg), pemberi=request.user, angka=angka)
+
+        formulir = FormLI(request.POST, instance=a)
+
+        if formulir.is_valid():
+            if float(angka) == cek_angka:
+                messages.success(request, 'Lembar instruksi berhasil ditambahkan')
+                a.save()
+            else:
+                messages.warning(request, 'Tidak diperbolehkan untuk mengganti angka kredit!')
+                return redirect('halaman_tambah_li_anggota', slug=slug, keg=keg, kode=kode)
 
     else:
         formulir = FormLI()
