@@ -44,14 +44,104 @@ def bantu_peran(request, usr, keg):
     return JsonResponse(data_raw, safe=False)
 
 
-def bantu_butir_perekayasa(request, cond):
+def bantu_butir_perekayasa(request, cond, keg):
+    try:
+        data_peran = get_object_or_404(Personil, orang=request.user, personil_kegiatan=keg, peran_utama=True)
+        peran = data_peran.peran
+    except Http404:
+        peran = ''
+
+    try:
+        data_jenjang = get_object_or_404(Profil, user=request.user)
+        jenjang = data_jenjang.jenjang
+    except Http404:
+        jenjang = ''
+
+    if peran == 'ES':
+        if jenjang == 'Pertama':
+            faktor = 1
+        elif jenjang == 'Muda':
+            faktor = 1
+        elif jenjang == 'Madya':
+            faktor = 0
+        elif jenjang == 'Utama':
+            faktor = 0
+        else:
+            faktor = 0
+
+    elif peran == 'L':
+        if jenjang == 'Pertama':
+            faktor = 0.8
+        elif jenjang == 'Muda':
+            faktor = 1
+        elif jenjang == 'Madya':
+            faktor = 1
+        elif jenjang == 'Utama':
+            faktor = 0
+        else:
+            faktor = 0
+
+    elif peran == 'GL':
+        if jenjang == 'Pertama':
+            faktor = 0
+        elif jenjang == 'Muda':
+            faktor = 0.8
+        elif jenjang == 'Madya':
+            faktor = 1
+        elif jenjang == 'Utama':
+            faktor = 1
+        else:
+            faktor = 0
+
+    elif peran == 'PM':
+        if jenjang == 'Pertama':
+            faktor = 0
+        elif jenjang == 'Muda':
+            faktor = 0.8
+        elif jenjang == 'Madya':
+            faktor = 1
+        elif jenjang == 'Utama':
+            faktor = 1
+        else:
+            faktor = 0
+
+    elif peran == 'CE':
+        if jenjang == 'Pertama':
+            faktor = 0
+        elif jenjang == 'Muda':
+            faktor = 0
+        elif jenjang == 'Madya':
+            faktor = 0.8
+        elif jenjang == 'Utama':
+            faktor = 1
+        else:
+            faktor = 0
+
+    elif peran == 'PD':
+        if jenjang == 'Pertama':
+            faktor = 0
+        elif jenjang == 'Muda':
+            faktor = 0
+        elif jenjang == 'Madya':
+            faktor = 0.8
+        elif jenjang == 'Utama':
+            faktor = 1
+        else:
+            faktor = 0
+    else:
+        faktor = 0
+
     data_butir = get_object_or_404(ButirPerekayasa, kodebutir=cond)
     data_raw = {
         'butir': data_butir.butir,
         'kodebutir': data_butir.kodebutir,
         'hasil': data_butir.hasil,
-        'angka': data_butir.angka,
+        'persentase': faktor * 100,
+        'angka_asli': data_butir.angka,
+        'angka': faktor * data_butir.angka,
         'pelaksana': data_butir.pelaksana,
+        'peran': peran,
+        'jenjang': jenjang,
     }
 
     return JsonResponse(data_raw, safe=False)
@@ -269,7 +359,6 @@ def tambah_li(request, slug, keg, kode):
     elif peran == 'PD':
         data_butir = ButirPerekayasa.objects.filter(kodebutir__startswith='II.A', hasil__contains='Lembar Instruksi',
                                                     pelaksana__in=['Madya', 'Madya/Utama', 'Utama'])
-
     else:
         data_butir = ButirPerekayasa.objects.filter(kodebutir__startswith='III.A')
 
