@@ -131,7 +131,11 @@ def bantu_butir_perekayasa(request, cond, keg, json=None):
     else:
         faktor = 0
 
-    data_butir = get_object_or_404(ButirPerekayasa, kodebutir=cond)
+    try:
+        data_butir = get_object_or_404(ButirPerekayasa, kodebutir=cond)
+    except Http404:
+        data_butir = ButirPerekayasa()
+
     data_raw = {
         'butir': data_butir.butir,
         'kodebutir': data_butir.kodebutir,
@@ -614,7 +618,8 @@ def lihat_lk_rinci(request, slug, pk, keg):
         'peran_pemeriksa': [data_li.pemberi.pk, data_keg.pk],
     }
 
-    if data_li.penerima.username == request.user.username or request.user.is_superuser:
+    if data_li.penerima.username == request.user.username or request.user.is_superuser or \
+            data_li.pemberi.username == request.user.username:
         return render(request, 'tugas/halaman_cetak_lk_lembaran.html', data)
     else:
         messages.warning(request, 'Hanya pemilik yang mendapatkan hak akses!')
