@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404, Http404
+from django.shortcuts import render, redirect, get_object_or_404, Http404, HttpResponse
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -138,7 +138,7 @@ def bantu_butir_perekayasa(request, cond, keg, json=None):
         'hasil': data_butir.hasil,
         'persentase': faktor * 100,
         'angka_asli': data_butir.angka,
-        'angka': faktor * data_butir.angka,
+        'angka': round(faktor * data_butir.angka, 3),
         'pelaksana': data_butir.pelaksana,
         'peran': peran,
         'jenjang': jenjang,
@@ -301,19 +301,24 @@ def tambah_li(request, slug, keg, kode):
     if request.method == 'POST':
         butir = request.POST.get('butir')
         angka = request.POST.get('angka_hid')
-        cek_angka = bantu_butir_perekayasa(request, butir, keg, 'na')
+        cek_angka = round(bantu_butir_perekayasa(request, butir, keg, 'na'), 3)
 
         a = LembarInstruksi(kegiatan=Kegiatan.objects.get(pk=keg), pemberi=request.user, angka=angka)
 
         formulir = FormLI(request.POST, instance=a)
 
         if formulir.is_valid():
-            if float(angka) == cek_angka:
-                messages.success(request, 'Lembar instruksi berhasil ditambahkan')
-                a.save()
+            if cek_keanggotaan(request.user, keg):
+                if float(angka) == cek_angka:
+                    messages.success(request, 'Lembar instruksi berhasil ditambahkan')
+                    a.save()
+                else:
+                    messages.warning(request, 'Tidak diperbolehkan untuk mengganti angka kredit!')
+                    return redirect('halaman_tambah_li_anggota', slug=slug, keg=keg, kode=kode)
+
             else:
-                messages.warning(request, 'Tidak diperbolehkan untuk mengganti angka kredit!')
-                return redirect('halaman_tambah_li_anggota', slug=slug, keg=keg, kode=kode)
+                messages.warning(request, 'Maaf, Anda tidak mendapatkan hak akses!')
+                return redirect('halaman_tugas_anggota', pk=keg)
 
     else:
         formulir = FormLI()
@@ -430,18 +435,23 @@ def ubah_li(request, slug, keg, kode, li):
             angka = 0
             messages.warning(request, 'Harus dalam bentuk angka!')
 
-        cek_angka = bantu_butir_perekayasa(request, butir, keg, 'na')
+        cek_angka = round(bantu_butir_perekayasa(request, butir, keg, 'na'), 3)
 
         li.angka = angka
 
         formulir = FormLI(request.POST, instance=li)
 
         if formulir.is_valid():
-            if float(angka) == cek_angka:
-                messages.success(request, 'Lembar instruksi berhasil disimpan')
-                li.save()
+            if cek_keanggotaan(request.user, keg):
+                if float(angka) == cek_angka:
+                    messages.success(request, 'Lembar instruksi berhasil disimpan')
+                    li.save()
+                else:
+                    messages.warning(request, 'Tidak diperbolehkan untuk mengganti angka kredit!')
+                    # return redirect('halaman_tambah_li_anggota', slug=slug, keg=keg, kode=kode)
+
             else:
-                messages.warning(request, 'Tidak diperbolehkan untuk mengganti angka kredit!')
+                messages.warning(request, 'Maaf, Anda tidak mendapatkan hak akses!')
                 return redirect('halaman_tambah_li_anggota', slug=slug, keg=keg, kode=kode)
 
     else:
@@ -525,6 +535,33 @@ def ubah_li(request, slug, keg, kode, li):
     else:
         messages.warning(request, 'Hanya dapat dilakukan oleh Group Leader atau Leader')
         return redirect('halaman_tugas_anggota', pk=keg)
+
+
+@login_required
+def hapus_li(request, pk):
+    li_ubah = get_object_or_404(LembarInstruksi, pk=pk)
+
+    if li_ubah.pemberi == request.user:
+        if li_ubah.delete():
+            html = '''<div class="ui green message">
+                    <div class="header">
+                        Info
+                    </div>
+                    <p>
+                        Lembar instruksi berhasil dihapus.
+                    </p>
+                </div>'''
+            return HttpResponse(html)
+    else:
+        html = '''<div class="ui red message">
+                <div class="header">
+                    Info
+                </div>
+                <p>
+                    Lembar instruksi hanya boleh dihapus oleh pemilik!
+                </p>
+            </div>'''
+        return HttpResponse(html)
 
 
 @login_required
