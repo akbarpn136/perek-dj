@@ -17,6 +17,8 @@ urlpatterns = [
 
     url(r'^(?P<slug>[\w-]+)-(?P<keg>[0-9]+)/tambah.(?P<kode>[\w]+)/$', views.tambah_li,
         name='halaman_tambah_li_anggota'),
+    url(r'^(?P<slug>[\w-]+)-(?P<keg>[0-9]+)/(?P<li>[\w]+).ubah.(?P<kode>[\w]+)/$', views.ubah_li,
+        name='halaman_ubah_li_anggota'),
 
     url(r'^(?P<usr>[\w.]+)/anggota/$', views.bantu_gravatar, name='json_bantu_gravatar'),
     url(r'^(?P<cond>[\w.()]+)/butir/(?P<keg>[0-9]+)/$', views.bantu_butir_perekayasa,
