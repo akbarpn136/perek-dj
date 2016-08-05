@@ -5,11 +5,11 @@
 {% load jenjang_terkait %}
 
 {% block title %}
-Tambah LI | Aplikasi PERK
+Rekam Data LI | Aplikasi PERK
 {% endblock %}
 
 {% block ruas_tiga %}
-    <div class="active section">Tambah tugas</div>
+    <div class="active section">Rekam tugas</div>
 {% endblock %}
 
 {% block style %}
@@ -156,6 +156,19 @@ Tambah LI | Aplikasi PERK
                             {% endif %}
                             {{ formulir.butir.label_tag }}
                             <input type="hidden" name="angka_hid" id="angka_hid" value="">
+                            {% if 'ubah' in request.path %}
+                                <script>
+                                    $(document).ready(function(){
+                                        var angka_selector = $("input#angka_hid");
+                                        var butir_selector = $("input#butir");
+                                        var keg = $("span#kegiatan").attr('data-value');
+
+                                        $.get('/tugas/'+butir_selector.val()+'/butir/'+keg+'/', function(nilai){
+                                            angka_selector.val(nilai['angka']);
+                                        });
+                                    });
+                                </script>
+                            {% endif %}
                             <div class="ui action input">
                                 {{ formulir.butir }}
                                 <a id="tbl_butir" class="ui icon button" title=" Gunakan template ">
@@ -213,9 +226,15 @@ Tambah LI | Aplikasi PERK
                     </div>
 
                     <input type="submit" class="ui submit primary button" value="Simpan">
+                    {% if 'ubah' in request.path %}
+                    <a href="{% url 'halaman_li_anggota_rinci' slug=li_tertentu.nomor|slugify pk=li_tertentu.pk keg=pk %}" class="ui icon tiny button" title=" kembali ">
+                        <i class="reply icon"></i>
+                    </a>
+                    {% else %}
                     <a href="{% url 'halaman_tugas_anggota' pk=pk %}" class="ui icon tiny button" title=" kembali ">
                         <i class="reply icon"></i>
                     </a>
+                    {% endif %}
                 </form>
             </div>
         </div>
