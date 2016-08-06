@@ -12,7 +12,7 @@ from .models import LembarInstruksi, LembarKerja, Kegiatan
 from butir.models import ButirPerekayasa
 from utama.models import Format, Personil
 from utiliti.models import Profil
-from .forms import FormLI
+from .forms import FormLI, FormKesepakatan
 
 
 # Create your views here.
@@ -566,6 +566,36 @@ def hapus_li(request, pk):
                 </p>
             </div>'''
         return HttpResponse(html)
+
+
+@login_required
+def kesepakatan_li(request, slug, keg, li):
+    if slug is None:
+        pass
+
+    try:
+        data_li = get_object_or_404(LembarInstruksi, kegiatan=keg, pk=li)
+    except Http404:
+        messages.warning(request, 'Lemabr instruksi tidak ditemukan!')
+        data_li = LembarInstruksi()
+
+    if request.method == 'POST':
+        form = FormKesepakatan(request.POST, instance=data_li)
+
+        if form.is_valid():
+            messages.success(request, 'Anda setuju '+data_li.nomor+' untuk dihapus suatu waktu')
+            data_li.save()
+    else:
+        form = FormKesepakatan(instance=data_li)
+
+    data = {
+        'pk': keg,
+        'li': data_li,
+        'peran': [request.user, keg],
+        'formulir': form,
+    }
+
+    return render(request, 'tugas/halaman_li_anggota_kesepakatan.html', data)
 
 
 @login_required
