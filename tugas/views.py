@@ -545,7 +545,7 @@ def ubah_li(request, slug, keg, kode, li):
 def hapus_li(request, pk):
     li_ubah = get_object_or_404(LembarInstruksi, pk=pk)
 
-    if li_ubah.pemberi == request.user:
+    if li_ubah.pemberi == request.user and li_ubah.kesepakatan:
         if li_ubah.delete():
             html = '''<div class="ui green message">
                     <div class="header">
@@ -562,7 +562,7 @@ def hapus_li(request, pk):
                     Info
                 </div>
                 <p>
-                    Lembar instruksi hanya boleh dihapus oleh pemilik!
+                    Lembar instruksi hanya boleh dihapus oleh pemilik dan disetujui oleh bawahan untuk dihapus!
                 </p>
             </div>'''
         return HttpResponse(html)
