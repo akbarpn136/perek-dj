@@ -18,3 +18,9 @@ class FormLI(ModelForm):
             'referensi': Textarea(attrs={'rows': '0', 'id': 'referensi'}),
             'isi': Textarea(attrs={'rows': '18', 'id': 'isi'}),
         }
+
+
+class FormKesepakatan(ModelForm):
+    class Meta:
+        model = LembarInstruksi
+        fields = ['kesepakatan']
