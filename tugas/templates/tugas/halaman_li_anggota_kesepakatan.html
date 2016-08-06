@@ -1,0 +1,56 @@
+{% extends 'tugas/halaman_li_anggota_rinci.html' %}
+{% load gravatar %}
+{% load staticfiles %}
+{% load peran_terkait %}
+
+{% block title %}
+Kesepakatan | Aplikasi PERK
+{% endblock %}
+
+{% block ruas_tiga %}
+    <div class="active section">Kesepakatan penghapusan tugas</div>
+{% endblock %}
+
+{% block style %}{% endblock %}
+
+{% block script %}{% endblock %}
+
+{% block kontainer %}
+    <div class="ui fluid teal card">
+        <div class="content">
+            {% block gambar %}
+            <img class="ui avatar image" src="https://www.gravatar.com/avatar/{{ request.user.email|hash_email }}?d=retro&f=y"> {{ request.user.get_full_name|default:request.user.username }}
+            <div class="right floated meta">{{ peran|ambil_peran_tertentu:'long' }}</div>
+            {% endblock %}
+        </div>
+
+        <div class="content">
+            <div class="header">Rekam Kesepakatan</div>
+
+            <div class="description">
+                <p>
+                    Apakah Anda setuju {{ li.nama }} {{ li.nomor }} untuk dihapus suatu waktu? Apabila suatu waktu
+                    atasan Anda menghapus dan setuju untuk dihapus, maka semua Lembar Kerja Anda akan hilang.
+                </p>
+                <form class="ui form" method="post">
+                    {% csrf_token %}
+                    <div class="field {% if formulir.penerima.errors %}error{% endif %}">
+                        {% if formulir.kesepakatan.errors %}
+                            <div class="ui error visible message">
+                                {% for error in formulir.kesepakatan.errors %}
+                                    <div class="header">Ada Kesalahan</div>
+                                    <p>{{ error|escape }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        {{ formulir.kesepakatan.label_tag }}
+                        {{ formulir.kesepakatan }}
+                    </div>
+
+                    <input type="submit" class="ui submit primary button" value="Simpan">
+                </form>
+            </div>
+            <span id="tbl_kembali" data-value="{% url 'halaman_tugas_anggota' pk=pk %}"></span>
+        </div>
+    </div>
+{% endblock %}
