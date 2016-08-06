@@ -7,7 +7,7 @@ from .models import *
 class FormLI(ModelForm):
     class Meta:
         model = LembarInstruksi
-        exclude = ['nama', 'kegiatan', 'pemberi', 'angka']
+        exclude = ['nama', 'kegiatan', 'pemberi', 'angka', 'kesepakatan']
         widgets = {
             'penerima': Select(
                 attrs={'class': 'ui fluid search dropdown', 'id': 'select_orang'}),
