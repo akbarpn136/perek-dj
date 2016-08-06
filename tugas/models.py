@@ -17,6 +17,7 @@ class LembarInstruksi(models.Model):
                                 on_delete=models.SET_NULL, null=True)
     penerima = models.ForeignKey('auth.User', related_name='penerima_tugas', verbose_name='Penerima Tugas',
                                  on_delete=models.SET_NULL, null=True)
+    kesepakatan = models.BooleanField(verbose_name='Setuju dihapus?', default=False)
     index = models.IntegerField(verbose_name='Index', default=0)
 
     def __str__(self):
