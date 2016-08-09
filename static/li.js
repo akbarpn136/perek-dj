@@ -66,7 +66,16 @@ $(document).ready(function(){
 
             $.get('/tugas/'+butir+'/butir/'+keg+'/', function(nilai){
                 $("input#angka_hid").val(nilai['angka']);
-                info.text('Hasil: '+nilai['hasil']+', Angka: '+nilai['angka']+' ('+nilai['persentase']+'% dari '+nilai['angka_asli']+')');
+                if(nilai['jenjang'] == '')
+                {
+                    info.text('Hasil: Data profil jenjang masih kosong, Harap diisi terlebih dahulu.');
+                }
+
+                else
+                {
+                    info.text('Hasil: '+nilai['hasil']+', Angka: '+nilai['angka']+' ('+nilai['persentase']+'% dari '+nilai['angka_asli']+')');
+                }
+
                 info.show();
             });
         }
