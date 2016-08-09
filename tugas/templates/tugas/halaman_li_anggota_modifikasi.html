@@ -3,13 +3,26 @@
 {% load staticfiles %}
 {% load peran_terkait %}
 {% load jenjang_terkait %}
+{% load li_terkait %}
 
 {% block title %}
 Rekam Data LI | Aplikasi PERK
 {% endblock %}
 
+
 {% block ruas_tiga %}
+    {% if 'IS' in request.path %}
     <div class="active section">Rekam tugas</div>
+    {% elif 'WS' in request.path %}
+    <a href="{% url 'halaman_li_anggota_rinci' slug=instruksi.nomor|slugify pk=instruksi.pk keg=pk %}" class="section">{{ instruksi.pk|ambil_li_tertentu }}</a>
+    <i class="right chevron icon divider"></i>
+    {% endif %}
+{% endblock %}
+
+{% block ruas_empat %}
+    {% if 'WS' in request.path %}
+    <div class="active section">Rekam tugas</div>
+    {% endif %}
 {% endblock %}
 
 {% block style %}
@@ -256,9 +269,15 @@ Rekam Data LI | Aplikasi PERK
 
                     <input type="submit" class="ui submit primary button" value="Simpan">
                     {% if 'ubah' in request.path %}
-                    <a id="tbl_hapus" href="" class="ui icon tiny red button" title=" hapus " data-value="{% url 'halaman_hapus_li_anggota' pk=li_tertentu.pk %}">
-                        <i class="trash icon"></i>
-                    </a>
+                        {% if 'IS' in request.path %}
+                        <a id="tbl_hapus" href="" class="ui icon tiny red button" title=" hapus " data-value="{% url 'halaman_hapus_li_anggota' pk=li_tertentu.pk %}">
+                            <i class="trash icon"></i>
+                        </a>
+                        {% else %}
+                        <a id="tbl_hapus" href="" class="ui icon tiny red button" title=" hapus " data-value="">
+                            <i class="trash icon"></i>
+                        </a>
+                        {% endif %}
                     <div id="modal_hapus_li" class="ui small modal">
                         <div class="header">Anda Yakin?</div>
                         <div class="content">
