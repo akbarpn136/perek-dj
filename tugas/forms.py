@@ -23,7 +23,7 @@ class FormLI(ModelForm):
 class FormLK(ModelForm):
     class Meta:
         model = LembarKerja
-        exclude = ['nama', 'kegiatan', 'penerima', 'angka', 'kesepakatan']
+        exclude = ['nama', 'kegiatan', 'penerima', 'angka', 'kesepakatan', 'li']
         widgets = {
             'pemberi': Select(
                 attrs={'class': 'ui fluid search dropdown', 'id': 'select_orang'}),
