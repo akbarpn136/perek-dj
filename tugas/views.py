@@ -615,28 +615,15 @@ def tambah_lk(request, slug, keg, kode, li):
         formulir = FormLK()
 
     if data_peran.peran == 'L':
-        if data_peran.wbs_wp_kode == '0':
-            formulir.fields['pemberi'].choices = \
-                [('', '-----')] + [(user.pk, '[' +
-                                    user.personil_set.filter(orang=user.pk, peran_utama=True).values_list('peran',
-                                                                                                          flat=True)[
-                                        0] + ']' + ' ' + user.get_full_name()) for user in
-                                   User.objects.filter(personil__personil_kegiatan=keg,
-                                                       personil__peran__in=['GL']).order_by(
-                                       'username').distinct().exclude(
-                                       pk=request.user.pk)]
-
-        else:
-            formulir.fields['pemberi'].choices = \
-                [('', '-----')] + [(user.pk, '[' +
-                                    user.personil_set.filter(orang=user.pk, peran_utama=True).values_list('peran',
-                                                                                                          flat=True)[
-                                        0] + ']' + ' ' + user.get_full_name()) for user in
-                                   User.objects.filter(personil__personil_kegiatan=keg,
-                                                       personil__peran__in=['L'],
-                                                       personil__wbs_wp_kode=data_peran.wbs_wp_kode).order_by(
-                                       'username').distinct().exclude(
-                                       pk=request.user.pk)]
+        formulir.fields['pemberi'].choices = \
+            [('', '-----')] + [(user.pk, '[' +
+                                user.personil_set.filter(orang=user.pk, peran_utama=True).values_list('peran',
+                                                                                                      flat=True)[
+                                    0] + ']' + ' ' + user.get_full_name()) for user in
+                               User.objects.filter(personil__personil_kegiatan=keg,
+                                                   personil__peran__in=['GL']).order_by(
+                                   'username').distinct().exclude(
+                                   pk=request.user.pk)]
     else:
         formulir.fields['pemberi'].choices = \
             [('', '-----')] + [(user.pk, '[' +
@@ -774,7 +761,7 @@ def lihat_lk_rinci(request, slug, pk, keg):
     }
 
     if data_li.penerima.username == request.user.username or request.user.is_superuser or \
-                    data_li.pemberi.username == request.user.username:
+            data_li.pemberi.username == request.user.username:
         return render(request, 'tugas/halaman_cetak_lk_lembaran.html', data)
     else:
         messages.warning(request, 'Hanya pemilik yang mendapatkan hak akses!')
