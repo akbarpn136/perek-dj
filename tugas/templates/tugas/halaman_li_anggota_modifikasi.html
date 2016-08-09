@@ -19,7 +19,11 @@ Rekam Data LI | Aplikasi PERK
 {% block script %}
     <script src="{% static 'zebra/zebra_datepicker.js' %}"></script>
     <script src="{% static 'tinymce/tinymce.min.js' %}"></script>
+    {% if 'IS' in request.path %}
     <script src="{% static 'li.js' %}"></script>
+    {% elif 'WS' in request.path %}
+    <script src="{% static 'lk.js' %}"></script>
+    {% endif %}
 {% endblock %}
 
 {% block kontainer %}
@@ -32,12 +36,17 @@ Rekam Data LI | Aplikasi PERK
         </div>
 
         <div class="content">
+            {% if 'IS' in request.path %}
             <div class="header">Rekam Lembar Instruksi</div>
+            {% elif 'WS' in request.path %}
+            <div class="header">Rekam Lembar Kerja</div>
+            {% endif %}
 
             <div class="description">
                 <form class="ui form" method="post">
                     {% csrf_token %}
                     <div class="two fields">
+                        {% if 'IS' in request.path %}
                         <div class="field {% if formulir.penerima.errors %}error{% endif %}">
                             {% if formulir.penerima.errors %}
                                 <div class="ui error visible message">
@@ -50,6 +59,20 @@ Rekam Data LI | Aplikasi PERK
                             {{ formulir.penerima.label_tag }}
                             {{ formulir.penerima }}
                         </div>
+                        {% elif 'WS' in request.path %}
+                        <div class="field {% if formulir.pemberi.errors %}error{% endif %}">
+                            {% if formulir.pemberi.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in formulir.pemberi.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ formulir.pemberi.label_tag }}
+                            {{ formulir.pemberi }}
+                        </div>
+                        {% endif %}
 
                         <div class="field {% if formulir.tanggal.errors %}error{% endif %}">
                             {% if formulir.tanggal.errors %}
@@ -85,8 +108,14 @@ Rekam Data LI | Aplikasi PERK
                                 <i class="arrow circle outline up icon"></i>
                             </a>
                             <span id="format" data-value="{{ format.formasi }}"></span>
+                            {% if 'IS' in request.path %}
                             <span id="kode_peran_pemberi" data-value="{{ peran|ambil_peran_tertentu:'short'|cut:' ' }}"></span>
                             <span id="kode_peran_penerima" data-value=""></span>
+                            {% elif 'WS' in request.path %}
+                            <span id="kode_peran_penerima" data-value="{{ peran|ambil_peran_tertentu:'short'|cut:' ' }}"></span>
+                            <span id="kode_peran_pemberi" data-value=""></span>
+                            {% endif %}
+
                             <span id="kegiatan" data-value="{{ kegiatan.pk }}"></span>
                             <span id="kode_kegiatan" data-value="{{ kegiatan.kode }}"></span>
                             <span id="bulan" data-value=""></span>
