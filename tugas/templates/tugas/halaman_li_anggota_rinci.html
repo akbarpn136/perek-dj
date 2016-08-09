@@ -80,6 +80,7 @@
                     <i class="pencil icon"></i>
                 </a>
 
+                {% if lmbr.pemberi.username != request.user.username %}
                 <div href="" class="ui icon top right pointing dropdown primary tiny button">
                     <i class="plus icon"></i>
                     <div class="menu">
@@ -91,6 +92,7 @@
                         </a>
                     </div>
                 </div>
+                {% endif %}
                 {% endblock %}
             </div>
         </div>
