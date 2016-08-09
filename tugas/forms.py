@@ -20,6 +20,22 @@ class FormLI(ModelForm):
         }
 
 
+class FormLK(ModelForm):
+    class Meta:
+        model = LembarKerja
+        exclude = ['nama', 'kegiatan', 'penerima', 'angka', 'kesepakatan']
+        widgets = {
+            'pemberi': Select(
+                attrs={'class': 'ui fluid search dropdown', 'id': 'select_orang'}),
+            'tanggal': TextInput(attrs={'placeholder': 'Tanggal pelaksanaan', 'class': 'tanggal'}),
+            'butir': TextInput(attrs={'placeholder': 'Nomor butir', 'id': 'butir', 'readonly': 'readonly'}),
+            'index': TextInput(attrs={'placeholder': 'Nomor urutan'}),
+            'nomor': Textarea(attrs={'rows': '0', 'id': 'nomor'}),
+            'referensi': Textarea(attrs={'rows': '0', 'id': 'referensi'}),
+            'isi': Textarea(attrs={'rows': '18', 'id': 'isi'}),
+        }
+
+
 class FormKesepakatan(ModelForm):
     class Meta:
         model = LembarInstruksi
