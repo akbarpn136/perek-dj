@@ -569,6 +569,96 @@ def hapus_li(request, pk):
 
 
 @login_required
+def kesepakatan_li(request, slug, keg, li):
+    if slug is None:
+        pass
+
+    try:
+        data_li = get_object_or_404(LembarInstruksi, kegiatan=keg, pk=li)
+    except Http404:
+        messages.warning(request, 'Lemabr instruksi tidak ditemukan!')
+        data_li = LembarInstruksi()
+
+    if request.method == 'POST':
+        form = FormKesepakatan(request.POST, instance=data_li)
+
+        if form.is_valid():
+            messages.success(request, 'Anda setuju ' + data_li.nomor + ' untuk dihapus suatu waktu')
+            data_li.save()
+    else:
+        form = FormKesepakatan(instance=data_li)
+
+    data = {
+        'pk': keg,
+        'li': data_li,
+        'peran': [request.user, keg],
+        'formulir': form,
+    }
+
+    return render(request, 'tugas/halaman_li_anggota_kesepakatan.html', data)
+
+
+@login_required
+def lihat_lk(request, slug, pk, keg, li):
+    if slug is None:
+        pass
+
+    try:
+        data_lk = get_object_or_404(LembarKerja, pk=pk)
+    except Http404:
+        messages.warning(request, 'Lembar kerja tidak ditemukan!')
+        return redirect('halaman_tugas_anggota', pk=keg)
+
+    data = {
+        'lmbr': data_lk,
+        'pk': keg,
+        'li': li,
+        'is_exist': False,
+    }
+
+    if request.user.username == data_lk.pemberi.username or request.user.username == data_lk.penerima.username:
+        return render(request, 'tugas/halaman_lk_anggota_rinci.html', data)
+    else:
+        messages.warning(request, 'Hanya pemberi dan penerima tugas saja yang memiliki hak akses!')
+        return redirect('halaman_tugas_anggota', pk=keg)
+
+
+@login_required
+def lihat_lk_rinci(request, slug, pk, keg):
+    if slug is None:
+        pass
+
+    try:
+        data_li = get_object_or_404(LembarKerja, pk=pk)
+    except Http404:
+        messages.warning(request, 'Lembar kerja tidak ditemukan!')
+        return redirect('halaman_tugas_anggota', pk=keg)
+
+    try:
+        data_keg = get_object_or_404(Kegiatan, pk=keg)
+    except Http404:
+        messages.warning(request, 'Kegiatan/Program tidak ditemukan!')
+        return redirect('halaman_tugas_anggota', pk=keg)
+
+    data = {
+        'lmbr': data_li,
+        'pk': keg,
+        'kegiatan': data_keg,
+        'peran': [data_li.penerima.pk, data_keg.pk],
+        'peran_pemeriksa': [data_li.pemberi.pk, data_keg.pk],
+    }
+
+    if data_li.penerima.username == request.user.username or request.user.is_superuser or \
+            data_li.pemberi.username == request.user.username:
+        return render(request, 'tugas/halaman_cetak_lk_lembaran.html', data)
+    else:
+        messages.warning(request, 'Hanya pemilik yang mendapatkan hak akses!')
+        # return redirect('/tugas/%s-%s-%s/rincian/' % (slugify(data_li.nomor, allow_unicode=True), pk, keg))
+        return redirect('halaman_lk_anggota_rinci', slug=slugify(data_li.nomor, allow_unicode=True), pk=pk, keg=keg,
+                        li=data_li.pk)
+
+
+@login_required
 def tambah_lk(request, slug, keg, kode, li):
     if slug is None:
         pass
@@ -678,93 +768,3 @@ def tambah_lk(request, slug, keg, kode, li):
     else:
         messages.warning(request, 'Hanya dapat dilakukan oleh Leader atau Engineering Staff')
         return redirect('halaman_tugas_anggota', pk=keg)
-
-
-@login_required
-def kesepakatan_li(request, slug, keg, li):
-    if slug is None:
-        pass
-
-    try:
-        data_li = get_object_or_404(LembarInstruksi, kegiatan=keg, pk=li)
-    except Http404:
-        messages.warning(request, 'Lemabr instruksi tidak ditemukan!')
-        data_li = LembarInstruksi()
-
-    if request.method == 'POST':
-        form = FormKesepakatan(request.POST, instance=data_li)
-
-        if form.is_valid():
-            messages.success(request, 'Anda setuju ' + data_li.nomor + ' untuk dihapus suatu waktu')
-            data_li.save()
-    else:
-        form = FormKesepakatan(instance=data_li)
-
-    data = {
-        'pk': keg,
-        'li': data_li,
-        'peran': [request.user, keg],
-        'formulir': form,
-    }
-
-    return render(request, 'tugas/halaman_li_anggota_kesepakatan.html', data)
-
-
-@login_required
-def lihat_lk(request, slug, pk, keg, li):
-    if slug is None:
-        pass
-
-    try:
-        data_lk = get_object_or_404(LembarKerja, pk=pk)
-    except Http404:
-        messages.warning(request, 'Lembar kerja tidak ditemukan!')
-        return redirect('halaman_tugas_anggota', pk=keg)
-
-    data = {
-        'lmbr': data_lk,
-        'pk': keg,
-        'li': li,
-        'is_exist': False,
-    }
-
-    if request.user.username == data_lk.pemberi.username or request.user.username == data_lk.penerima.username:
-        return render(request, 'tugas/halaman_lk_anggota_rinci.html', data)
-    else:
-        messages.warning(request, 'Hanya pemberi dan penerima tugas saja yang memiliki hak akses!')
-        return redirect('halaman_tugas_anggota', pk=keg)
-
-
-@login_required
-def lihat_lk_rinci(request, slug, pk, keg):
-    if slug is None:
-        pass
-
-    try:
-        data_li = get_object_or_404(LembarKerja, pk=pk)
-    except Http404:
-        messages.warning(request, 'Lembar kerja tidak ditemukan!')
-        return redirect('halaman_tugas_anggota', pk=keg)
-
-    try:
-        data_keg = get_object_or_404(Kegiatan, pk=keg)
-    except Http404:
-        messages.warning(request, 'Kegiatan/Program tidak ditemukan!')
-        return redirect('halaman_tugas_anggota', pk=keg)
-
-    data = {
-        'lmbr': data_li,
-        'pk': keg,
-        'kegiatan': data_keg,
-        'peran': [data_li.penerima.pk, data_keg.pk],
-        'peran_pemeriksa': [data_li.pemberi.pk, data_keg.pk],
-    }
-
-    if data_li.penerima.username == request.user.username or request.user.is_superuser or \
-            data_li.pemberi.username == request.user.username:
-        return render(request, 'tugas/halaman_cetak_lk_lembaran.html', data)
-    else:
-        messages.warning(request, 'Hanya pemilik yang mendapatkan hak akses!')
-        # return redirect('/tugas/%s-%s-%s/rincian/' % (slugify(data_li.nomor, allow_unicode=True), pk, keg))
-        return redirect('halaman_lk_anggota_rinci', slug=slugify(data_li.nomor, allow_unicode=True), pk=pk, keg=keg,
-                        li=data_li.pk)
