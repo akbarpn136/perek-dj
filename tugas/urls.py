@@ -23,6 +23,11 @@ urlpatterns = [
         name='halaman_kesepakatan_li_anggota'),
     url(r'^hapus-(?P<pk>[0-9]+)/li/$', views.hapus_li, name='halaman_hapus_li_anggota'),
 
+    url(r'^(?P<slug>[\w-]+)-(?P<keg>[0-9]+)/tambah.(?P<kode>[\w]+)@tugas=rincian-(?P<li>[0-9]+)/$', views.tambah_lk,
+        name='halaman_tambah_lk_anggota'),
+    url(r'^(?P<slug>[\w-]+)-(?P<keg>[0-9]+)/(?P<li>[\w]+).ubah.(?P<kode>[\w]+)/$', views.ubah_li,
+        name='halaman_ubah_lk_anggota'),
+
     url(r'^(?P<usr>[\w.]+)/anggota/$', views.bantu_gravatar, name='json_bantu_gravatar'),
     url(r'^(?P<cond>[\w.()]+)/butir/(?P<keg>[0-9]+)/$', views.bantu_butir_perekayasa,
         name='json_bantu_butir_perekayasa'),
