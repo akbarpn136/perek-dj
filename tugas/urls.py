@@ -25,6 +25,8 @@ urlpatterns = [
 
     url(r'^(?P<slug>[\w-]+)-(?P<keg>[0-9]+)/tambah.(?P<kode>[\w]+)@tugas=rincian-(?P<li>[0-9]+)/$', views.tambah_lk,
         name='halaman_tambah_lk_anggota'),
+    url(r'^(?P<slug>[\w-]+)-(?P<keg>[0-9]+)/ubah.(?P<kode>[\w]+)-(?P<lk>[0-9]+)@tugas=rincian-(?P<li>[0-9]+)/$',
+        views.ubah_lk, name='halaman_ubah_lk_anggota'),
     url(r'^(?P<slug>[\w-]+)-(?P<keg>[0-9]+)/(?P<li>[\w]+).ubah.(?P<kode>[\w]+)/$', views.ubah_li,
         name='halaman_ubah_lk_anggota'),
 
