@@ -274,15 +274,15 @@ Rekam Data LI | Aplikasi PERK
                             <i class="trash icon"></i>
                         </a>
                         {% else %}
-                        <a id="tbl_hapus" href="" class="ui icon tiny red button" title=" hapus " data-value="">
+                        <a id="tbl_hapus" href="" class="ui icon tiny red button" title=" hapus " data-value="{% url 'halaman_hapus_lk_anggota' pk=lk %}">
                             <i class="trash icon"></i>
                         </a>
-                        {% endif %}
+                    {% endif %}
                     <div id="modal_hapus_li" class="ui small modal">
                         <div class="header">Anda Yakin?</div>
                         <div class="content">
                             <p>
-                                Apakah Anda yakin untuk menghapus Lembar instruksi ini?
+                                Apakah Anda yakin untuk menghapus <span id="lmbr">Lembar instruksi</span> ini?
                             </p>
                         </div>
 
@@ -302,7 +302,11 @@ Rekam Data LI | Aplikasi PERK
                     {% endif %}
                 </form>
             </div>
+            {% if 'IS' in request.path %}
             <span id="tbl_kembali" data-value="{% url 'halaman_tugas_anggota' pk=pk %}"></span>
+            {% elif 'WS' in request.path %}
+            <span id="tbl_kembali" data-value="{% url 'halaman_li_anggota_rinci' slug=li_tertentu.nomor|slugify pk=li_tertentu.pk keg=pk %}"></span>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
