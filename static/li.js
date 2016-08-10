@@ -144,6 +144,8 @@ $(document).ready(function(){
                     html += '</a>';
 
                     $("form").empty().prepend(dt).prepend(html);
+                    var selector = $("div#latar-samping");
+                    selector.css('min-height', '102%');
                 });
             },
             onShow : function(){
