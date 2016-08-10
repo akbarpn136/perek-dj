@@ -56,7 +56,7 @@ Rekam Data LI | Aplikasi PERK
             {% endif %}
 
             <div class="description">
-                <form class="ui form" method="post">
+                <form class="ui form" method="post" novalidate>
                     {% csrf_token %}
                     <div class="two fields">
                         {% if 'IS' in request.path %}
