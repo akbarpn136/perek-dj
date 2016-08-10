@@ -66,7 +66,6 @@ $(document).ready(function(){
 
             $.get('/tugas/'+butir+'/butir/'+keg+'/', function(nilai){
                 $("input#angka_hid").val(nilai['angka']);
-                console.log(nilai);
                 if(nilai['jenjang'] == '')
                 {
                     info.text('Hasil: Data profil jenjang masih kosong, Harap diisi terlebih dahulu.');
