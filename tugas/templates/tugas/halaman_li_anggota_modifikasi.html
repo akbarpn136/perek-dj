@@ -31,7 +31,7 @@ Rekam Data LI | Aplikasi PERK
 
 {% block script %}
     <script src="{% static 'zebra/zebra_datepicker.js' %}"></script>
-    <script src="{% static 'tinymce/tinymce.min.js' %}"></script>
+    <script src="http://cdn.tinymce.com/4/tinymce.min.js"></script>
     {% if 'IS' in request.path %}
     <script src="{% static 'li.js' %}"></script>
     {% elif 'WS' in request.path %}
@@ -305,7 +305,7 @@ Rekam Data LI | Aplikasi PERK
             {% if 'IS' in request.path %}
             <span id="tbl_kembali" data-value="{% url 'halaman_tugas_anggota' pk=pk %}"></span>
             {% elif 'WS' in request.path %}
-            <span id="tbl_kembali" data-value="{% url 'halaman_li_anggota_rinci' slug=li_tertentu.nomor|slugify pk=li_tertentu.pk keg=pk %}"></span>
+            <span id="tbl_kembali" data-value="{% url 'halaman_li_anggota_rinci' slug=instruksi.nomor|slugify pk=instruksi.pk keg=pk %}"></span>
             {% endif %}
         </div>
     </div>
