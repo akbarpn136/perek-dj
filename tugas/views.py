@@ -273,7 +273,8 @@ def lihat_li_rinci(request, slug, pk, keg):
         'peran_penerima': [data_li.penerima.pk, data_keg.pk],
     }
 
-    if data_li.pemberi.username == request.user.username or request.user.is_superuser:
+    if data_li.pemberi.username == request.user.username or data_li.penerima.username == request.user.username or \
+            request.user.is_superuser:
         return render(request, 'tugas/halaman_cetak_li_lembaran.html', data)
     else:
         messages.warning(request, 'Hanya pemilik yang mendapatkan hak akses!')
@@ -538,7 +539,7 @@ def ubah_li(request, slug, keg, kode, li):
         return render(request, 'tugas/halaman_li_anggota_modifikasi.html', data)
     else:
         messages.warning(request, 'Hanya dapat dilakukan oleh Group Leader atau Leader')
-        return redirect('halaman_tugas_anggota', pk=keg)
+        return redirect('halaman_li_anggota_rinci', slug=slugify(li.nomor, allow_unicode=True), pk=li.pk, keg=keg)
 
 
 @login_required
@@ -914,3 +915,39 @@ def ubah_lk(request, slug, keg, kode, li, lk):
     else:
         messages.warning(request, 'Hanya dapat dilakukan oleh Leader atau Engineering Staff')
         return redirect('halaman_tugas_anggota', pk=keg)
+
+
+@login_required
+def duplikat_lk(request, slug, keg, kode, li, lk):
+    if slug is None or kode is None:
+        pass
+
+    try:
+        instruksi = get_object_or_404(LembarInstruksi, pk=li)
+    except Http404:
+        messages.warning(request, 'Penugasan tidak ditemukan')
+        return redirect('halaman_tugas_anggota', pk=keg)
+
+    try:
+        kerja = get_object_or_404(LembarKerja, pk=lk)
+    except Http404:
+        messages.warning(request, 'Tugas tidak ditemukan')
+        return redirect('halaman_li_anggota_rinci', slug=slugify(instruksi.nomor, allow_unicode=True), pk=li, keg=keg)
+
+    try:
+        duplikat = get_object_or_404(LembarKerja, pk=lk)
+        duplikat.pk = None
+        if cek_keanggotaan(request.user, keg):
+            if request.user.username == instruksi.penerima.username:
+                duplikat.save()
+                messages.warning(request, 'Lembar kerja berhasil diduplikat')
+                return redirect('halaman_lk_anggota_rinci', slug=slug, pk=kerja.pk, keg=keg, li=li)
+            else:
+                messages.warning(request, 'Hanya penerima tugas yang mendapatkan hak akses!')
+                return redirect('halaman_lk_anggota_rinci', slug=slug, pk=kerja.pk, keg=keg, li=li)
+        else:
+            messages.warning(request, 'Maaf, Anda tidak mendapatkan hak akses!')
+            return redirect('halaman_tugas_anggota', pk=keg)
+    except Http404:
+        messages.warning(request, 'Tugas tidak ditemukan')
+        return redirect('halaman_li_anggota_rinci', slug=slugify(instruksi.nomor, allow_unicode=True), pk=li, keg=keg)
