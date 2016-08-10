@@ -901,6 +901,7 @@ def ubah_lk(request, slug, keg, kode, li, lk):
     data = {
         'pk': keg,
         'li': data_li,
+        'lk': lk,
         'instruksi': instruksi,
         'li_tertentu': instruksi,
         'kegiatan': data_kegiatan,
@@ -951,3 +952,30 @@ def duplikat_lk(request, slug, keg, kode, li, lk):
     except Http404:
         messages.warning(request, 'Tugas tidak ditemukan')
         return redirect('halaman_li_anggota_rinci', slug=slugify(instruksi.nomor, allow_unicode=True), pk=li, keg=keg)
+
+
+@login_required
+def hapus_lk(request, pk):
+    lk_ubah = get_object_or_404(LembarKerja, pk=pk)
+
+    if lk_ubah.penerima == request.user:
+        if lk_ubah.delete():
+            html = '''<div class="ui green message">
+                    <div class="header">
+                        Info
+                    </div>
+                    <p>
+                        Lembar kerja berhasil dihapus.
+                    </p>
+                </div>'''
+            return HttpResponse(html)
+    else:
+        html = '''<div class="ui red message">
+                <div class="header">
+                    Info
+                </div>
+                <p>
+                    Lembar kerja hanya boleh dihapus oleh pemilik!
+                </p>
+            </div>'''
+        return HttpResponse(html)
