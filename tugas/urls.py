@@ -22,6 +22,8 @@ urlpatterns = [
     url(r'^(?P<slug>[\w-]+)-(?P<keg>[0-9]+)/kesepakatan.(?P<li>[0-9]+)/$', views.kesepakatan_li,
         name='halaman_kesepakatan_li_anggota'),
     url(r'^hapus-(?P<pk>[0-9]+)/li/$', views.hapus_li, name='halaman_hapus_li_anggota'),
+    url(r'^(?P<slug>[\w-]+)-(?P<keg>[0-9]+)/duplikat.(?P<kode>[\w]+)@tugas=rincian-(?P<li>[0-9]+)/$',
+        views.duplikat_li, name='halaman_duplikat_li_anggota'),
 
     url(r'^(?P<slug>[\w-]+)-(?P<keg>[0-9]+)/tambah.(?P<kode>[\w]+)@tugas=rincian-(?P<li>[0-9]+)/$', views.tambah_lk,
         name='halaman_tambah_lk_anggota'),
