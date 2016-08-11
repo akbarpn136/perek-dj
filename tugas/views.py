@@ -570,6 +570,36 @@ def hapus_li(request, pk):
 
 
 @login_required
+def duplikat_li(request, slug, keg, kode, li):
+    if slug is None or kode is None:
+        pass
+
+    try:
+        instruksi = get_object_or_404(LembarInstruksi, pk=li)
+    except Http404:
+        messages.warning(request, 'Penugasan tidak ditemukan')
+        return redirect('halaman_tugas_anggota', pk=keg)
+
+    try:
+        instruksi.pk = None
+        if cek_keanggotaan(request.user, keg):
+            if request.user.username == instruksi.pemberi.username:
+                instruksi.save()
+                messages.warning(request, 'Lembar instruksi berhasil diduplikat')
+                return redirect('halaman_li_anggota_rinci', slug=slugify(instruksi.nomor, allow_unicode=True), pk=li,
+                                keg=keg)
+            else:
+                messages.warning(request, 'Hanya pemberi tugas yang mendapatkan hak akses!')
+                return redirect('halaman_tugas_anggota', pk=keg)
+        else:
+            messages.warning(request, 'Maaf, Anda tidak mendapatkan hak akses!')
+            return redirect('halaman_tugas_anggota', pk=keg)
+    except Http404:
+        messages.warning(request, 'Tugas tidak ditemukan')
+        return redirect('halaman_li_anggota_rinci', slug=slugify(instruksi.nomor, allow_unicode=True), pk=li, keg=keg)
+
+
+@login_required
 def kesepakatan_li(request, slug, keg, li):
     if slug is None:
         pass
