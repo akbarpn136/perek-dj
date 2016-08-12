@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'utiliti.apps.UtilitiConfig',
     'tugas.apps.TugasConfig',
     'butir.apps.ButirConfig',
+    'logbook.apps.LogbookConfig',
 ]
 
 MIDDLEWARE_CLASSES = [
