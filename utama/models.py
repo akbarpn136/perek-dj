@@ -40,6 +40,7 @@ class Format(models.Model):
         ('PCM', 'Progress Control and Monitoring'),
         ('IS', 'Instruction Sheet'),
         ('WS', 'Working Sheet'),
+        ('LB', 'Logbook'),
         ('DS', 'Decision Sheet'),
     )
 
