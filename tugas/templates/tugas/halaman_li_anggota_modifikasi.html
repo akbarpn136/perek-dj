@@ -254,6 +254,18 @@ Rekam Data LI | Aplikasi PERK
                         </div>
                     </div>
 
+                    <div class="field {% if formulir.uraian.errors %}error{% endif %}">
+                        {% if formulir.uraian.errors %}
+                            <div class="ui error visible message">
+                                {% for error in formulir.uraian.errors %}
+                                    <div class="header">Ada Kesalahan</div>
+                                    <p>{{ error|escape }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        {{ formulir.uraian.label_tag }}
+                        {{ formulir.uraian }}
+                    </div>
                     <div class="field {% if formulir.isi.errors %}error{% endif %}">
                         {% if formulir.isi.errors %}
                             <div class="ui error visible message">
