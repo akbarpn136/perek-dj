@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 
 from .models import Logbook
-from tugas.models import LembarInstruksi, LembarKerja, Kegiatan
+from tugas.models import LembarInstruksi, Kegiatan
 from utama.models import Format, Personil
 from butir.models import ButirPerekayasa
 from utiliti.models import Profil
