@@ -51,6 +51,19 @@
                 {% empty %}
                     <div class="item">Laporan pendukung masih kosong.</div>
                 {% endfor %}
+
+                {% for ws in logbook %}
+                <div class="item">
+                    <img class="ui avatar image" src="https://www.gravatar.com/avatar/{{ ws.penerima.email|hash_email }}?d=retro&f=y">
+
+                    <div class="content">
+                        <a href="{% url 'halaman_lk_anggota_rinci' slug=ws.nomor|slugify pk=ws.pk keg=pk li=lmbr.pk %}" class="header">{{ ws.nomor }}</a>
+                        <div class="description">
+                            {{ ws.butir }}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
         </div>
         {% endif %}
@@ -93,7 +106,7 @@
                         <a href="{% url 'halaman_tambah_lk_anggota' slug=lmbr.nomor|slugify keg=pk kode='WS' li=lmbr.pk %}" class="item">
                             Lembar Kerja
                         </a>
-                        <a class="item">
+                        <a href="{% url 'halaman_tambah_lb_anggota' slug=lmbr.nomor|slugify keg=pk kode='LB' li=lmbr.pk %}" class="item">
                             Logbook
                         </a>
                     </div>
