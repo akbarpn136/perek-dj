@@ -13,8 +13,6 @@ class FormLB(ModelForm):
                 attrs={'class': 'ui fluid search dropdown', 'id': 'select_orang_pemeriksa'}),
             'pemberi': Select(
                 attrs={'class': 'ui fluid search dropdown', 'id': 'select_orang'}),
-            'referensi': Select(
-                attrs={'class': 'ui fluid search dropdown', 'id': 'select_referensi'}),
             'tanggal': TextInput(attrs={'placeholder': 'Tanggal pelaksanaan', 'class': 'tanggal'}),
             'butir': TextInput(attrs={'placeholder': 'Nomor butir', 'id': 'butir', 'readonly': 'readonly'}),
             'index': TextInput(attrs={'placeholder': 'Nomor urutan'}),

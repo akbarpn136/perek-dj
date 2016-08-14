@@ -210,16 +210,6 @@ def tambah_lb(request, slug, keg, kode, li):
                                'username').distinct().exclude(
                                pk=request.user.pk)]
 
-    formulir.fields['referensi'].choices = [('', '-----')] + [(lk.pk, lk.nomor) for lk in
-                                                              LembarKerja.objects.filter(kegiatan=keg,
-                                                                                         butir__in=['II.A.1.a.2).(b)',
-                                                                                                    'II.A.1.a.4).(a)',
-                                                                                                    'II.A.1.a.4).(b)',
-                                                                                                    'II.A.1.a.4).(c)',
-                                                                                                    'II.A.1.a.6).(c)',
-                                                                                                    'II.A.1.a.7).(c)',
-                                                                                                    'II.A.1.a.8).(c)'])]
-
     try:
         peran = request.user.personil_set.values_list('peran', flat=True)[0]
     except IndexError:
