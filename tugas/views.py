@@ -8,8 +8,7 @@ from django.utils.text import slugify
 
 import hashlib
 
-from .models import LembarInstruksi, LembarKerja, Kegiatan
-from logbook.models import Logbook
+from .models import LembarInstruksi, LembarKerja, Kegiatan, Logbook
 from butir.models import ButirPerekayasa
 from utama.models import Format, Personil
 from utiliti.models import Profil
@@ -696,7 +695,7 @@ def lihat_lk_rinci(request, slug, pk, keg):
     }
 
     if data_li.penerima.username == request.user.username or request.user.is_superuser or \
-                    data_li.pemberi.username == request.user.username:
+            data_li.pemberi.username == request.user.username:
         return render(request, 'tugas/halaman_cetak_lk_lembaran.html', data)
     else:
         messages.warning(request, 'Hanya pemilik yang mendapatkan hak akses!')
