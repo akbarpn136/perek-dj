@@ -38,7 +38,7 @@ $(document).ready(function(){
             {
                 this.getDoc().body.style.fontSize = '14px';
                 var selector = $("div#latar-samping");
-                selector.css('min-height', $("div#ui.card").height()+28);
+                selector.css('min-height', $("div#kolom_konten").height()-$("body").height()+$("div.ui.inverted.fixed.menu").height()+60);
             });
         }
     });
@@ -53,6 +53,11 @@ $(document).ready(function(){
                 $("span#kode_peran_pemberi").attr('data-value', prn[0]['peran']+prn[0]['wbs_wp_kode']+'.'+prn[0]['kode']);
             });
         }
+    });
+
+    $("select#select_orang_pemeriksa, select#select_referensi").dropdown({
+        placeholder: true,
+        fullTextSearch: 'exact'
     });
 
     $("select#pilih_butir").dropdown({

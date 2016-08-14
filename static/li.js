@@ -38,7 +38,7 @@ $(document).ready(function(){
             {
                 this.getDoc().body.style.fontSize = '14px';
                 var selector = $("div#latar-samping");
-                selector.css('min-height', $("div#ui.card").height()+28);
+                selector.css('min-height', $("div#kolom_konten").height()-$("body").height()+$("div.ui.inverted.fixed.menu").height());
             });
         }
     });
