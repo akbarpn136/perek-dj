@@ -1,7 +1,7 @@
 from django.forms import ModelForm, TextInput, Textarea, Select
 # from django import forms
 
-from .models import *
+from tugas.models import Logbook
 
 
 class FormLB(ModelForm):

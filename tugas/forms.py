@@ -27,6 +27,8 @@ class FormLK(ModelForm):
         widgets = {
             'pemberi': Select(
                 attrs={'class': 'ui fluid search dropdown', 'id': 'select_orang'}),
+            'lb': Select(
+                attrs={'class': 'ui fluid search dropdown', 'id': 'select_lb'}),
             'tanggal': TextInput(attrs={'placeholder': 'Tanggal pelaksanaan', 'class': 'tanggal'}),
             'butir': TextInput(attrs={'placeholder': 'Nomor butir', 'id': 'butir', 'readonly': 'readonly'}),
             'index': TextInput(attrs={'placeholder': 'Nomor urutan'}),
