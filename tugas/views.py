@@ -9,6 +9,7 @@ from django.utils.text import slugify
 import hashlib
 
 from .models import LembarInstruksi, LembarKerja, Kegiatan
+from logbook.models import Logbook
 from butir.models import ButirPerekayasa
 from utama.models import Format, Personil
 from utiliti.models import Profil
@@ -223,7 +224,8 @@ def lihat_li(request, slug, pk, keg):
     if slug is None:
         pass
 
-    data_lk = LembarKerja.objects.filter(li=pk)
+    data_lk = LembarKerja.objects.filter(li=pk, kegiatan=keg)
+    data_logbook = Logbook.objects.filter(kegiatan=keg)
     data_li_semua = LembarInstruksi.objects.filter(kegiatan=keg)
 
     try:
@@ -236,6 +238,7 @@ def lihat_li(request, slug, pk, keg):
         'kode_tugas': 'IS',
         'instruksi': data_li_semua,
         'kerja': data_lk,
+        'logbook': data_logbook,
         'lmbr': data_li,
         'pk': keg,
         'is_exist': True,
@@ -332,8 +335,9 @@ def tambah_li(request, slug, keg, kode):
         if data_peran.wbs_wp_kode == '0':
             formulir.fields['penerima'].choices = \
                 [('', '-----')] + [(user.pk, '[' +
-                                    user.personil_set.filter(orang=user.pk, peran_utama=True).values_list('peran',
-                                                                                                          flat=True)[
+                                    user.personil_set.filter(orang=user.pk, peran_utama=True,
+                                                             personil_kegiatan=keg).values_list('peran',
+                                                                                                flat=True)[
                                         0] + ']' + ' ' + user.get_full_name()) for user in
                                    User.objects.filter(personil__personil_kegiatan=keg,
                                                        personil__peran__in=['L']).order_by(
@@ -343,8 +347,9 @@ def tambah_li(request, slug, keg, kode):
         else:
             formulir.fields['penerima'].choices = \
                 [('', '-----')] + [(user.pk, '[' +
-                                    user.personil_set.filter(orang=user.pk, peran_utama=True).values_list('peran',
-                                                                                                          flat=True)[
+                                    user.personil_set.filter(orang=user.pk, peran_utama=True,
+                                                             personil_kegiatan=keg).values_list('peran',
+                                                                                                flat=True)[
                                         0] + ']' + ' ' + user.get_full_name()) for user in
                                    User.objects.filter(personil__personil_kegiatan=keg,
                                                        personil__peran__in=['L'],
@@ -355,8 +360,9 @@ def tambah_li(request, slug, keg, kode):
     elif data_peran.peran == 'L':
         formulir.fields['penerima'].choices = \
             [('', '-----')] + [(user.pk, '[' +
-                                user.personil_set.filter(orang=user.pk, peran_utama=True).values_list('peran',
-                                                                                                      flat=True)[
+                                user.personil_set.filter(orang=user.pk, peran_utama=True,
+                                                         personil_kegiatan=keg).values_list('peran',
+                                                                                            flat=True)[
                                     0] + ']' + ' ' + user.get_full_name()) for user in
                                User.objects.filter(personil__personil_kegiatan=keg,
                                                    personil__peran__in=['ES'],
@@ -466,8 +472,9 @@ def ubah_li(request, slug, keg, kode, li):
         if data_peran.wbs_wp_kode == '0':
             formulir.fields['penerima'].choices = \
                 [('', '-----')] + [(user.pk, '[' +
-                                    user.personil_set.filter(orang=user.pk, peran_utama=True).values_list('peran',
-                                                                                                          flat=True)[
+                                    user.personil_set.filter(orang=user.pk, peran_utama=True,
+                                                             personil_kegiatan=keg).values_list('peran',
+                                                                                                flat=True)[
                                         0] + ']' + ' ' + user.get_full_name()) for user in
                                    User.objects.filter(personil__personil_kegiatan=keg,
                                                        personil__peran__in=['L']).order_by(
@@ -477,8 +484,9 @@ def ubah_li(request, slug, keg, kode, li):
         else:
             formulir.fields['penerima'].choices = \
                 [('', '-----')] + [(user.pk, '[' +
-                                    user.personil_set.filter(orang=user.pk, peran_utama=True).values_list('peran',
-                                                                                                          flat=True)[
+                                    user.personil_set.filter(orang=user.pk, peran_utama=True,
+                                                             personil_kegiatan=keg).values_list('peran',
+                                                                                                flat=True)[
                                         0] + ']' + ' ' + user.get_full_name()) for user in
                                    User.objects.filter(personil__personil_kegiatan=keg,
                                                        personil__peran__in=['L'],
@@ -489,8 +497,9 @@ def ubah_li(request, slug, keg, kode, li):
     elif data_peran.peran == 'L':
         formulir.fields['penerima'].choices = \
             [('', '-----')] + [(user.pk, '[' +
-                                user.personil_set.filter(orang=user.pk, peran_utama=True).values_list('peran',
-                                                                                                      flat=True)[
+                                user.personil_set.filter(orang=user.pk, peran_utama=True,
+                                                         personil_kegiatan=keg).values_list('peran',
+                                                                                            flat=True)[
                                     0] + ']' + ' ' + user.get_full_name()) for user in
                                User.objects.filter(personil__personil_kegiatan=keg,
                                                    personil__peran__in=['ES'],
@@ -687,7 +696,7 @@ def lihat_lk_rinci(request, slug, pk, keg):
     }
 
     if data_li.penerima.username == request.user.username or request.user.is_superuser or \
-            data_li.pemberi.username == request.user.username:
+                    data_li.pemberi.username == request.user.username:
         return render(request, 'tugas/halaman_cetak_lk_lembaran.html', data)
     else:
         messages.warning(request, 'Hanya pemilik yang mendapatkan hak akses!')
@@ -754,8 +763,9 @@ def tambah_lk(request, slug, keg, kode, li):
     if data_peran.peran == 'L':
         formulir.fields['pemberi'].choices = \
             [('', '-----')] + [(user.pk, '[' +
-                                user.personil_set.filter(orang=user.pk, peran_utama=True).values_list('peran',
-                                                                                                      flat=True)[
+                                user.personil_set.filter(orang=user.pk, peran_utama=True,
+                                                         personil_kegiatan=keg).values_list('peran',
+                                                                                            flat=True)[
                                     0] + ']' + ' ' + user.get_full_name()) for user in
                                User.objects.filter(personil__personil_kegiatan=keg,
                                                    personil__peran__in=['GL']).order_by(
@@ -764,8 +774,9 @@ def tambah_lk(request, slug, keg, kode, li):
     else:
         formulir.fields['pemberi'].choices = \
             [('', '-----')] + [(user.pk, '[' +
-                                user.personil_set.filter(orang=user.pk, peran_utama=True).values_list('peran',
-                                                                                                      flat=True)[
+                                user.personil_set.filter(orang=user.pk, peran_utama=True,
+                                                         personil_kegiatan=keg).values_list('peran',
+                                                                                            flat=True)[
                                     0] + ']' + ' ' + user.get_full_name()) for user in
                                User.objects.filter(personil__personil_kegiatan=keg,
                                                    personil__peran__in=['L'],
@@ -882,8 +893,9 @@ def ubah_lk(request, slug, keg, kode, li, lk):
     if data_peran.peran == 'L':
         formulir.fields['pemberi'].choices = \
             [('', '-----')] + [(user.pk, '[' +
-                                user.personil_set.filter(orang=user.pk, peran_utama=True).values_list('peran',
-                                                                                                      flat=True)[
+                                user.personil_set.filter(orang=user.pk, peran_utama=True,
+                                                         personil_kegiatan=keg).values_list('peran',
+                                                                                            flat=True)[
                                     0] + ']' + ' ' + user.get_full_name()) for user in
                                User.objects.filter(personil__personil_kegiatan=keg,
                                                    personil__peran__in=['GL']).order_by(
@@ -892,8 +904,9 @@ def ubah_lk(request, slug, keg, kode, li, lk):
     else:
         formulir.fields['pemberi'].choices = \
             [('', '-----')] + [(user.pk, '[' +
-                                user.personil_set.filter(orang=user.pk, peran_utama=True).values_list('peran',
-                                                                                                      flat=True)[
+                                user.personil_set.filter(orang=user.pk, peran_utama=True,
+                                                         personil_kegiatan=keg).values_list('peran',
+                                                                                            flat=True)[
                                     0] + ']' + ' ' + user.get_full_name()) for user in
                                User.objects.filter(personil__personil_kegiatan=keg,
                                                    personil__peran__in=['L'],
