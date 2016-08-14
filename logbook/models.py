@@ -14,7 +14,6 @@ class Logbook(models.Model):
     uraian = models.TextField(verbose_name='Uraian Singkat', blank=True)
     isi = models.TextField(verbose_name='Isi')
     kegiatan = models.ForeignKey(Kegiatan, verbose_name='Kegiatan', on_delete=models.CASCADE)
-    referensi = models.ForeignKey(LembarKerja, verbose_name='Referensi', null=True, on_delete=models.CASCADE)
     li = models.ForeignKey(LembarInstruksi, verbose_name='Lembar Instruksi', on_delete=models.CASCADE, default=1)
     pemberi = models.ForeignKey('auth.User', related_name='pemberi_tugas_lb', verbose_name='Pemberi Tugas',
                                 on_delete=models.SET_NULL, null=True)
