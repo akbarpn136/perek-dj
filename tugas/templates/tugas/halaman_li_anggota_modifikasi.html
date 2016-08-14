@@ -6,21 +6,21 @@
 {% load li_terkait %}
 
 {% block title %}
-Rekam Data LI | Aplikasi PERK
+{% if 'IS' in request.path %}Rekam Data LI{% elif 'WS' in request.path %}Rekam Data LK{% elif 'LB' in request.path %}Rekam Data LB{% endif %} | Aplikasi PERK
 {% endblock %}
 
 
 {% block ruas_tiga %}
     {% if 'IS' in request.path %}
     <div class="active section">Rekam tugas</div>
-    {% elif 'WS' in request.path %}
+    {% elif 'WS' in request.path or 'LB' in request.path %}
     <a href="{% url 'halaman_li_anggota_rinci' slug=instruksi.nomor|slugify pk=instruksi.pk keg=pk %}" class="section">{{ instruksi.pk|ambil_li_tertentu }}</a>
     <i class="right chevron icon divider"></i>
     {% endif %}
 {% endblock %}
 
 {% block ruas_empat %}
-    {% if 'WS' in request.path %}
+    {% if 'WS' in request.path or 'LB' in request.path %}
     <div class="active section">Rekam tugas</div>
     {% endif %}
 {% endblock %}
@@ -34,7 +34,7 @@ Rekam Data LI | Aplikasi PERK
     <script src="http://cdn.tinymce.com/4/tinymce.min.js"></script>
     {% if 'IS' in request.path %}
     <script src="{% static 'li.js' %}"></script>
-    {% elif 'WS' in request.path %}
+    {% elif 'WS' in request.path or 'LB' in request.path %}
     <script src="{% static 'lk.js' %}"></script>
     {% endif %}
 {% endblock %}
@@ -53,12 +53,14 @@ Rekam Data LI | Aplikasi PERK
             <div class="header">Rekam Lembar Instruksi</div>
             {% elif 'WS' in request.path %}
             <div class="header">Rekam Lembar Kerja</div>
+            {% elif 'LB' in request.path %}
+            <div class="header">Rekam Logbook</div>
             {% endif %}
 
             <div class="description">
                 <form class="ui form" method="post" novalidate>
                     {% csrf_token %}
-                    <div class="two fields">
+                    <div class="{% if 'LB' in request.path %}three{% else %}two{% endif %} fields">
                         {% if 'IS' in request.path %}
                         <div class="field {% if formulir.penerima.errors %}error{% endif %}">
                             {% if formulir.penerima.errors %}
@@ -84,6 +86,32 @@ Rekam Data LI | Aplikasi PERK
                             {% endif %}
                             {{ formulir.pemberi.label_tag }}
                             {{ formulir.pemberi }}
+                        </div>
+                        {% elif 'LB' in request.path %}
+                        <div class="field {% if formulir.pemberi.errors %}error{% endif %}">
+                            {% if formulir.pemberi.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in formulir.pemberi.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ formulir.pemberi.label_tag }}
+                            {{ formulir.pemberi }}
+                        </div>
+
+                        <div class="field {% if formulir.pemeriksa.errors %}error{% endif %}">
+                            {% if formulir.pemeriksa.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in formulir.pemeriksa.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ formulir.pemeriksa.label_tag }}
+                            {{ formulir.pemeriksa }}
                         </div>
                         {% endif %}
 
@@ -124,7 +152,7 @@ Rekam Data LI | Aplikasi PERK
                             {% if 'IS' in request.path %}
                             <span id="kode_peran_pemberi" data-value="{{ peran|ambil_peran_tertentu:'short'|cut:' ' }}"></span>
                             <span id="kode_peran_penerima" data-value=""></span>
-                            {% elif 'WS' in request.path %}
+                            {% elif 'WS' in request.path or 'LB' in request.path %}
                             <span id="kode_peran_penerima" data-value="{{ peran|ambil_peran_tertentu:'short'|cut:' ' }}"></span>
                             <span id="kode_peran_pemberi" data-value=""></span>
                             {% endif %}
@@ -147,6 +175,7 @@ Rekam Data LI | Aplikasi PERK
                             {{ formulir.referensi.label_tag }}
                             {{ formulir.referensi }}
                             <div class="gap"></div>
+                            {% if 'LB' not in request.path %}
                             <a id="tbl_ref" class="ui icon button" title=" Pilih referensi ">
                                 <i class="arrow circle outline up icon"></i>
                             </a>
@@ -181,6 +210,7 @@ Rekam Data LI | Aplikasi PERK
                                     <div class="ui deny button">Oke</div>
                                 </div>
                             </div>
+                            {% endif %}
                         </div>
                     </div>
 
