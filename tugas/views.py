@@ -783,6 +783,9 @@ def tambah_lk(request, slug, keg, kode, li):
                                    'username').distinct().exclude(
                                    pk=request.user.pk)]
 
+    formulir.fields['lb'].choices = [('', '-----')] + [(lb.pk, lb.nomor) for lb in
+                                                       Logbook.objects.filter(kegiatan=keg, li=li)]
+
     try:
         peran = request.user.personil_set.values_list('peran', flat=True)[0]
     except IndexError:
@@ -912,6 +915,9 @@ def ubah_lk(request, slug, keg, kode, li, lk):
                                                    personil__wbs_wp_kode=data_peran.wbs_wp_kode).order_by(
                                    'username').distinct().exclude(
                                    pk=request.user.pk)]
+
+    formulir.fields['lb'].choices = [('', '-----')] + [(lb.pk, lb.nomor) for lb in
+                                                       Logbook.objects.filter(kegiatan=keg, li=li)]
 
     try:
         peran = request.user.personil_set.values_list('peran', flat=True)[0]
