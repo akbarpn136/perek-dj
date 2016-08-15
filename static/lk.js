@@ -4,6 +4,7 @@
 
 $(document).ready(function(){
     $("div#label_info").hide();
+    $("div#kolom_lb").hide();
 
     $("input.tanggal").Zebra_DatePicker({
         show_icon: false,
@@ -65,7 +66,19 @@ $(document).ready(function(){
         fullTextSearch: 'exact',
         onChange: function(butir){
             var info = $("div#label_info");
+            var kolom = $("div#kolom_lb");
             var keg = $("span#kegiatan").attr('data-value');
+            var col = ['II.A.1.a.2).(b)', 'II.A.1.a.4).(a)', 'II.A.1.a.4).(b)', 'II.A.1.a.4).(c)', 'II.A.1.a.6).(c)', 'II.A.1.a.7).(c)', 'II.A.1.a.8).(c)'];
+
+            if(col.indexOf(butir) == -1)
+            {
+                kolom.hide();
+            }
+
+            else
+            {
+                kolom.show();
+            }
 
             $("input#butir").val(butir);
 
