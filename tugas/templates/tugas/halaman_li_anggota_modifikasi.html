@@ -216,7 +216,7 @@
 
                     <div class="gap"></div>
                     <div class="gap"></div>
-                    <div class="two fields">
+                    <div class="{% if 'WS' in request.path %}three{% else %}two{% endif %} fields">
                         <div class="field {% if formulir.butir.errors %}error{% endif %}">
                             {% if formulir.butir.errors %}
                                 <div class="ui error visible message">
@@ -282,6 +282,43 @@
                             {{ formulir.index.label_tag }}
                             {{ formulir.index }}
                         </div>
+
+                        {% if 'WS' in request.path %}
+                        <div id="kolom_lb" class="field {% if formulir.lb.errors %}error{% endif %}">
+                            {% if formulir.lb.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in formulir.lb.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ formulir.lb.label_tag }}
+                            <div class="ui action input">
+                                {{ formulir.lb }}
+                                <a href="{% url 'halaman_tambah_lb_anggota' slug=instruksi|slugify keg=kegiatan.pk kode='LB' li=instruksi.pk %}" class="ui icon teal button"><i class="plus icon"></i></a>
+                            </div>
+                        </div>
+                        {% if 'ubah' in request.path %}
+                        <script>
+                        $(document).ready(function(){
+                            var kolom = $("div#kolom_lb");
+                            var butir = $("input#butir").val();
+                            var col = ['II.A.1.a.2).(b)', 'II.A.1.a.4).(a)', 'II.A.1.a.4).(b)', 'II.A.1.a.4).(c)', 'II.A.1.a.6).(c)', 'II.A.1.a.7).(c)', 'II.A.1.a.8).(c)'];
+
+                            if(col.indexOf(butir) == -1)
+                            {
+                                kolom.hide();
+                            }
+
+                            else
+                            {
+                                kolom.show();
+                            }
+                        });
+                        </script>
+                        {% endif %}
+                        {% endif %}
                     </div>
 
                     <div class="field {% if formulir.uraian.errors %}error{% endif %}">
