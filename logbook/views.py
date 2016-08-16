@@ -124,6 +124,14 @@ def bantu_butir_perekayasa(request, cond, keg, json=None):
         return faktor * data_butir.angka
 
 
+def bantu_pilih_lb(request, cond):
+    data_raw = {
+        'lb': [(lb.pk, lb.nomor) for lb in Logbook.objects.filter(butir=cond)]
+    }
+
+    return JsonResponse(data_raw, safe=False)
+
+
 def cek_keanggotaan(user, pk_kegiatan):
     anggota_kegiatan = User.objects.filter(personil__personil_kegiatan=pk_kegiatan)
     return user.pk in anggota_kegiatan.values_list('pk', flat=True)
