@@ -21,6 +21,7 @@ $(document).ready(function(){
         }
     });
 
+    //noinspection JSUnresolvedVariable
     tinymce.init({
         selector: 'textarea#isi',
         theme: 'modern',
@@ -78,6 +79,14 @@ $(document).ready(function(){
             else
             {
                 kolom.show();
+                $.get("/logbook/"+butir+'/butir/', function(koleksi){
+                    var select_lb = $("select#select_lb");
+                    select_lb.empty();
+
+                    $.each(koleksi['lb'], function(k, v){
+                        select_lb.append('<option value="'+v[0]+'">' + v[1] + '</option>');
+                    });
+                });
             }
 
             $("input#butir").val(butir);
