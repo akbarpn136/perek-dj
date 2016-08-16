@@ -12,4 +12,6 @@ urlpatterns = [
     # url(r'^(?P<slug>[\w-]+)-(?P<keg>[0-9]+)/ubah.(?P<kode>[\w]+)-(?P<lk>[0-9]+)@tugas=rincian-(?P<li>[0-9]+)/$', views.ubah_lk, name='halaman_ubah_lk_anggota'),
     # url(r'^(?P<slug>[\w-]+)-(?P<keg>[0-9]+)/duplikat.(?P<kode>[\w]+)-(?P<lk>[0-9]+)@tugas=rincian-(?P<li>[0-9]+)/$', views.duplikat_lk, name='halaman_duplikat_lk_anggota'),
     # url(r'^hapus-(?P<pk>[0-9]+)/lk/$', views.hapus_lk, name='halaman_hapus_lk_anggota'),
+
+    url(r'^(?P<cond>[\w.()]+)/butir/$', views.bantu_pilih_lb, name='halaman_bantu_pilih_lb'),
 ]
