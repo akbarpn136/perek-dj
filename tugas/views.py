@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import JsonResponse
 from django.utils.text import slugify
+from django.views.decorators.cache import cache_control
 
 import hashlib
 
@@ -285,6 +286,7 @@ def lihat_li_rinci(request, slug, pk, keg):
 
 
 @login_required
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def tambah_li(request, slug, keg, kode):
     if slug is None:
         pass
@@ -413,6 +415,7 @@ def tambah_li(request, slug, keg, kode):
 
 
 @login_required
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def ubah_li(request, slug, keg, kode, li):
     if slug is None:
         pass
@@ -705,6 +708,7 @@ def lihat_lk_rinci(request, slug, pk, keg):
 
 
 @login_required
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def tambah_lk(request, slug, keg, kode, li):
     if slug is None:
         pass
@@ -837,6 +841,7 @@ def tambah_lk(request, slug, keg, kode, li):
 
 
 @login_required
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def ubah_lk(request, slug, keg, kode, li, lk):
     if slug is None:
         pass

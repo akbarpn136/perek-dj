@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import JsonResponse
+from django.views.decorators.cache import cache_control
 
 from tugas.models import LembarInstruksi, Kegiatan, Logbook
 from utama.models import Format, Personil
@@ -129,6 +130,7 @@ def cek_keanggotaan(user, pk_kegiatan):
 
 
 @login_required
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def tambah_lb(request, slug, keg, kode, li):
     if slug is None:
         pass
