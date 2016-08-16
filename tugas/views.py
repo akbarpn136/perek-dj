@@ -715,7 +715,12 @@ def tambah_lk(request, slug, keg, kode, li):
         messages.warning(request, 'Anda tidak memiliki peran dalam kegiatan ini!')
         return redirect('halaman_tugas_anggota', pk=keg)
 
-    data_kegiatan = get_object_or_404(Kegiatan, pk=keg)
+    try:
+        data_kegiatan = get_object_or_404(Kegiatan, pk=keg)
+    except Http404:
+        messages.warning(request, 'Halaman yang Anda cari tidak ditemukan!')
+        return redirect('halaman_tugas_anggota', pk=keg)
+
     data_li = LembarInstruksi.objects.filter(pk=li).exclude(pemberi=request.user)
 
     try:
@@ -842,7 +847,12 @@ def ubah_lk(request, slug, keg, kode, li, lk):
         messages.warning(request, 'Anda tidak memiliki peran dalam kegiatan ini!')
         return redirect('halaman_tugas_anggota', pk=keg)
 
-    data_kegiatan = get_object_or_404(Kegiatan, pk=keg)
+    try:
+        data_kegiatan = get_object_or_404(Kegiatan, pk=keg)
+    except Http404:
+        messages.warning(request, 'Halaman yang Anda cari tidak ditemukan!')
+        return redirect('halaman_tugas_anggota', pk=keg)
+
     data_li = LembarInstruksi.objects.filter(pk=li).exclude(pemberi=request.user)
 
     try:
