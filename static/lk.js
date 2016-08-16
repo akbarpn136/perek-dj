@@ -182,4 +182,8 @@ $(document).ready(function(){
             }
         }).modal('show');
     });
+    $("select#select_lb").dropdown({
+        placeholder: true,
+        fullTextSearch: 'exact',
+    });
 });

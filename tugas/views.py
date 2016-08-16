@@ -698,7 +698,7 @@ def lihat_lk_rinci(request, slug, pk, keg):
     }
 
     if data_li.penerima.username == request.user.username or request.user.is_superuser or \
-            data_li.pemberi.username == request.user.username:
+                    data_li.pemberi.username == request.user.username:
         return render(request, 'tugas/halaman_cetak_lk_lembaran.html', data)
     else:
         messages.warning(request, 'Hanya pemilik yang mendapatkan hak akses!')
@@ -892,6 +892,10 @@ def ubah_lk(request, slug, keg, kode, li, lk):
             if cek_keanggotaan(request.user, keg):
                 if request.user.username != instruksi.pemberi.username:
                     if float(angka) == cek_angka:
+                        if butir not in ['II.A.1.a.2).(b)', 'II.A.1.a.4).(a)', 'II.A.1.a.4).(b)', 'II.A.1.a.4).(c)',
+                                         'II.A.1.a.6).(c)', 'II.A.1.a.7).(c)', 'II.A.1.a.8).(c)']:
+                            kerja.lb = None
+
                         messages.success(request, 'Lembar kerja berhasil disimpan')
                         kerja.save()
                     else:
@@ -932,7 +936,7 @@ def ubah_lk(request, slug, keg, kode, li, lk):
                                    pk=request.user.pk)]
 
     formulir.fields['lb'].choices = [('', '-----')] + [(lb.pk, lb.nomor) for lb in
-                                                       Logbook.objects.filter(kegiatan=keg, li=li)]
+                                                       Logbook.objects.filter(kegiatan=keg, li=li, butir=kerja.butir)]
 
     try:
         peran = request.user.personil_set.values_list('peran', flat=True)[0]
