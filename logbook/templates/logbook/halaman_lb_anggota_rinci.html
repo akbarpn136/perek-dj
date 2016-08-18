@@ -33,7 +33,7 @@
 </a>
 
 {% if request.user.username == lmbr.penerima.username %}
-<a href="{% url 'halaman_duplikat_lk_anggota' slug=lmbr.nomor|slugify keg=pk kode='LB' lk=lmbr.pk li=li  %}" class="ui icon basic tiny button" title=" duplikat ">
+<a href="{% url 'halaman_duplikat_lb_anggota' slug=lmbr.nomor|slugify keg=pk kode='LB' lb=lmbr.pk li=li  %}" class="ui icon basic tiny button" title=" duplikat ">
     <i class="clone icon"></i>
 </a>
 {% endif %}
