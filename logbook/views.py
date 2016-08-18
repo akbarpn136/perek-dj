@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.views.decorators.cache import cache_control
+from django.utils.text import slugify
 
 from tugas.models import LembarInstruksi, Kegiatan, Logbook
 from utama.models import Format, Personil
@@ -453,3 +454,33 @@ def hapus_lb(request, pk):
                 </p>
             </div>'''
         return HttpResponse(html)
+
+
+@login_required
+def duplikat_lb(request, slug, keg, kode, li, lb):
+    if slug is None or kode is None:
+        pass
+
+    try:
+        instruksi = get_object_or_404(LembarInstruksi, pk=li)
+    except Http404:
+        messages.warning(request, 'Penugasan tidak ditemukan')
+        return redirect('halaman_tugas_anggota', pk=keg)
+
+    try:
+        duplikat = get_object_or_404(Logbook, pk=lb)
+        duplikat.pk = None
+        if cek_keanggotaan(request.user, keg):
+            if request.user.username == instruksi.penerima.username:
+                duplikat.save()
+                messages.warning(request, 'Logbook berhasil diduplikat')
+                return redirect('halaman_lb_anggota_rinci', slug=slug, pk=duplikat.pk, keg=keg, li=li)
+            else:
+                messages.warning(request, 'Hanya penerima tugas yang mendapatkan hak akses!')
+                return redirect('halaman_lb_anggota_rinci', slug=slug, pk=duplikat.pk, keg=keg, li=li)
+        else:
+            messages.warning(request, 'Maaf, Anda tidak mendapatkan hak akses!')
+            return redirect('halaman_tugas_anggota', pk=keg)
+    except Http404:
+        messages.warning(request, 'Tugas tidak ditemukan')
+        return redirect('halaman_li_anggota_rinci', slug=slugify(instruksi.nomor, allow_unicode=True), pk=li, keg=keg)
