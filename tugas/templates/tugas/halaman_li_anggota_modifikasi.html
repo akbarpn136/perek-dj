@@ -353,32 +353,37 @@
                         <a id="tbl_hapus" href="" class="ui icon tiny red button" title=" hapus " data-value="{% url 'halaman_hapus_li_anggota' pk=li_tertentu.pk %}">
                             <i class="trash icon"></i>
                         </a>
-                        {% else %}
+                        {% elif 'WS' in request.path %}
                         <a id="tbl_hapus" href="" class="ui icon tiny red button" title=" hapus " data-value="{% url 'halaman_hapus_lk_anggota' pk=lk %}">
                             <i class="trash icon"></i>
                         </a>
-                    {% endif %}
-                    <div id="modal_hapus_li" class="ui small modal">
-                        <div class="header">Anda Yakin?</div>
-                        <div class="content">
-                            <p>
-                                Apakah Anda yakin untuk menghapus <span id="lmbr">Lembar instruksi</span> ini?
-                            </p>
+                        {% elif 'LB' in request.path %}
+                        <a id="tbl_hapus" href="" class="ui icon tiny red button" title=" hapus " data-value="">
+                            <i class="trash icon"></i>
+                        </a>
+                        {% endif %}
+
+                        <div id="modal_hapus_li" class="ui small modal">
+                            <div class="header">Anda Yakin?</div>
+                            <div class="content">
+                                <p>
+                                    Apakah Anda yakin untuk menghapus <span id="lmbr">Lembar instruksi</span> ini?
+                                </p>
+                            </div>
+
+                            <div class="actions">
+                                <div class="ui positive button">Ya</div>
+                                <div class="ui deny button">Tidak</div>
+                            </div>
                         </div>
 
-                        <div class="actions">
-                            <div class="ui positive button">Ya</div>
-                            <div class="ui deny button">Tidak</div>
-                        </div>
-                    </div>
-
-                    <a href="{% url 'halaman_li_anggota_rinci' slug=li_tertentu.nomor|slugify pk=li_tertentu.pk keg=pk %}" class="ui icon tiny button" title=" kembali ">
-                        <i class="reply icon"></i>
-                    </a>
-                    {% else %}
-                    <a href="{% url 'halaman_tugas_anggota' pk=pk %}" class="ui icon tiny button" title=" kembali ">
-                        <i class="reply icon"></i>
-                    </a>
+                        <a href="{% url 'halaman_li_anggota_rinci' slug=li_tertentu.nomor|slugify pk=li_tertentu.pk keg=pk %}" class="ui icon tiny button" title=" kembali ">
+                            <i class="reply icon"></i>
+                        </a>
+                        {% else %}
+                        <a href="{% url 'halaman_tugas_anggota' pk=pk %}" class="ui icon tiny button" title=" kembali ">
+                            <i class="reply icon"></i>
+                        </a>
                     {% endif %}
                 </form>
             </div>
