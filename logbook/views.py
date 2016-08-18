@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404, Http404
+from django.shortcuts import render, redirect, get_object_or_404, Http404, HttpResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -413,6 +413,7 @@ def ubah_lb(request, slug, keg, kode, li, lb):
         'pk': keg,
         'instruksi': instruksi,
         'li_tertentu': instruksi,
+        'lb': data_logbook,
         'kegiatan': data_kegiatan,
         'peran': [request.user, keg],
         'formulir': formulir,
@@ -425,3 +426,30 @@ def ubah_lb(request, slug, keg, kode, li, lb):
     else:
         messages.warning(request, 'Hanya dapat dilakukan oleh Leader atau Engineering Staff')
         return redirect('halaman_tugas_anggota', pk=keg)
+
+
+@login_required
+def hapus_lb(request, pk):
+    lb_ubah = get_object_or_404(Logbook, pk=pk)
+
+    if lb_ubah.penerima == request.user:
+        if lb_ubah.delete():
+            html = '''<div class="ui green message">
+                    <div class="header">
+                        Info
+                    </div>
+                    <p>
+                        Logbook berhasil dihapus.
+                    </p>
+                </div>'''
+            return HttpResponse(html)
+    else:
+        html = '''<div class="ui red message">
+                <div class="header">
+                    Info
+                </div>
+                <p>
+                    Logbook hanya boleh dihapus oleh pemilik!
+                </p>
+            </div>'''
+        return HttpResponse(html)
