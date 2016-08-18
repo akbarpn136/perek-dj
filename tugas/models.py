@@ -57,7 +57,7 @@ class LembarKerja(models.Model):
     uraian = models.TextField(verbose_name='Uraian Singkat', blank=True)
     isi = models.TextField(verbose_name='Isi', default=None)
     kegiatan = models.ForeignKey(Kegiatan, verbose_name='Kegiatan', on_delete=models.CASCADE)
-    lb = models.ForeignKey(Logbook, verbose_name='Logbook', null=True, on_delete=models.SET_NULL)
+    lb = models.ForeignKey(Logbook, verbose_name='Logbook', blank=True, null=True, on_delete=models.SET_NULL)
     li = models.ForeignKey(LembarInstruksi, verbose_name='Lembar Instruksi', on_delete=models.CASCADE, default=1)
     pemberi = models.ForeignKey('auth.User', related_name='pemberi_tugas_lk', verbose_name='Pemberi Tugas',
                                 on_delete=models.SET_NULL, null=True)
