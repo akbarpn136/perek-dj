@@ -1,0 +1,40 @@
+{% extends 'tugas/halaman_li_anggota_rinci.html' %}
+{% load gravatar %}
+{% load li_terkait %}
+
+{% block ruas_tiga %}
+    <a href="{% url 'halaman_li_anggota_rinci' slug=instruksi.nomor|slugify pk=li keg=pk %}" class="section">{{ li|ambil_li_tertentu }}</a>
+    <i class="right chevron icon divider"></i>
+{% endblock %}
+
+{% block ruas_empat %}
+    <div class="active section">{{ lmbr.nama }}</div>
+{% endblock %}
+
+{% block gambar %}
+<img class="ui avatar image" src="https://www.gravatar.com/avatar/{{ lmbr.penerima.email|hash_email }}?d=retro&f=y"> {{ lmbr.penerima.get_full_name|default:lmbr.penerima.username }}
+{% endblock %}
+
+{% block tombol_kembali %}
+<a href="{% url 'halaman_li_anggota_rinci' slug=instruksi.nomor|slugify pk=li keg=pk %}" class="ui icon tiny button" title=" kembali ">
+    <i class="reply icon"></i>
+</a>
+{% endblock %}
+
+{% block tombol_cetak %}
+<a href="" class="ui icon basic tiny button" title=" lihat ">
+    <i class="unhide icon"></i>
+</a>
+{% endblock %}
+
+{% block tombol_aksi %}
+<a href="{% url 'halaman_ubah_lb_anggota' slug=lmbr.nomor|slugify keg=pk kode='LB' lb=lmbr.pk li=li  %}" class="ui icon basic tiny button" title=" ubah ">
+    <i class="pencil icon"></i>
+</a>
+
+{% if request.user.username == lmbr.penerima.username %}
+<a href="{% url 'halaman_duplikat_lk_anggota' slug=lmbr.nomor|slugify keg=pk kode='LB' lk=lmbr.pk li=li  %}" class="ui icon basic tiny button" title=" duplikat ">
+    <i class="clone icon"></i>
+</a>
+{% endif %}
+{% endblock %}
