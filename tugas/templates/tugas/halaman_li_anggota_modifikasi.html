@@ -58,7 +58,7 @@
             {% endif %}
 
             <div class="description">
-                <form class="ui form" method="post" novalidate>
+                <form {% if 'WS' in request.path %}id="form_ubah"{% endif %} class="ui form" method="post" novalidate>
                     {% csrf_token %}
                     <div class="{% if 'LB' in request.path %}three{% else %}two{% endif %} fields">
                         {% if 'IS' in request.path %}
@@ -298,6 +298,7 @@
                                 {{ formulir.lb }}
                                 <a href="{% url 'halaman_tambah_lb_anggota' slug=instruksi|slugify keg=kegiatan.pk kode='LB' li=instruksi.pk %}" class="ui icon teal button"><i class="plus icon"></i></a>
                             </div>
+                            <div class="ui error message"></div>
                         </div>
                         {% if 'ubah' in request.path %}
                         <script>
