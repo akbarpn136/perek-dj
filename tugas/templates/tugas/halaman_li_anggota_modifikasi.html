@@ -358,7 +358,7 @@
                             <i class="trash icon"></i>
                         </a>
                         {% elif 'LB' in request.path %}
-                        <a id="tbl_hapus" href="" class="ui icon tiny red button" title=" hapus " data-value="">
+                        <a id="tbl_hapus_lb" href="" class="ui icon tiny red button" title=" hapus " data-value="{% url 'halaman_hapus_lb_anggota' pk=lb.pk %}">
                             <i class="trash icon"></i>
                         </a>
                         {% endif %}
@@ -367,7 +367,7 @@
                             <div class="header">Anda Yakin?</div>
                             <div class="content">
                                 <p>
-                                    Apakah Anda yakin untuk menghapus <span id="lmbr">Lembar instruksi</span> ini?
+                                    Apakah Anda yakin untuk menghapus {% if 'IS' in request.path %}<span id="lmbr">Lembar instruksi</span>{% elif 'WS' in request.path %}<span id="lmbr">Lembar kerja</span>{% elif 'LB' in request.path %}<span id="lmbr">Logbook</span>{% endif %} ini?
                                 </p>
                             </div>
 
@@ -389,7 +389,7 @@
             </div>
             {% if 'IS' in request.path %}
             <span id="tbl_kembali" data-value="{% url 'halaman_tugas_anggota' pk=pk %}"></span>
-            {% elif 'WS' in request.path %}
+            {% elif 'WS' in request.path or 'LB' in request.path %}
             <span id="tbl_kembali" data-value="{% url 'halaman_li_anggota_rinci' slug=instruksi.nomor|slugify pk=instruksi.pk keg=pk %}"></span>
             {% endif %}
         </div>
