@@ -138,6 +138,38 @@ def cek_keanggotaan(user, pk_kegiatan):
 
 
 @login_required
+def lihat_lb(request, slug, pk, keg, li):
+    if slug is None:
+        pass
+
+    try:
+        data_lb = get_object_or_404(Logbook, pk=pk, kegiatan=keg, li=li)
+    except Http404:
+        messages.warning(request, 'Logbook tidak ditemukan!')
+        return redirect('halaman_tugas_anggota', pk=keg)
+
+    try:
+        instruksi = get_object_or_404(LembarInstruksi, pk=li)
+    except Http404:
+        messages.warning(request, 'Penugasan tidak ditemukan')
+        return redirect('halaman_tugas_anggota', pk=keg)
+
+    data = {
+        'lmbr': data_lb,
+        'instruksi': instruksi,
+        'pk': keg,
+        'li': li,
+        'is_exist': False,
+    }
+
+    if request.user.username == data_lb.pemberi.username or request.user.username == data_lb.penerima.username:
+        return render(request, 'logbook/halaman_lb_anggota_rinci.html', data)
+    else:
+        messages.warning(request, 'Hanya pemberi dan penerima tugas saja yang memiliki hak akses!')
+        return redirect('halaman_tugas_anggota', pk=keg)
+
+
+@login_required
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def tambah_lb(request, slug, keg, kode, li):
     if slug is None:
@@ -249,6 +281,138 @@ def tambah_lb(request, slug, keg, kode, li):
     data = {
         'pk': keg,
         'instruksi': instruksi,
+        'kegiatan': data_kegiatan,
+        'peran': [request.user, keg],
+        'formulir': formulir,
+        'format': data_format,
+        'butir': data_butir,
+    }
+
+    if data_peran.peran in ['L', 'ES']:
+        return render(request, 'tugas/halaman_li_anggota_modifikasi.html', data)
+    else:
+        messages.warning(request, 'Hanya dapat dilakukan oleh Leader atau Engineering Staff')
+        return redirect('halaman_tugas_anggota', pk=keg)
+
+
+@login_required
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+def ubah_lb(request, slug, keg, kode, li, lb):
+    if slug is None:
+        pass
+
+    try:
+        data_logbook = get_object_or_404(Logbook, kegiatan=keg, li=li, pk=lb)
+    except Http404:
+        messages.warning(request, 'Logbook tidak ditemukan')
+        return redirect('halaman_tugas_anggota', pk=keg)
+
+    try:
+        data_peran = get_object_or_404(Personil, orang=request.user, personil_kegiatan=keg, peran_utama=True)
+    except Http404:
+        messages.warning(request, 'Anda tidak memiliki peran dalam kegiatan ini!')
+        return redirect('halaman_tugas_anggota', pk=keg)
+
+    try:
+        data_kegiatan = get_object_or_404(Kegiatan, pk=keg)
+    except Http404:
+        messages.warning(request, 'Kegiatan tidak ditemukan')
+        return redirect('halaman_tugas_anggota', pk=keg)
+
+    try:
+        instruksi = get_object_or_404(LembarInstruksi, pk=li)
+    except Http404:
+        messages.warning(request, 'Penugasan tidak ditemukan')
+        return redirect('halaman_tugas_anggota', pk=keg)
+
+    try:
+        data_format = get_object_or_404(Format, format_kegiatan=keg, kode=kode)
+
+    except Http404:
+        messages.warning(request, 'Format logbook tidak ditemukan...')
+        return redirect('halaman_tugas_anggota', pk=keg)
+
+    if request.method == 'POST':
+        butir = request.POST.get('butir')
+        angka = request.POST.get('angka_hid')
+        cek_angka = round(bantu_butir_perekayasa(request, butir, keg, 'na'), 3)
+
+        formulir = FormLB(request.POST, instance=data_logbook)
+
+        if formulir.is_valid():
+            if cek_keanggotaan(request.user, keg):
+                if request.user.username != instruksi.pemberi.username:
+                    if float(angka) == cek_angka:
+                        data_logbook.angka = float(angka)
+                        messages.success(request, 'Logbook berhasil disimpan')
+                        data_logbook.save()
+                    else:
+                        messages.warning(request, 'Tidak diperbolehkan untuk mengganti angka kredit!')
+                        return redirect('halaman_li_anggota_rinci', slug=slug, pk=li, keg=keg)
+                else:
+                    messages.warning(request, 'Tidak diperbolehkan untuk mengganti angka kredit!')
+                    return redirect('halaman_li_anggota_rinci', slug=slug, pk=li, keg=keg)
+            else:
+                messages.warning(request, 'Maaf, Anda tidak mendapatkan hak akses!')
+                return redirect('halaman_tugas_anggota', pk=keg)
+
+    else:
+        formulir = FormLB(instance=data_logbook)
+
+    formulir.fields['pemberi'].choices = \
+        [('', '-----')] + [(user.pk, '[' +
+                            user.personil_set.filter(orang=user.pk, peran_utama=True,
+                                                     personil_kegiatan=keg).values_list('peran',
+                                                                                        flat=True)[
+                                0] + ']' + ' ' + user.get_full_name()) for user in
+                           User.objects.filter(personil__personil_kegiatan=keg,
+                                               personil__peran__in=['L'],
+                                               personil__wbs_wp_kode=data_peran.wbs_wp_kode).order_by(
+                               'username').distinct().exclude(
+                               pk=request.user.pk)]
+
+    formulir.fields['pemeriksa'].choices = \
+        [('', '-----')] + [(user.pk, '[' +
+                            user.personil_set.filter(orang=user.pk, peran_utama=True,
+                                                     personil_kegiatan=keg).values_list('peran',
+                                                                                        flat=True)[
+                                0] + ']' + ' ' + user.get_full_name()) for user in
+                           User.objects.filter(personil__personil_kegiatan=keg,
+                                               personil__peran__in=['GL']).order_by(
+                               'username').distinct().exclude(
+                               pk=request.user.pk)]
+
+    try:
+        peran = request.user.personil_set.values_list('peran', flat=True)[0]
+    except IndexError:
+        peran = ''
+
+    if peran == 'ES':
+        data_butir = ButirPerekayasa.objects.filter(kodebutir__startswith='II.A',
+                                                    hasil__contains='Logbook',
+                                                    pelaksana__in=['Pertama', 'Pertama/Muda', 'Muda'])
+    elif peran == 'L':
+        data_butir = ButirPerekayasa.objects.filter(kodebutir__startswith='II.A', hasil__contains='Logbook',
+                                                    pelaksana__in=['Pertama', 'Pertama/Muda', 'Muda', 'Madya'])
+    elif peran == 'GL':
+        data_butir = ButirPerekayasa.objects.filter(kodebutir__startswith='II.A', hasil__contains='Logbook',
+                                                    pelaksana__in=['Muda', 'Muda/Madya', 'Madya', 'Utama'])
+    elif peran == 'PM':
+        data_butir = ButirPerekayasa.objects.filter(kodebutir__startswith='II.A', hasil__contains='Logbook',
+                                                    pelaksana__in=['Muda', 'Muda/Madya', 'Madya', 'Utama'])
+    elif peran == 'CE':
+        data_butir = ButirPerekayasa.objects.filter(kodebutir__startswith='II.A', hasil__contains='Logbook',
+                                                    pelaksana__in=['Madya', 'Madya/Utama', 'Utama'])
+    elif peran == 'PD':
+        data_butir = ButirPerekayasa.objects.filter(kodebutir__startswith='II.A', hasil__contains='Logbook',
+                                                    pelaksana__in=['Madya', 'Madya/Utama', 'Utama'])
+    else:
+        data_butir = ButirPerekayasa.objects.filter(kodebutir__startswith='III.A')
+
+    data = {
+        'pk': keg,
+        'instruksi': instruksi,
+        'li_tertentu': instruksi,
         'kegiatan': data_kegiatan,
         'peran': [request.user, keg],
         'formulir': formulir,
