@@ -87,6 +87,21 @@ $(document).ready(function(){
                         select_lb.append('<option value="'+v[0]+'">' + v[1] + '</option>');
                     });
                 });
+
+                $("form#form_ubah").form({
+                    on: 'blur',
+                    fields: {
+                        lb: {
+                            identifier  : 'lb',
+                            rules: [{
+                                type   : 'empty',
+                                prompt : 'Silahkan pilih logbook terkait.'
+                            }]
+                        }
+                    }
+                });
+
+                $("select#select_lb").next().next().next().empty();
             }
 
             $("input#butir").val(butir);
@@ -130,7 +145,7 @@ $(document).ready(function(){
             closable  : false,
             onShow : function(){
                 var selector = $("div#latar-samping");
-                selector.css('min-height', selector.height()+28);
+                selector.css('min-height', $("div#kolom_konten").height()-$("div.ui.inverted.fixed.menu").height()+60);
             }
         }).modal('show');
         e.preventDefault();
@@ -184,6 +199,6 @@ $(document).ready(function(){
     });
     $("select#select_lb").dropdown({
         placeholder: true,
-        fullTextSearch: 'exact',
+        fullTextSearch: 'exact'
     });
 });
