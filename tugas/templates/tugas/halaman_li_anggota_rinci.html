@@ -57,7 +57,7 @@
                     <img class="ui avatar image" src="https://www.gravatar.com/avatar/{{ ws.penerima.email|hash_email }}?d=retro&f=y">
 
                     <div class="content">
-                        <a href="{% url 'halaman_lk_anggota_rinci' slug=ws.nomor|slugify pk=ws.pk keg=pk li=lmbr.pk %}" class="header">{{ ws.nomor }}</a>
+                        <a href="{% url 'halaman_lb_anggota_rinci' slug=ws.nomor|slugify pk=ws.pk keg=pk li=lmbr.pk %}" class="header">{{ ws.nomor }}</a>
                         <div class="description">
                             {{ ws.butir }}
                         </div>
