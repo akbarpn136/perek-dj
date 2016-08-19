@@ -30,6 +30,7 @@ class LembarInstruksi(models.Model):
 
 class Logbook(models.Model):
     nama = models.CharField(max_length=25, verbose_name='Jenis Tugas', default='Logbook')
+    judul = models.CharField(max_length=80, verbose_name='Judul', default='')
     nomor = models.TextField(verbose_name='Nomor')
     tanggal = models.DateField(verbose_name='Tanggal')
     butir = models.CharField(max_length=20, verbose_name='Butir Kegiatan')
