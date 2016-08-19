@@ -1,0 +1,49 @@
+{% extends 'master/cetak.html' %}
+{% load staticfiles %}
+{% load peran_terkait %}
+
+{% block title %}
+    Dibuat dengan Aplikasi Fungsional Perekayasa BBTA3 BPPT | PERK
+{% endblock %}
+
+{% block style %}
+<style>
+    .gap{
+        padding: 30px;
+    }
+    .gap-med{
+        padding: 50px;
+    }
+
+    * {overflow: visible !important;}
+    @media print {
+        footer{
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="ui left floated basic segment">
+    <img src="{% static 'lb.svg' %}" alt="logo BPPT" class="ui centered image">
+</div>
+
+<div class="ui right aligned basic segment" style="margin-top: 0; padding-top: 0;">
+    {{ lmbr.nomor }}
+
+    <div class="gap"></div>
+    <img src="{% static 'logo_bppt.png' %}" alt="logo BPPT" class="ui right floated tiny image">
+
+    <div class="gap-med"></div>
+    <h3 class="ui header">
+        {{ lmbr.nama|upper }}
+        <div class="sub header">{{ peran|ambil_peran_tertentu:'short' }}</div>
+    </h3>
+
+    <div class="gap"></div>
+    <h1 class="ui header">{{ lmbr.judul }}</h1>
+</div>
+{% endblock %}
