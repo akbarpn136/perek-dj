@@ -187,9 +187,12 @@ def lihat_lb_rinci(request, slug, pk, keg):
         messages.warning(request, 'Kegiatan/Program tidak ditemukan!')
         return redirect('halaman_tugas_anggota', pk=keg)
 
+    prof = get_object_or_404(Profil, user=request.user)
+
     data = {
         'lmbr': data_lb,
         'kegiatan': data_keg,
+        'profil': prof,
         'peran': [data_lb.penerima.pk, data_keg.pk],
         'peran_pemberi': [data_lb.pemberi.pk, data_keg.pk],
         'peran_pemeriksa': [data_lb.pemeriksa.pk, data_keg.pk],
