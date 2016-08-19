@@ -16,6 +16,7 @@ class FormLB(ModelForm):
             'tanggal': TextInput(attrs={'placeholder': 'Tanggal pelaksanaan', 'class': 'tanggal'}),
             'butir': TextInput(attrs={'placeholder': 'Nomor butir', 'id': 'butir', 'readonly': 'readonly'}),
             'index': TextInput(attrs={'placeholder': 'Nomor urutan'}),
+            'judul': TextInput(attrs={'placeholder': 'Judul logbook'}),
             'nomor': Textarea(attrs={'rows': '0', 'id': 'nomor'}),
             'isi': Textarea(attrs={'rows': '18', 'id': 'isi'}),
         }
