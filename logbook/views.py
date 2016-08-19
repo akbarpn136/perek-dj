@@ -171,6 +171,41 @@ def lihat_lb(request, slug, pk, keg, li):
 
 
 @login_required
+def lihat_lb_rinci(request, slug, pk, keg):
+    if slug is None:
+        pass
+
+    try:
+        data_lb = get_object_or_404(Logbook, pk=pk)
+    except Http404:
+        messages.warning(request, 'Logbook tidak ditemukan!')
+        return redirect('halaman_tugas_anggota', pk=keg)
+
+    try:
+        data_keg = get_object_or_404(Kegiatan, pk=keg)
+    except Http404:
+        messages.warning(request, 'Kegiatan/Program tidak ditemukan!')
+        return redirect('halaman_tugas_anggota', pk=keg)
+
+    data = {
+        'lmbr': data_lb,
+        'kegiatan': data_keg,
+        'peran': [data_lb.penerima.pk, data_keg.pk],
+        'peran_pemberi': [data_lb.pemberi.pk, data_keg.pk],
+        'peran_pemeriksa': [data_lb.pemeriksa.pk, data_keg.pk],
+    }
+
+    if data_lb.penerima.username == request.user.username or request.user.is_superuser or \
+            data_lb.pemberi.username == request.user.username:
+        return render(request, 'logbook/halaman_cetak_lb_lembaran.html', data)
+    else:
+        messages.warning(request, 'Hanya pemilik yang mendapatkan hak akses!')
+        # return redirect('/tugas/%s-%s-%s/rincian/' % (slugify(data_li.nomor, allow_unicode=True), pk, keg))
+        return redirect('halaman_lk_anggota_rinci', slug=slugify(data_lb.nomor, allow_unicode=True), pk=pk, keg=keg,
+                        li=data_lb.pk)
+
+
+@login_required
 @cache_control(no_cache=True, must_revalidate=True, no_store=True)
 def tambah_lb(request, slug, keg, kode, li):
     if slug is None:
