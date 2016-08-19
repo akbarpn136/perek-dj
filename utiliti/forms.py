@@ -13,6 +13,8 @@ class FormPersonil(ModelForm):
             'nip': TextInput(attrs={'placeholder': 'NIP'}),
             'pendidikan': TextInput(attrs={'placeholder': 'Misal: S1/Teknik'}),
             'instansi': Textarea(attrs={'rows': '0'}),
+            'satuan': Textarea(attrs={'rows': '0'}),
+            'kantor': Textarea(attrs={'rows': '0'}),
             'instansi_kode': TextInput(attrs={'placeholder': 'Misal: BUK'}),
             'jabatan': TextInput(attrs={'placeholder': 'Misal: Staff'}),
             'pangkat': Textarea(attrs={'rows': '0'}),

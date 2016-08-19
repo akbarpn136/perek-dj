@@ -107,6 +107,35 @@
                                 {{ formulir.pangkat }}
                             </div>
                         </div>
+
+                        <div class="two fields">
+                            <div class="field {% if formulir.satuan.errors %}error{% endif %}">
+                                {% if formulir.satuan.errors %}
+                                    <div class="ui error visible message">
+                                        {% for error in formulir.satuan.errors %}
+                                            <div class="header">Ada Kesalahan</div>
+                                            <p>{{ error|escape }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                {{ formulir.satuan.label_tag }}
+                                {{ formulir.satuan }}
+                            </div>
+
+                            <div class="field {% if formulir.kantor.errors %}error{% endif %}">
+                                {% if formulir.kantor.errors %}
+                                    <div class="ui error visible message">
+                                        {% for error in formulir.kantor.errors %}
+                                            <div class="header">Ada Kesalahan</div>
+                                            <p>{{ error|escape }}</p>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                {{ formulir.kantor.label_tag }}
+                                {{ formulir.kantor }}
+                            </div>
+                        </div>
+
                         <div class="field {% if formulir.jenjang.errors %}error{% endif %}">
                             {% if formulir.jenjang.errors %}
                                 <div class="ui error visible message">
