@@ -46,4 +46,31 @@
     <div class="gap"></div>
     <h1 class="ui header">{{ lmbr.judul }}</h1>
 </div>
+
+<footer>
+    <div class="ui center aligned basic segment" style="margin-top: 0; padding-top: 0;">
+         <p>{{ profil.instansi|upper }}</p>
+         <p>{{ profil.satuan|upper }}</p>
+         <p>{{ profil.kantor|upper }}</p>
+    </div>
+
+    <table class="ui celled table">
+        <tr>
+            <td>Dibuat oleh:</td>
+            <td>Diperiksa oleh:</td>
+            <td>Disetujui oleh:</td>
+        </tr>
+        <tr>
+            <td>{{ peran|ambil_peran_tertentu:'long' }}</td>
+            <td>{{ peran_pemberi|ambil_peran_tertentu:'long' }}</td>
+            <td>{{ peran_pemeriksa|ambil_peran_tertentu:'long' }}</td>
+        </tr>
+        <tr>
+            <td rowspan="2"><br><br>{{ lmbr.penerima.get_full_name|default:lmbr.penerima.username }}</td>
+            <td rowspan="2"><br><br>{{ lmbr.pemberi.get_full_name|default:lmbr.pemberi.username }}</td>
+            <td rowspan="2"><br><br>{{ lmbr.pemeriksa.get_full_name|default:lmbr.pemeriksa.username }}</td>
+        </tr>
+    </table>
+    <br>
+</footer>
 {% endblock %}
