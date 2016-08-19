@@ -6,7 +6,7 @@ urlpatterns = [
     url(r'^(?P<slug>[\w-]+)/lb@(?P<pk>[0-9]+).(?P<keg>[0-9]+).(?P<li>[0-9]+)/rincian/$', views.lihat_lb,
         name='halaman_lb_anggota_rinci'),
 
-    url(r'^(?P<slug>[\w-]+)/cetak-(?P<pk>[0-9]+)-(?P<keg>[0-9]+)-lb/rincian/$', views.lihat_lb_rinci,
+    url(r'^(?P<slug>[\w-]+)/cetak-(?P<pk>[0-9]+)-(?P<keg>[0-9]+)-lb/rincian@(?P<kode>[\w]+)/$', views.lihat_lb_rinci,
         name='halaman_lb_anggota_rinci_cetak'),
 
     url(r'^(?P<slug>[\w-]+)-(?P<keg>[0-9]+)/tambah.(?P<kode>[\w]+)@tugas=rincian-(?P<li>[0-9]+)/$', views.tambah_lb,

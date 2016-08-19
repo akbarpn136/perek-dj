@@ -171,7 +171,7 @@ def lihat_lb(request, slug, pk, keg, li):
 
 
 @login_required
-def lihat_lb_rinci(request, slug, pk, keg):
+def lihat_lb_rinci(request, slug, pk, keg, kode):
     if slug is None:
         pass
 
@@ -197,6 +197,11 @@ def lihat_lb_rinci(request, slug, pk, keg):
         'peran_pemberi': [data_lb.pemberi.pk, data_keg.pk],
         'peran_pemeriksa': [data_lb.pemeriksa.pk, data_keg.pk],
     }
+
+    if kode == 'cover':
+        data['status'] = True
+    else:
+        data['status'] = False
 
     if data_lb.penerima.username == request.user.username or request.user.is_superuser or \
             data_lb.pemberi.username == request.user.username:
