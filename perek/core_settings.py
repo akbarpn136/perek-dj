@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'tugas.apps.TugasConfig',
     'butir.apps.ButirConfig',
     'logbook.apps.LogbookConfig',
+    'keputusan.apps.KeputusanConfig',
 ]
 
 MIDDLEWARE_CLASSES = [
