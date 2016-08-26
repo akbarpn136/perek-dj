@@ -1,0 +1,139 @@
+{% extends 'master/base.html' %}
+{% load staticfiles %}
+{% load gravatar %}
+{% load peran_terkait %}
+
+{% block title %}
+Lembar Keputusan | Aplikasi PERK
+{% endblock %}
+
+{% block grafik %}
+    <div class="gap"></div>
+    <div class="ui fluid container">
+        {% block breadcrumb %}
+        <div class="ui breadcrumb">
+            {% block ruas_satu %}
+                <a href="{% url 'halaman_utama' %}" class="section"><i class="ui home icon"></i> Kegiatan</a>
+                <i class="right chevron icon divider"></i>
+            {% endblock %}
+
+            {% block ruas_dua %}
+                <div class="active section">Keputusan</div>
+            {% endblock %}
+
+            {% block ruas_tiga %}
+            {% endblock %}
+
+            {% block ruas_empat %}
+            {% endblock %}
+        </div>
+        {% endblock %}
+        {% block kontainer %}
+
+        <div class="gap"></div>
+        {% if peran|ambil_peran_tertentu:'singkatan' == 'GL' or peran|ambil_peran_tertentu:'singkatan' == 'L' %}
+        <a href="{% url 'halaman_tambah_li_anggota' slug=kegiatan.nama|slugify keg=kegiatan.pk kode=kode_tugas %}" class="ui right labeled primary icon button">
+            <i class="plus icon"></i>
+            Tugas baru
+        </a>
+        {% endif %}
+
+        <div class="gap"></div>
+        <table class="ui selectable single line definition table">
+            <thead>
+            <tr>
+                <th></th>
+                <th>Tanggal</th>
+                <th>Nomor</th>
+                <th>Tingkatan</th>
+                <th>Pimpinan</th>
+                <th class="center aligned">Opsi</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for kep in keputusan %}
+            <tr>
+                <td class="center aligned">
+                    <a href="" class="ui icon tiny primary button" title=" Lihat ">
+                        <i class="print icon"></i>
+                    </a>
+                </td>
+                <td>{{ kep.tanggal|date:'d F Y' }}</td>
+                <td>{{ kep.nomor }}</td>
+                <td>{{ kep.tingkatan }}</td>
+                <td>{{ kep.pemberi.get_full_name }}</td>
+                <td class="center aligned">
+                    <a href="" class="ui icon tiny secondary button" title=" Ubah ">
+                        <i class="pencil icon"></i>
+                    </a>
+                    <a href="" class="ui icon tiny tertiary button" title=" Duplikat ">
+                        <i class="clone icon"></i>
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+            </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+        <div class="gap"></div>
+        <div class="row">
+            <div class="sixteen wide column">
+                <div class="ui pagination menu" style="padding-left: 0; padding-right: 0; {% if page_range|length < 2 %}display: none;{% endif %}">
+                    {% if keputusan.has_previous %}
+                        <a href="?halaman={{ keputusan.previous_page_number }}" class="item"><i class="chevron left fitted icon" style="margin-right: 0;"></i></a>
+                    {% endif %}
+
+                    {% if page_range|length != 1 %}
+                        {% for pg in page_range %}
+                            {% if keputusan.number == pg %}
+                                <a href="?halaman={{ pg }}" class="active item">{{ pg }}</a>
+                            {% else %}
+                                <a href="?halaman={{ pg }}" class="item">{{ pg }}</a>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+                    {% if keputusan.has_next %}
+                        <a href="?halaman={{ keputusan.next_page_number }}" class="item"><i class="chevron right fitted icon" style="margin-right: 0;"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{% if '/tugas/' in request.path %}
+    {% block menu_tombol %}
+    <div class="ui simple dropdown item">
+        TUGAS
+        <i class="tasks icon"></i>
+        <div class="menu">
+            <a href="{% url 'halaman_tugas_anggota' pk=pk %}" class="item"><i class="star icon"></i>PENUGASAN</a>
+            <a href="{% url 'halaman_keputusan' slug=kegiatan.nama|slugify keg=kegiatan.pk %}" class="item"><i class="list icon"></i>KEPUTUSAN</a>
+        </div>
+    </div>
+    {% endblock %}
+
+    {% block menu_tombol_mobile %}
+        <div class="item">
+            <i class="left dropdown icon"></i>
+            Tugas
+            <div class="menu" style="left: -100px !important;">
+                <a href="{% url 'halaman_tugas_anggota' pk=pk %}" class="item"><i class="star icon"></i>PENUGASAN</a>
+                <a href="{% url 'halaman_keputusan' slug=kegiatan.nama|slugify keg=kegiatan.pk %}" class="item"><i class="list icon"></i>KEPUTUSAN</a>
+            </div>
+        </div>
+    {% endblock %}
+{% endif %}
