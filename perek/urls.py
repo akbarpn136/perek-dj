@@ -22,5 +22,5 @@ urlpatterns = [
     url(r'^utiliti/', include('utiliti.urls')),
     url(r'^tugas/', include('tugas.urls')),
     url(r'^logbook/', include('logbook.urls')),
-    url(r'^keputusan/', include('keputusan.urls')),
+    url(r'^tugas/keputusan/', include('keputusan.urls')),
 ]
