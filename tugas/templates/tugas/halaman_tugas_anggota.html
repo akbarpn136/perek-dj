@@ -221,7 +221,7 @@ $(document).ready(function(){
         <i class="tasks icon"></i>
         <div class="menu">
             <a href="{% url 'halaman_tugas_anggota' pk=pk %}" class="item"><i class="star icon"></i>PENUGASAN</a>
-            <a class="item"><i class="list icon"></i>DOKUMEN</a>
+            <a href="{% url 'halaman_keputusan' slug=kegiatan.nama|slugify keg=kegiatan.pk %}" class="item"><i class="list icon"></i>KEPUTUSAN</a>
         </div>
     </div>
     {% endblock %}
@@ -232,7 +232,7 @@ $(document).ready(function(){
             Tugas
             <div class="menu" style="left: -100px !important;">
                 <a href="{% url 'halaman_tugas_anggota' pk=pk %}" class="item"><i class="star icon"></i>PENUGASAN</a>
-            <a class="item"><i class="list icon"></i>DOKUMEN</a>
+                <a href="{% url 'halaman_keputusan' slug=kegiatan.nama|slugify keg=kegiatan.pk %}" class="item"><i class="list icon"></i>KEPUTUSAN</a>
             </div>
         </div>
     {% endblock %}
