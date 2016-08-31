@@ -1,5 +1,30 @@
 {% extends 'master/base.html' %}
 
+{% block grafik %}
+    <div class="gap"></div>
+    <div class="ui fluid container">
+        {% block breadcrumb %}
+        <div class="ui breadcrumb">
+            {% block ruas_satu %}
+                <a href="{% url 'halaman_utama' %}" class="section"><i class="ui home icon"></i> Kegiatan</a>
+                <i class="right chevron icon divider"></i>
+            {% endblock %}
+
+            {% block ruas_dua %}
+                <div class="active section">Tugas</div>
+            {% endblock %}
+
+            {% block ruas_tiga %}
+            {% endblock %}
+
+            {% block ruas_empat %}
+            {% endblock %}
+        </div>
+        {% endblock %}
+        {% block kontainer %}{% endblock %}
+    </div>
+{% endblock %}
+
 {% if '/tugas/' in request.path %}
     {% block menu_tombol %}
     <div class="ui simple dropdown item">
