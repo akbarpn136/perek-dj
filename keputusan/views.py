@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404, Http404, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.generic import ListView
+
 
 from .models import LembarKeputusan
 from utama.models import Kegiatan
@@ -13,47 +14,24 @@ def cek_keanggotaan(user, pk_kegiatan):
     return user.pk in anggota_kegiatan.values_list('pk', flat=True)
 
 
-def lihat_keputusan(request, slug, keg):
-    if cek_keanggotaan(request.user, keg):
-        if slug is None:
-            pass
+class LihatKeputusan(ListView):
+    model = LembarKeputusan
+    template_name = 'keputusan/halaman_keputusan.html'
+    context_object_name = 'keputusan'
+    paginate_by = 1
+    paginate_orphans = 1
+    page_kwarg = 'halaman'
 
-        try:
-            kegiatan = get_object_or_404(Kegiatan, pk=keg)
-
-        except Http404:
-            messages.warning(request, 'Halaman yang dicari tidak ditemukan!')
+    def dispatch(self, request, *args, **kwargs):
+        if cek_keanggotaan(request.user, self.kwargs['pk']):
+            return super(LihatKeputusan, self).dispatch(request, *args, **kwargs)
+        else:
+            messages.warning(request, 'Maaf, Anda tidak memiliki hak keanggotaan dari kegiatan ini.')
             return redirect('halaman_utama')
 
-        data_keputusan = LembarKeputusan.objects.filter(kegiatan=kegiatan)
+    def get_context_data(self, **kwargs):
+        context = super(LihatKeputusan, self).get_context_data(**kwargs)
+        context['pk'] = self.kwargs['pk']
+        context['kegiatan'] = get_object_or_404(Kegiatan, pk=self.kwargs['pk'])
 
-        paginator = Paginator(data_keputusan.order_by('-tanggal'), 12, 1)
-        page = request.GET.get('halaman')
-
-        try:
-            kep = paginator.page(page)
-        except PageNotAnInteger:
-            # If page is not an integer, deliver first page.
-            kep = paginator.page(1)
-        except EmptyPage:
-            # If page is out of range (e.g. 9999), deliver last page of results.
-            kep = paginator.page(paginator.num_pages)
-
-        maks = len(paginator.page_range)
-
-        start_number = kep.number - 3 if kep.number >= 4 else 0
-        end_number = kep.number + 2 if kep.number <= maks else maks
-        page_range = paginator.page_range[start_number:end_number]
-
-        data = {
-            'pk': kegiatan.pk,
-            'kegiatan': kegiatan,
-            'page_range': page_range,
-            'keputusan': kep,
-        }
-
-        return render(request, 'keputusan/halaman_keputusan.html', data)
-
-    else:
-        messages.warning(request, 'Maaf, Anda tidak memiliki hak keanggotaan dari kegiatan ini.')
-        return redirect('halaman_utama')
+        return context
