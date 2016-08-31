@@ -30,6 +30,12 @@ Lembar Keputusan | Aplikasi PERK
         {% endblock %}
         {% block kontainer %}
 
+        <a href="{% url 'halaman_tambah_keputusan' slug=kegiatan.nama|slugify pk=kegiatan.pk %}" class="ui compact labeled icon right floated green button">
+            <i class="plus icon"></i>
+            Tambah
+        </a>
+
+        <div class="gap"></div>
         <div class="gap"></div>
         <table class="ui selectable single line definition table">
             <thead>
