@@ -1,0 +1,99 @@
+{% extends 'master/cetak.html' %}
+{% load staticfiles %}
+{% load peran_terkait %}
+
+{% block title %}
+    Dibuat dengan Aplikasi Fungsional Perekayasa BBTA3 BPPT | PERK
+{% endblock %}
+
+{% block style %}
+<style>
+    * {overflow: visible !important;}
+    @media print {
+        footer{
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<table class="ui celled structured compact table">
+    <tbody>
+        <tr>
+            <td rowspan="2" class="center aligned">
+                <img src="{% static 'logo_bppt.png' %}" alt="logo BPPT" class="ui centered tiny image">
+            </td>
+            <td class="center aligned">
+                <h2 class="ui {% block warna_header %}violet{% endblock %} header">{{ keputusan.nama|upper }}</h2>
+            </td>
+            <td>
+                No.: {{ keputusan.nomor }}
+            </td>
+        </tr>
+
+        <tr>
+            <td class="center aligned">
+                {{ keputusan.kegiatan.nama }}
+            </td>
+            <td>
+                Tgl.: {{ keputusan.tanggal|date:'d F Y' }}
+            </td>
+        </tr>
+    </tbody>
+</table>
+{{ keputusan.isi|safe }}
+<footer>
+    <table class="ui celled structured compact table">
+        <tbody>
+            <tr>
+                <td colspan="2">
+                    Tingkatan Rapat: {{ keputusan.tingkatan }}
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    Pimpinan Rapat:
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Nama
+                </td>
+                <td>
+                    {{ keputusan.pemberi.get_full_name }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Peran
+                </td>
+                <td>
+                    {{ peran|ambil_peran_tertentu:'long' }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Jobcode
+                </td>
+                <td>
+                    {{ peran|ambil_peran_tertentu:'short' }}
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Tanda tangan
+                </td>
+                <td><br><br></td>
+                <td>
+                    Daftar Hadir Terlampir
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</footer>
+<br>
+
+{% endblock %}
