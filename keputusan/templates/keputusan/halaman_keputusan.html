@@ -31,14 +31,6 @@ Lembar Keputusan | Aplikasi PERK
         {% block kontainer %}
 
         <div class="gap"></div>
-        {% if peran|ambil_peran_tertentu:'singkatan' == 'GL' or peran|ambil_peran_tertentu:'singkatan' == 'L' %}
-        <a href="{% url 'halaman_tambah_li_anggota' slug=kegiatan.nama|slugify keg=kegiatan.pk kode=kode_tugas %}" class="ui right labeled primary icon button">
-            <i class="plus icon"></i>
-            Tugas baru
-        </a>
-        {% endif %}
-
-        <div class="gap"></div>
         <table class="ui selectable single line definition table">
             <thead>
             <tr>
@@ -55,8 +47,8 @@ Lembar Keputusan | Aplikasi PERK
             {% for kep in keputusan %}
             <tr>
                 <td class="center aligned">
-                    <a href="" class="ui icon tiny primary button" title=" Lihat ">
-                        <i class="print icon"></i>
+                    <a href="{% url 'halaman_rincian_keputusan' slug=kegiatan.nama|slugify pk_kegiatan=kegiatan.pk pk=kep.pk %}" class="ui icon tiny primary button" title=" Lihat ">
+                        <i class="unhide icon"></i>
                     </a>
                 </td>
                 <td>{{ kep.tanggal|date:'d F Y' }}</td>
