@@ -1,0 +1,68 @@
+{% extends 'master/tugas.html' %}
+{% load gravatar %}
+{% load staticfiles %}
+{% load peran_terkait %}
+{% load jenjang_terkait %}
+{% load li_terkait %}
+
+{% block title %}
+Tambah Lembar Keputusan | Aplikasi PERK
+{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" type="text/css" href="{% static 'zebra/bootstrap.css' %}">
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'zebra/zebra_datepicker.js' %}"></script>
+    <script src="http://cdn.tinymce.com/4/tinymce.min.js"></script>
+{% endblock %}
+
+{% block ruas_dua %}
+<a href="{% url 'halaman_keputusan' slug=kegiatan.nama|slugify pk=kegiatan.pk %}" class="section">Keputusan</a>
+<i class="right chevron icon divider"></i>
+{% endblock %}
+
+{% block ruas_tiga %}
+    <div class="active section">Tambah surat keputusan</div>
+{% endblock %}
+
+{% block kontainer %}
+    <div class="ui fluid teal card">
+        <div class="content">
+            {% block gambar %}
+            <img class="ui avatar image" src="https://www.gravatar.com/avatar/{{ request.user.email|hash_email }}?d=retro&f=y"> {{ request.user.get_full_name|default:request.user.username }}
+            <div class="right floated meta">{{ peran|ambil_peran_tertentu:'long' }}</div>
+            {% endblock %}
+        </div>
+
+        <div class="content">
+            <div class="header">Rekam Surat Keputusan</div>
+
+            <div class="description">
+                <form class="ui form" method="post" novalidate>
+                    {% csrf_token %}
+                    <div class="two fields">
+                        <div class="field {% if form.tanggal.errors %}error{% endif %}">
+                            {% if form.tanggal.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in form.tanggal.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ form.tanggal.label_tag }}
+                            <div class="ui icon input">
+                                <i class="calendar icon"></i>
+                                {{ form.tanggal }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="submit" class="ui submit primary button" value="Simpan">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
