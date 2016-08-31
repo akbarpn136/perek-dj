@@ -3,7 +3,7 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    url(r'^(?P<slug>[\w-]+)-(?P<keg>[0-9]+)/rincian/$', views.lihat_keputusan, name='halaman_keputusan'),
+    url(r'^(?P<slug>[\w-]+)-(?P<pk>[0-9]+)/rincian/$', views.LihatKeputusan.as_view(), name='halaman_keputusan'),
 
     # url(r'^(?P<slug>[\w-]+)/cetak-(?P<pk>[0-9]+)-(?P<keg>[0-9]+)-lb/rincian@(?P<kode>[\w]+)/$', views.lihat_lb_rinci,name='halaman_lb_anggota_rinci_cetak'),
 
