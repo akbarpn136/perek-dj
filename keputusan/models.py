@@ -9,6 +9,7 @@ class LembarKeputusan(models.Model):
     nomor = models.TextField(verbose_name='Nomor')
     tanggal = models.DateField(verbose_name='Tanggal')
     tingkatan = models.CharField(max_length=20, verbose_name='Tingkatan Rapat')
+    butir = models.CharField(max_length=20, verbose_name='Butir Kegiatan', default='')
     angka = models.FloatField(verbose_name='Angka Kredit')
     uraian = models.TextField(verbose_name='Uraian Singkat', blank=True)
     isi = models.TextField(verbose_name='Isi')
