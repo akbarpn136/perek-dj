@@ -21,11 +21,7 @@ Tugas | Aplikasi PERK
     });
 </script>
 {% endblock %}
-
-{% block grafik %}
-    <div class="gap"></div>
-    <div class="ui fluid container">
-        {% block breadcrumb %}
+    {% block breadcrumb %}
         <div class="ui breadcrumb">
             {% block ruas_satu %}
                 <a href="{% url 'halaman_utama' %}" class="section"><i class="ui home icon"></i> Kegiatan</a>
@@ -43,7 +39,7 @@ Tugas | Aplikasi PERK
             {% endblock %}
         </div>
         {% endblock %}
-        {% block kontainer %}
+    {% block kontainer %}
         <h2 class="ui center aligned icon header" style="display: none;">
             <i class="circular calendar icon"></i>
             PENUGASAN <br> {{ kegiatan.nama }} <br> {{ kegiatan.referensi }}
@@ -183,8 +179,6 @@ Tugas | Aplikasi PERK
             </div>
         </div>
         {% endblock %}
-    </div>
-{% endblock %}
 {% block js %}
 <script type="text/javascript">
 $(document).ready(function(){
