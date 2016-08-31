@@ -18,7 +18,7 @@ class LihatKeputusan(ListView):
     model = LembarKeputusan
     template_name = 'keputusan/halaman_keputusan.html'
     context_object_name = 'keputusan'
-    paginate_by = 1
+    paginate_by = 12
     paginate_orphans = 1
     page_kwarg = 'halaman'
 
