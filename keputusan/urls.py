@@ -6,6 +6,8 @@ urlpatterns = [
     url(r'^(?P<slug>[\w-]+)-(?P<pk>[0-9]+)/rincian/$', views.LihatKeputusan.as_view(), name='halaman_keputusan'),
     url(r'^(?P<slug>[\w-]+)-(?P<pk_kegiatan>[0-9]+)-(?P<pk>[0-9]+)/rincian$', views.RincianKeputusan.as_view(),
         name='halaman_rincian_keputusan'),
+    url(r'^(?P<slug>[\w-]+)-(?P<pk>[0-9]+)/tambah/$', views.TambahKeputusan.as_view(),
+        name='halaman_tambah_keputusan'),
 
     # url(r'^(?P<slug>[\w-]+)/cetak-(?P<pk>[0-9]+)-(?P<keg>[0-9]+)-lb/rincian@(?P<kode>[\w]+)/$', views.lihat_lb_rinci,name='halaman_lb_anggota_rinci_cetak'),
 
