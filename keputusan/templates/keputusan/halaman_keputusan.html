@@ -1,4 +1,4 @@
-{% extends 'master/base.html' %}
+{% extends 'master/tugas.html' %}
 {% load staticfiles %}
 {% load gravatar %}
 {% load peran_terkait %}
@@ -89,23 +89,25 @@ Lembar Keputusan | Aplikasi PERK
         <div class="gap"></div>
         <div class="row">
             <div class="sixteen wide column">
-                <div class="ui pagination menu" style="padding-left: 0; padding-right: 0; {% if page_range|length < 2 %}display: none;{% endif %}">
-                    {% if keputusan.has_previous %}
-                        <a href="?halaman={{ keputusan.previous_page_number }}" class="item"><i class="chevron left fitted icon" style="margin-right: 0;"></i></a>
-                    {% endif %}
+                <div class="ui pagination menu" style="{% if not is_paginated %}display: none;{% endif %}">
+                    {% if is_paginated %}
+                        {% if page_obj.has_previous %}
+                            <a href="?halaman={{ page_obj.previous_page_number }}" class="item"><i class="chevron left fitted icon" style="margin-right: 0;"></i></a>
+                        {% endif %}
 
-                    {% if page_range|length != 1 %}
-                        {% for pg in page_range %}
-                            {% if keputusan.number == pg %}
-                                <a href="?halaman={{ pg }}" class="active item">{{ pg }}</a>
-                            {% else %}
-                                <a href="?halaman={{ pg }}" class="item">{{ pg }}</a>
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
+                        {% if paginator.page_range|length != 1 %}
+                            {% for pg in paginator.page_range%}
+                                {% if keputusan.number == pg %}
+                                    <a href="?halaman={{ pg }}" class="active item">{{ pg }}</a>
+                                {% else %}
+                                    <a href="?halaman={{ pg }}" class="item">{{ pg }}</a>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
 
-                    {% if keputusan.has_next %}
-                        <a href="?halaman={{ keputusan.next_page_number }}" class="item"><i class="chevron right fitted icon" style="margin-right: 0;"></i></a>
+                        {% if page_obj.has_next %}
+                            <a href="?halaman={{ page_obj.next_page_number }}" class="item"><i class="chevron right fitted icon" style="margin-right: 0;"></i></a>
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>
@@ -113,27 +115,3 @@ Lembar Keputusan | Aplikasi PERK
         {% endblock %}
     </div>
 {% endblock %}
-
-{% if '/tugas/' in request.path %}
-    {% block menu_tombol %}
-    <div class="ui simple dropdown item">
-        TUGAS
-        <i class="tasks icon"></i>
-        <div class="menu">
-            <a href="{% url 'halaman_tugas_anggota' pk=pk %}" class="item"><i class="star icon"></i>PENUGASAN</a>
-            <a href="{% url 'halaman_keputusan' slug=kegiatan.nama|slugify keg=kegiatan.pk %}" class="item"><i class="list icon"></i>KEPUTUSAN</a>
-        </div>
-    </div>
-    {% endblock %}
-
-    {% block menu_tombol_mobile %}
-        <div class="item">
-            <i class="left dropdown icon"></i>
-            Tugas
-            <div class="menu" style="left: -100px !important;">
-                <a href="{% url 'halaman_tugas_anggota' pk=pk %}" class="item"><i class="star icon"></i>PENUGASAN</a>
-                <a href="{% url 'halaman_keputusan' slug=kegiatan.nama|slugify keg=kegiatan.pk %}" class="item"><i class="list icon"></i>KEPUTUSAN</a>
-            </div>
-        </div>
-    {% endblock %}
-{% endif %}
