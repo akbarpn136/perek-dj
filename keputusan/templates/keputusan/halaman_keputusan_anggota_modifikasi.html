@@ -15,6 +15,7 @@ Tambah Lembar Keputusan | Aplikasi PERK
 
 {% block script %}
     <script src="{% static 'zebra/zebra_datepicker.js' %}"></script>
+    <script src="{% static 'kep.js' %}"></script>
     <script src="http://cdn.tinymce.com/4/tinymce.min.js"></script>
 {% endblock %}
 
@@ -42,7 +43,19 @@ Tambah Lembar Keputusan | Aplikasi PERK
             <div class="description">
                 <form class="ui form" method="post" novalidate>
                     {% csrf_token %}
-                    <div class="two fields">
+                    <div class="three fields">
+                        <div class="field {% if form.tingkatan.errors %}error{% endif %}">
+                            {% if form.tingkatan.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in form.tingkatan.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ form.tingkatan.label_tag }}
+                            {{ form.tingkatan }}
+                        </div>
                         <div class="field {% if form.tanggal.errors %}error{% endif %}">
                             {% if form.tanggal.errors %}
                                 <div class="ui error visible message">
@@ -58,7 +71,85 @@ Tambah Lembar Keputusan | Aplikasi PERK
                                 {{ form.tanggal }}
                             </div>
                         </div>
+                        <div class="field {% if form.pemberi.errors %}error{% endif %}">
+                            {% if form.pemberi.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in form.pemberi.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ form.pemberi.label_tag }}
+                            {{ form.pemberi }}
+                        </div>
                     </div>
+                    <div class="two fields">
+                        <div class="field {% if form.nomor.errors %}error{% endif %}">
+                            {% if form.nomor.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in form.nomor.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ form.nomor.label_tag }}
+                            {{ form.nomor }}
+                        </div>
+                        <div class="field {% if form.uraian.errors %}error{% endif %}">
+                            {% if form.uraian.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in form.uraian.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ form.uraian.label_tag }}
+                            {{ form.uraian }}
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field {% if form.butir.errors %}error{% endif %}">
+                            {% if form.butir.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in form.butir.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ form.butir.label_tag }}
+                            {{ form.butir }}
+                        </div>
+                        <div class="field {% if form.index.errors %}error{% endif %}">
+                            {% if form.index.errors %}
+                                <div class="ui error visible message">
+                                    {% for error in form.index.errors %}
+                                        <div class="header">Ada Kesalahan</div>
+                                        <p>{{ error|escape }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            {{ form.index.label_tag }}
+                            {{ form.index }}
+                        </div>
+                    </div>
+
+                    <div class="field {% if form.isi.errors %}error{% endif %}">
+                        {% if form.isi.errors %}
+                            <div class="ui error visible message">
+                                {% for error in form.isi.errors %}
+                                    <div class="header">Ada Kesalahan</div>
+                                    <p>{{ error|escape }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        {{ form.isi.label_tag }}
+                        {{ form.isi }}
+                    </div>
+                    <div class="ui divider"></div>
 
                     <input type="submit" class="ui submit primary button" value="Simpan">
                 </form>
