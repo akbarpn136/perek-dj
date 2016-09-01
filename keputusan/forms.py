@@ -13,7 +13,8 @@ class FormKeputusan(ModelForm):
             'tanggal': TextInput(attrs={'placeholder': 'Tanggal pelaksanaan', 'class': 'tanggal'}),
             'butir': TextInput(attrs={'placeholder': 'Nomor butir', 'id': 'butir', 'readonly': 'readonly'}),
             'index': TextInput(attrs={'placeholder': 'Nomor urutan'}),
+            'tingkatan': TextInput(attrs={'placeholder': 'Misal: WP1, WBS1.2, ...'}),
             'nomor': Textarea(attrs={'rows': '0', 'id': 'nomor'}),
-            'referensi': Textarea(attrs={'rows': '0', 'id': 'referensi'}),
+            'uraian': Textarea(attrs={'rows': '0', 'id': 'uraian'}),
             'isi': Textarea(attrs={'rows': '18', 'id': 'isi'}),
         }
