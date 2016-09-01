@@ -6,9 +6,8 @@ from django.views.generic import edit
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
-
 from .models import LembarKeputusan
-from utama.models import Kegiatan
+from utama.models import Kegiatan, Personil
 from .forms import FormKeputusan
 
 
@@ -82,7 +81,18 @@ class TambahKeputusan(edit.CreateView):
 
     def dispatch(self, request, *args, **kwargs):
         if cek_keanggotaan(request.user, self.kwargs['pk']):
-            return super(TambahKeputusan, self).dispatch(request, *args, **kwargs)
+            try:
+                data_peran = get_object_or_404(Personil, orang=request.user, personil_kegiatan=self.kwargs['pk'],
+                                               peran_utama=True)
+                peran = data_peran.peran
+            except Http404:
+                peran = ''
+
+            if peran not in ['TS', 'ES', 'ACE']:
+                return super(TambahKeputusan, self).dispatch(request, *args, **kwargs)
+            else:
+                messages.warning(request, 'Maaf, Anda tidak mendapatkan izin untuk tambah surat keputusan')
+                return redirect('halaman_utama')
         else:
             messages.warning(request, 'Maaf, Anda tidak memiliki hak keanggotaan dari kegiatan ini.')
             return redirect('halaman_utama')
@@ -100,3 +110,12 @@ class TambahKeputusan(edit.CreateView):
         context['kegiatan'] = data_kegiatan
 
         return context
+
+    def get_form(self, form_class=None):
+        form = super(TambahKeputusan, self).get_form(form_class)
+        form.fields['pemberi'].choices = [('', '------')] + [(user.pk, user.get_full_name()) for user in
+                                                             User.objects.filter(
+                                                                 personil__personil_kegiatan=self.kwargs['pk']
+                                                             ).distinct()]
+
+        return form
