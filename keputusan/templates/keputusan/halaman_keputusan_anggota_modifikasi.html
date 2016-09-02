@@ -96,6 +96,17 @@ Tambah Lembar Keputusan | Aplikasi PERK
                             {% endif %}
                             {{ form.nomor.label_tag }}
                             {{ form.nomor }}
+                            <div class="gap"></div>
+                            <a id="tbl_nmr" class="ui icon button" title=" Gunakan format laporan ">
+                                <i class="arrow circle outline up icon"></i>
+                            </a>
+                            <span id="format" data-value="{{ format.formasi }}"></span>
+                            <span id="kode_peran_pemberi" data-value="{{ peran|ambil_peran_tertentu:'short'|cut:' ' }}"></span>
+
+                            <span id="kegiatan" data-value="{{ kegiatan.pk }}"></span>
+                            <span id="kode_kegiatan" data-value="{{ kegiatan.kode }}"></span>
+                            <span id="bulan" data-value=""></span>
+                            <span id="tahun" data-value=""></span>
                         </div>
                         <div class="field {% if form.uraian.errors %}error{% endif %}">
                             {% if form.uraian.errors %}
@@ -121,7 +132,35 @@ Tambah Lembar Keputusan | Aplikasi PERK
                                 </div>
                             {% endif %}
                             {{ form.butir.label_tag }}
-                            {{ form.butir }}
+                            <input type="hidden" name="angka_hid" id="angka_hid" value="">
+
+                            <div class="ui action input">
+                                {{ form.butir }}
+                                <a id="tbl_butir" class="ui icon button">
+                                    <i class="options icon"></i>
+                                </a>
+                                <div id="modal_butir" class="ui small modal">
+                                    <div class="header">Pilih Butir</div>
+                                    <div class="content">
+                                        <div class="ui form">
+                                            <div class="grouped fields">
+                                                <label for="pilih_butir">Butir:</label>
+                                                <select id="pilih_butir" class="ui search fluid dropdown">
+                                                    <option value="">--- Pilihan Butir ---</option>
+                                                    {% for btr in butir %}
+                                                    <option value="{{ btr.kodebutir }}">[{{ btr.angka }} - {{ btr.hasil }}] {{ btr.butir }} #{{ btr.pelaksana }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="actions">
+                                        <div class="ui deny button">Oke</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="label_info" class="ui pointing label"></div>
                         </div>
                         <div class="field {% if form.index.errors %}error{% endif %}">
                             {% if form.index.errors %}
