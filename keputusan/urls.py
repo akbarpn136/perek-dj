@@ -15,5 +15,6 @@ urlpatterns = [
     # url(r'^(?P<slug>[\w-]+)-(?P<keg>[0-9]+)/ubah.(?P<kode>[\w]+)-(?P<lb>[0-9]+)@tugas=rincian-(?P<li>[0-9]+)/$',views.ubah_lb, name='halaman_ubah_lb_anggota'),
     # url(r'^(?P<slug>[\w-]+)-(?P<keg>[0-9]+)/duplikat.(?P<kode>[\w]+)-(?P<lb>[0-9]+)@tugas=rincian-(?P<li>[0-9]+)/$',views.duplikat_lb, name='halaman_duplikat_lb_anggota'),
     # url(r'^hapus-(?P<pk>[0-9]+)/lb/$', views.hapus_lb, name='halaman_hapus_lb_anggota'),
-    # url(r'^(?P<cond>[\w.()]+)/butir/$', views.bantu_pilih_lb, name='halaman_bantu_pilih_lb'),
+    url(r'^(?P<cond>[\w.()]+)/butir/(?P<keg>[0-9]+)/$', views.bantu_butir_perekayasa,
+        name='json_bantu_butir_perekayasa'),
 ]
