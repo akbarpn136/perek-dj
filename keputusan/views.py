@@ -1,3 +1,4 @@
+from tugas.perekayasa import *
 from django.shortcuts import get_object_or_404, Http404, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -5,18 +6,14 @@ from django.views import generic
 from django.views.generic import edit
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.core.urlresolvers import reverse_lazy
 
 from .models import LembarKeputusan
-from utama.models import Kegiatan, Personil
+from utama.models import Kegiatan, Personil, Format
 from .forms import FormKeputusan
 
 
 # Create your views here.
-def cek_keanggotaan(user, pk_kegiatan):
-    anggota_kegiatan = User.objects.filter(personil__personil_kegiatan=pk_kegiatan)
-    return user.pk in anggota_kegiatan.values_list('pk', flat=True)
-
-
 @method_decorator(login_required, name='dispatch')
 class LihatKeputusan(generic.ListView):
     model = LembarKeputusan
@@ -62,7 +59,7 @@ class RincianKeputusan(generic.DetailView):
             return redirect('halaman_utama')
 
         try:
-            data_keputusan = get_object_or_404(LembarKeputusan, pk=self.kwargs['pk_kegiatan'])
+            data_keputusan = get_object_or_404(LembarKeputusan, pk=self.kwargs['pk'])
         except Http404:
             messages.warning(self.request, 'Halaman yang Anda cari tidak ditemukan')
             return redirect('halaman_utama')
@@ -78,6 +75,7 @@ class TambahKeputusan(edit.CreateView):
     model = LembarKeputusan
     template_name = 'keputusan/halaman_keputusan_anggota_modifikasi.html'
     form_class = FormKeputusan
+    success_url = reverse_lazy('halaman_keputusan')
 
     def dispatch(self, request, *args, **kwargs):
         if cek_keanggotaan(request.user, self.kwargs['pk']):
@@ -104,10 +102,20 @@ class TambahKeputusan(edit.CreateView):
             messages.warning(self.request, 'Halaman yang Anda cari tidak ditemukan')
             return redirect('halaman_utama')
 
+        try:
+            data_format = get_object_or_404(Format, format_kegiatan=self.kwargs['pk'], kode='DS')
+        except Http404:
+            messages.warning(self.request, 'Halaman yang Anda cari tidak ditemukan')
+            return redirect('halaman_utama')
+
+        data_butir = bantu_peran(self.request.user, 'Lembar Keputusan')
+
         context = super(TambahKeputusan, self).get_context_data(**kwargs)
         context['peran'] = [self.request.user, data_kegiatan.pk]
         context['pk'] = data_kegiatan.pk
         context['kegiatan'] = data_kegiatan
+        context['butir'] = data_butir
+        context['format'] = data_format
 
         return context
 
@@ -119,3 +127,19 @@ class TambahKeputusan(edit.CreateView):
                                                              ).distinct()]
 
         return form
+
+    def form_valid(self, form):
+        butir = self.request.POST.get('butir')
+        angka = self.request.POST.get('angka_hid')
+        cek_angka = round(bantu_butir_perekayasa(self.request, butir, self.kwargs['pk'], 'na'), 3)
+
+        if float(angka) == cek_angka:
+            form.instance.angka = angka
+            form.instance.kegiatan = Kegiatan.objects.get(pk=self.kwargs['pk'])
+            form.instance.pemberi = self.request.user
+
+            messages.success(self.request, 'Lembar keputusan berhasil ditambahkan')
+            return super(TambahKeputusan, self).form_valid(form)
+        else:
+            messages.warning(self.request, 'Tidak diperbolehkan untuk mengganti angka kredit!')
+            return redirect('halaman_keputusan', slug=self.kwargs['slug'], keg=self.kwargs['pk'])
