@@ -234,6 +234,12 @@ def lihat_li(request, slug, pk, keg):
         messages.warning(request, 'Lembar instruksi tidak ditemukan!')
         return redirect('halaman_tugas_anggota', pk=keg)
 
+    try:
+        data_kegiatan = get_object_or_404(Kegiatan, pk=keg)
+    except Http404:
+        messages.warning(request, 'Halaman yang Anda cari tidak ditemukan')
+        return redirect('halaman_utama')
+
     data = {
         'kode_tugas': 'IS',
         'instruksi': data_li_semua,
@@ -241,6 +247,7 @@ def lihat_li(request, slug, pk, keg):
         'logbook': data_logbook,
         'lmbr': data_li,
         'pk': keg,
+        'kegiatan': data_kegiatan,
         'is_exist': True,
     }
 
@@ -657,11 +664,18 @@ def lihat_lk(request, slug, pk, keg, li):
         messages.warning(request, 'Penugasan tidak ditemukan')
         return redirect('halaman_tugas_anggota', pk=keg)
 
+    try:
+        data_kegiatan = get_object_or_404(Kegiatan, pk=keg)
+    except Http404:
+        messages.warning(request, 'Halaman yang Anda cari tidak ditemukan')
+        return redirect('halaman_utama')
+
     data = {
         'lmbr': data_lk,
         'instruksi': instruksi,
         'pk': keg,
         'li': li,
+        'kegiatan': data_kegiatan,
         'is_exist': False,
     }
 
