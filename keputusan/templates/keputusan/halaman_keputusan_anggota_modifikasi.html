@@ -133,6 +133,17 @@ Tambah Lembar Keputusan | Aplikasi PERK
                             {% endif %}
                             {{ form.butir.label_tag }}
                             <input type="hidden" name="angka_hid" id="angka_hid" value="">
+                            <script>
+                                $(document).ready(function(){
+                                    var angka_selector = $("input#angka_hid");
+                                    var butir_selector = $("input#butir");
+                                    var keg = $("span#kegiatan").attr('data-value');
+
+                                    $.get('/tugas/'+butir_selector.val()+'/butir/'+keg+'/', function(nilai){
+                                        angka_selector.val(nilai['angka']);
+                                    });
+                                });
+                            </script>
 
                             <div class="ui action input">
                                 {{ form.butir }}
