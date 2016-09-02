@@ -23,6 +23,8 @@ $(document).ready(function(){
     tinymce.init({
         selector: 'textarea#isi',
         theme: 'modern',
+        resize: false,
+        height : "480",
         plugins: [
             'advlist autolink lists link image charmap print preview hr anchor pagebreak',
             'searchreplace wordcount visualblocks visualchars code fullscreen',
