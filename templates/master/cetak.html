@@ -11,20 +11,20 @@
     </title>
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="{% static 'table.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'custom.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'header.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'cetak.css' %}">
     {% block style %}{% endblock %}
-    <script src="{% static 'jquery-2.1.4.min.js' %}"></script>
-    <script src="{% static 'semantic.min.js' %}"></script>
-    <script src="{% static 'custom.js' %}"></script>
     {% block script %}{% endblock %}
 </head>
 <body>
-    {% block container %}
-        <div class="ui text container">
-            {% block content %}
-            {% endblock %}
-        </div>
-    {% endblock %}
-    {% block js %}{% endblock %}
+{% block container %}
+<div class="demo">
+    {% block isi %}{% endblock %}
+</div>
+
+<div class="footer">
+    {% block footer %}{% endblock %}
+</div>
+{% endblock %}
 </body>
 </html>
