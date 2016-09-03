@@ -62,7 +62,7 @@ Lembar Keputusan | Aplikasi PERK
                 <td>{{ kep.tingkatan }}</td>
                 <td>{{ kep.pemberi.get_full_name }}</td>
                 <td class="center aligned">
-                    <a href="" class="ui icon tiny secondary button" title=" Ubah ">
+                    <a href="{% url 'halaman_ubah_keputusan' slug=kegiatan.nama|slugify pk_kegiatan=kegiatan.pk pk=kep.pk %}" class="ui icon tiny secondary button" title=" Ubah ">
                         <i class="pencil icon"></i>
                     </a>
                     <a href="" class="ui icon tiny tertiary button" title=" Duplikat ">
