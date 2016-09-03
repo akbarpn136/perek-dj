@@ -203,9 +203,23 @@ Tambah Lembar Keputusan | Aplikasi PERK
 
                     <input type="submit" class="ui submit primary button" value="Simpan">
                     {% if 'ubah' in request.path %}
-                    <a href="{% url 'halaman_hapus_keputusan' slug=kegiatan.nama|slugify pk_kegiatan=kegiatan.pk pk=pk_keputusan %}" class="ui icon tiny red button" title=" Hapus ">
+                    <a id="tbl_hapus" class="ui icon tiny red button" title=" Hapus " data-value="{% url 'halaman_hapus_keputusan' slug=kegiatan.nama|slugify pk_kegiatan=kegiatan.pk pk=pk_keputusan %}">
                         <i class="trash icon"></i>
                     </a>
+
+                    <div id="modal_hapus_keputusan" class="ui small modal">
+                        <div class="header">Anda Yakin?</div>
+                        <div class="content">
+                            <p>
+                                Apakah Anda yakin untuk menghapus lembar keputusan ini?
+                            </p>
+                        </div>
+
+                        <div class="actions">
+                            <div class="ui positive button">Ya</div>
+                            <div class="ui deny button">Tidak</div>
+                        </div>
+                    </div>
                     {% endif %}
                 </form>
             </div>
