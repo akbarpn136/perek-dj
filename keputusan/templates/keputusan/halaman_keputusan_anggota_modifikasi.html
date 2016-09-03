@@ -202,6 +202,11 @@ Tambah Lembar Keputusan | Aplikasi PERK
                     <div class="ui divider"></div>
 
                     <input type="submit" class="ui submit primary button" value="Simpan">
+                    {% if 'ubah' in request.path %}
+                    <a href="{% url 'halaman_hapus_keputusan' slug=kegiatan.nama|slugify pk_kegiatan=kegiatan.pk pk=pk_keputusan %}" class="ui icon tiny red button" title=" Hapus ">
+                        <i class="trash icon"></i>
+                    </a>
+                    {% endif %}
                 </form>
             </div>
         </div>
