@@ -75,7 +75,6 @@ class TambahKeputusan(edit.CreateView):
     model = LembarKeputusan
     template_name = 'keputusan/halaman_keputusan_anggota_modifikasi.html'
     form_class = FormKeputusan
-    success_url = reverse_lazy('halaman_keputusan')
 
     def dispatch(self, request, *args, **kwargs):
         if cek_keanggotaan(request.user, self.kwargs['pk']):
@@ -143,3 +142,6 @@ class TambahKeputusan(edit.CreateView):
         else:
             messages.warning(self.request, 'Tidak diperbolehkan untuk mengganti angka kredit!')
             return redirect('halaman_keputusan', slug=self.kwargs['slug'], keg=self.kwargs['pk'])
+
+    def get_success_url(self):
+        return reverse_lazy('halaman_keputusan',  kwargs={'slug': self.kwargs['slug'], 'pk': self.kwargs['pk']})
