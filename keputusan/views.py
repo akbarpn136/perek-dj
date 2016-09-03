@@ -1,8 +1,8 @@
 from tugas.perekayasa import *
-from django.shortcuts import get_object_or_404, Http404, redirect
+from django.shortcuts import get_object_or_404, Http404, redirect, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
-from django.views import generic
+from django.views import generic, View
 from django.views.generic import edit
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -147,7 +147,7 @@ class TambahKeputusan(edit.CreateView):
             return redirect('halaman_keputusan', slug=self.kwargs['slug'], keg=self.kwargs['pk'])
 
     def get_success_url(self):
-        return reverse_lazy('halaman_keputusan',  kwargs={'slug': self.kwargs['slug'], 'pk': self.kwargs['pk']})
+        return reverse_lazy('halaman_keputusan', kwargs={'slug': self.kwargs['slug'], 'pk': self.kwargs['pk']})
 
 
 @method_decorator(login_required, name='dispatch')
@@ -192,6 +192,7 @@ class UbahKeputusan(edit.UpdateView):
         context = super(UbahKeputusan, self).get_context_data(**kwargs)
         context['peran'] = [self.request.user, data_kegiatan.pk]
         context['pk'] = data_kegiatan.pk
+        context['pk_keputusan'] = self.kwargs['pk']
         context['kegiatan'] = data_kegiatan
         context['butir'] = data_butir
         context['format'] = data_format
@@ -224,4 +225,42 @@ class UbahKeputusan(edit.UpdateView):
             return redirect('halaman_keputusan', slug=self.kwargs['slug'], keg=self.kwargs['pk_kegiatan'])
 
     def get_success_url(self):
-        return reverse_lazy('halaman_keputusan',  kwargs={'slug': self.kwargs['slug'], 'pk': self.kwargs['pk_kegiatan']})
+        return reverse_lazy('halaman_keputusan',
+                            kwargs={'slug': self.kwargs['slug'], 'pk': self.kwargs['pk_kegiatan']})
+
+
+@method_decorator(login_required, name='dispatch')
+class HapusKeputusan(View):
+    def get(self, request, **kwargs):
+        if cek_keanggotaan(request.user, kwargs['pk_kegiatan']):
+            try:
+                kep = get_object_or_404(LembarKeputusan, kegiatan=self.kwargs['pk_kegiatan'], pk=self.kwargs['pk'])
+            except Http404:
+                messages.warning(request, 'Halaman yang Anda cari tidak ditemukan.')
+                return redirect('halaman_keputusan', slug=kwargs['slug'], pk=kwargs['pk_kegiatan'])
+
+            if kep.pemberi == request.user:
+                if kep.delete():
+                    html = '''<div class="ui green message">
+                            <div class="header">
+                                Info
+                            </div>
+                            <p>
+                                Lembar keputusan berhasil dihapus.
+                            </p>
+                        </div>'''
+                    return HttpResponse(html)
+            else:
+                messages.warning(request, 'Hanya pemilik yang dapat hak akses.')
+                return redirect('halaman_keputusan', slug=kwargs['slug'], pk=kwargs['pk_kegiatan'])
+
+        else:
+            html = '''<div class="ui red message">
+                <div class="header">
+                    Info
+                </div>
+                <p>
+                    Anda tidak memiliki hak akses.
+                </p>
+            </div>'''
+            return HttpResponse(html)
