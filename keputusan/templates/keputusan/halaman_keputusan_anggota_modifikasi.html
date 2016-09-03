@@ -6,7 +6,7 @@
 {% load li_terkait %}
 
 {% block title %}
-Tambah Lembar Keputusan | Aplikasi PERK
+Rekam Lembar Keputusan | Aplikasi PERK
 {% endblock %}
 
 {% block style %}
@@ -202,6 +202,7 @@ Tambah Lembar Keputusan | Aplikasi PERK
                     <div class="ui divider"></div>
 
                     <input type="submit" class="ui submit primary button" value="Simpan">
+                    <span id="tbl_kembali" data-value="{% url 'halaman_keputusan' slug=kegiatan.nama|slugify pk=kegiatan.pk %}"></span>
                     {% if 'ubah' in request.path %}
                     <a id="tbl_hapus" class="ui icon tiny red button" title=" Hapus " data-value="{% url 'halaman_hapus_keputusan' slug=kegiatan.nama|slugify pk_kegiatan=kegiatan.pk pk=pk_keputusan %}">
                         <i class="trash icon"></i>
