@@ -1,0 +1,65 @@
+ /**
+ * Demo Styles
+ */
+
+@media print
+{
+    .foter {
+        margin-bottom: 0 !important;
+    }
+}
+
+html
+{
+    height: 100%;
+    box-sizing: border-box;
+}
+
+*, *:before, *:after
+{
+  box-sizing: inherit;
+}
+
+body
+{
+    position: relative;
+    margin: 0;
+    padding-bottom: 6rem;
+    min-height: 100%;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+.demo
+{
+    margin: 0 auto;
+    max-width: 640px;
+    width: 94%;
+}
+
+.demo h1
+{
+    margin-top: 0;
+}
+
+/**
+ * Footer Styles
+ */
+
+.footer
+{
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: -150px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-width: 640px;
+    width: 94%;
+    z-index: -1;
+}
+
+table.ui.table
+{
+    margin: 0 auto;
+}
