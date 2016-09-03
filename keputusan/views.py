@@ -159,14 +159,25 @@ class UbahKeputusan(edit.UpdateView):
     def dispatch(self, request, *args, **kwargs):
         if cek_keanggotaan(request.user, self.kwargs['pk_kegiatan']):
             try:
-                data_peran = get_object_or_404(Personil, orang=request.user, personil_kegiatan=self.kwargs['pk'],
-                                               peran_utama=True)
+                data_peran = get_object_or_404(Personil, orang=request.user,
+                                               personil_kegiatan=self.kwargs['pk_kegiatan'], peran_utama=True)
                 peran = data_peran.peran
             except Http404:
                 peran = ''
 
+            try:
+                data_pemberi = get_object_or_404(LembarKeputusan, kegiatan=self.kwargs['pk_kegiatan'],
+                                                 pk=self.kwargs['pk'])
+            except Http404:
+                messages.warning(request, 'Halaman tidak ditemukan.')
+                return redirect('halaman_utama')
+
             if peran not in ['TS', 'ES', 'ACE']:
-                return super(UbahKeputusan, self).dispatch(request, *args, **kwargs)
+                if data_pemberi.pemberi == request.user:
+                    return super(UbahKeputusan, self).dispatch(request, *args, **kwargs)
+                else:
+                    messages.warning(request, 'Hanya pimpinan rapat yang mendapatkan hak akses.')
+                    return redirect('halaman_keputusan', slug=self.kwargs['slug'], pk=self.kwargs['pk_kegiatan'])
             else:
                 messages.warning(request, 'Maaf, Anda tidak mendapatkan izin untuk tambah surat keputusan')
                 return redirect('halaman_utama')
@@ -218,7 +229,7 @@ class UbahKeputusan(edit.UpdateView):
             form.instance.kegiatan = Kegiatan.objects.get(pk=self.kwargs['pk_kegiatan'])
             form.instance.pemberi = self.request.user
 
-            messages.success(self.request, 'Lembar keputusan berhasil ditambahkan')
+            messages.success(self.request, 'Lembar keputusan berhasil disimpan.')
             return super(UbahKeputusan, self).form_valid(form)
         else:
             messages.warning(self.request, 'Tidak diperbolehkan untuk mengganti angka kredit!')
@@ -235,23 +246,54 @@ class HapusKeputusan(View):
         if cek_keanggotaan(request.user, kwargs['pk_kegiatan']):
             try:
                 kep = get_object_or_404(LembarKeputusan, kegiatan=self.kwargs['pk_kegiatan'], pk=self.kwargs['pk'])
+
+                if kep.pemberi == request.user:
+                    if kep.delete():
+                        html = '''<div class="ui green message">
+                                <div class="header">
+                                    Info
+                                </div>
+                                <p>
+                                    Lembar keputusan berhasil dihapus.
+                                </p>
+                            </div>'''
+                        return HttpResponse(html)
+                else:
+                    messages.warning(request, 'Hanya pemilik yang dapat hak akses.')
+                    return redirect('halaman_keputusan', slug=kwargs['slug'], pk=kwargs['pk_kegiatan'])
             except Http404:
                 messages.warning(request, 'Halaman yang Anda cari tidak ditemukan.')
                 return redirect('halaman_keputusan', slug=kwargs['slug'], pk=kwargs['pk_kegiatan'])
 
-            if kep.pemberi == request.user:
-                if kep.delete():
-                    html = '''<div class="ui green message">
-                            <div class="header">
-                                Info
-                            </div>
-                            <p>
-                                Lembar keputusan berhasil dihapus.
-                            </p>
-                        </div>'''
-                    return HttpResponse(html)
-            else:
-                messages.warning(request, 'Hanya pemilik yang dapat hak akses.')
+        else:
+            html = '''<div class="ui red message">
+                <div class="header">
+                    Info
+                </div>
+                <p>
+                    Anda tidak memiliki hak akses.
+                </p>
+            </div>'''
+            return HttpResponse(html)
+
+
+@method_decorator(login_required, name='dispatch')
+class DuplikatKeputusan(View):
+    def get(self, request, **kwargs):
+        if cek_keanggotaan(request.user, kwargs['pk_kegiatan']):
+            try:
+                kep = get_object_or_404(LembarKeputusan, kegiatan=self.kwargs['pk_kegiatan'], pk=self.kwargs['pk'])
+                kep.pk = None
+
+                if kep.pemberi == request.user:
+                    kep.save()
+                    messages.success(request, 'Surat keputusan berhasil diduplikat.')
+                    return redirect('halaman_keputusan', slug=kwargs['slug'], pk=kwargs['pk_kegiatan'])
+                else:
+                    messages.warning(request, 'Hanya pemilik yang dapat hak akses.')
+                    return redirect('halaman_keputusan', slug=kwargs['slug'], pk=kwargs['pk_kegiatan'])
+            except Http404:
+                messages.warning(request, 'Halaman yang Anda cari tidak ditemukan.')
                 return redirect('halaman_keputusan', slug=kwargs['slug'], pk=kwargs['pk_kegiatan'])
 
         else:
