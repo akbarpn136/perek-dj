@@ -65,7 +65,7 @@ Lembar Keputusan | Aplikasi PERK
                     <a href="{% url 'halaman_ubah_keputusan' slug=kegiatan.nama|slugify pk_kegiatan=kegiatan.pk pk=kep.pk %}" class="ui icon tiny secondary button" title=" Ubah ">
                         <i class="pencil icon"></i>
                     </a>
-                    <a href="" class="ui icon tiny tertiary button" title=" Duplikat ">
+                    <a href="{% url 'halaman_duplikat_keputusan' slug=kegiatan.nama|slugify pk_kegiatan=kegiatan.pk pk=kep.pk %}" class="ui icon tiny tertiary button" title=" Duplikat ">
                         <i class="clone icon"></i>
                     </a>
                 </td>
