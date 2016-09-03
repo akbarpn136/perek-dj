@@ -6,20 +6,7 @@
     Dibuat dengan Aplikasi Fungsional Perekayasa BBTA3 BPPT | PERK
 {% endblock %}
 
-{% block style %}
-<style>
-    * {overflow: visible !important;}
-    @media print {
-        footer{
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-    }
-</style>
-{% endblock %}
-
-{% block content %}
+{% block isi %}
 <table class="ui celled structured compact table">
     <tbody>
         <tr>
@@ -69,10 +56,10 @@
         </tr>
     </tbody>
 </table>
-<p>
-    {{ lmbr.isi|safe }}
-</p>
-<footer>
+{{ lmbr.isi|safe }}
+{% endblock %}
+
+{% block footer %}
 <table class="ui celled structured compact table">
     <tr>
         <td colspan="2">Dari:</td>
@@ -115,5 +102,4 @@
         </td>
     </tr>
 </table>
-</footer>
 {% endblock %}
