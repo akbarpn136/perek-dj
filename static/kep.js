@@ -104,4 +104,26 @@ $(document).ready(function(){
         nomor.text(baru);
         e.preventDefault();
     });
+
+    $("a#tbl_hapus").click(function(e){
+        e.preventDefault();
+        $("div#modal_hapus_keputusan").modal({
+            closable  : false,
+            onApprove : function(){
+                $.get($("a#tbl_hapus").attr('data-value'), function(dt){
+                    var html = '<a href="'+$("span#tbl_kembali").attr('data-value')+'" class="ui icon green button" title=" Kembali ke tugas ">';
+                    html += '<i class="reply icon"></i> Kembali';
+                    html += '</a>';
+
+                    $("form").empty().prepend(dt).prepend(html);
+                    var selector = $("div#latar-samping");
+                    selector.css('min-height', '102%');
+                });
+            },
+            onShow : function(){
+                var selector = $("div#latar-samping");
+                selector.css('min-height', selector.height()+28);
+            }
+        }).modal('show');
+    });
 });
